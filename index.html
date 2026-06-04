@@ -3,1209 +3,628 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>NEON QUEST ULTIMATE</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>NEON QUEST ULTIMATE V3</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --neon-cyan: #00f5ff;
-  --neon-pink: #ff006e;
-  --neon-purple: #8338ec;
-  --neon-green: #39ff14;
-  --neon-gold: #ffd60a;
-  --neon-orange: #ff4d00;
-  --bg-deep: #020408;
-  --bg-dark: #060d16;
-  --bg-card: #0a1628;
-  --bg-card2: #0f1e35;
-  --border-neon: rgba(0,245,255,0.2);
-  --text-primary: #e0f4ff;
-  --text-muted: #4a7a9b;
-  --font-display: 'Orbitron', monospace;
-  --font-ui: 'Rajdhani', sans-serif;
-  --font-fa: 'Vazirmatn', sans-serif;
+  --c:#00f5ff;--p:#ff006e;--v:#8338ec;--g:#39ff14;--gold:#ffd60a;
+  --o:#ff4d00;--bg:#020408;--bgd:#060d16;--bgc:#0a1628;--bgc2:#0f1e35;
+  --bn:rgba(0,245,255,0.2);--tx:#e0f4ff;--tm:#4a7a9b;
+  --fd:'Orbitron',monospace;--fu:'Rajdhani',sans-serif;--ff:'Vazirmatn',sans-serif;
+  --depth:perspective(600px);
 }
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:var(--ff);min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,245,255,0.01) 2px,rgba(0,245,255,0.01) 4px);pointer-events:none;z-index:9999}
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* LOADING */
+#loading{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10000;transition:opacity 0.8s}
+#loading h1{font-family:var(--fd);font-size:clamp(2rem,8vw,4rem);font-weight:900;color:var(--c);text-shadow:0 0 40px var(--c),0 0 80px rgba(0,245,255,0.3);letter-spacing:6px;animation:pglow 2s ease-in-out infinite}
+#loading .sub{font-family:var(--fd);font-size:.75rem;color:var(--p);letter-spacing:4px;margin-top:6px;text-shadow:0 0 20px var(--p)}
+.load-bar{width:280px;height:3px;background:rgba(0,245,255,0.1);border-radius:2px;margin-top:40px;overflow:hidden}
+.load-bar-fill{height:100%;background:linear-gradient(90deg,var(--c),var(--v));animation:lanim 2.2s ease-out forwards;box-shadow:0 0 10px var(--c)}
+@keyframes lanim{from{width:0}to{width:100%}}
+@keyframes pglow{0%,100%{text-shadow:0 0 40px var(--c),0 0 80px rgba(0,245,255,0.3)}50%{text-shadow:0 0 80px var(--c),0 0 160px rgba(0,245,255,0.5)}}
 
-body {
-  background: var(--bg-deep);
-  color: var(--text-primary);
-  font-family: var(--font-fa);
-  min-height: 100vh;
-  overflow-x: hidden;
-  -webkit-tap-highlight-color: transparent;
-}
+/* SCREEN */
+.screen{display:none;min-height:100vh}
+.screen.active{display:block}
 
-/* ── SCANLINES ── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0,245,255,0.015) 2px,
-    rgba(0,245,255,0.015) 4px
-  );
-  pointer-events: none;
-  z-index: 9999;
+/* ══ SETUP SCREEN ══ */
+#setup-screen{
+  background:radial-gradient(ellipse at 50% 0%,rgba(131,56,236,0.4) 0%,transparent 60%),
+             radial-gradient(ellipse at 80% 80%,rgba(0,245,255,0.2) 0%,transparent 50%),
+             radial-gradient(ellipse at 10% 60%,rgba(255,0,110,0.15) 0%,transparent 50%),var(--bg);
+  padding:20px;display:flex;flex-direction:column;align-items:center;min-height:100vh
 }
+.setup-logo{font-family:var(--fd);font-size:clamp(1.8rem,7vw,3.5rem);font-weight:900;color:var(--c);
+  text-shadow:0 0 30px var(--c),0 0 60px rgba(0,245,255,0.4),0 0 100px rgba(0,245,255,0.15);
+  letter-spacing:6px;text-align:center;margin:24px 0 6px;animation:logoFloat 4s ease-in-out infinite}
+@keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.setup-tagline{font-family:var(--fd);font-size:.62rem;color:var(--p);letter-spacing:4px;text-shadow:0 0 15px var(--p);margin-bottom:8px}
 
-/* ── LOADING SCREEN ── */
-#loading {
-  position: fixed;
-  inset: 0;
-  background: var(--bg-deep);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-  transition: opacity 0.8s;
-}
-#loading h1 {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 8vw, 4rem);
-  font-weight: 900;
-  color: var(--neon-cyan);
-  text-shadow: 0 0 40px var(--neon-cyan), 0 0 80px rgba(0,245,255,0.3);
-  letter-spacing: 6px;
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-#loading .sub {
-  font-family: var(--font-display);
-  font-size: 0.75rem;
-  color: var(--neon-pink);
-  letter-spacing: 4px;
-  margin-top: 6px;
-  text-shadow: 0 0 20px var(--neon-pink);
-}
-.load-bar {
-  width: 280px;
-  height: 3px;
-  background: rgba(0,245,255,0.1);
-  border-radius: 2px;
-  margin-top: 40px;
-  overflow: hidden;
-}
-.load-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
-  border-radius: 2px;
-  animation: load-anim 2.2s ease-out forwards;
-  box-shadow: 0 0 10px var(--neon-cyan);
-}
-@keyframes load-anim { from { width: 0 } to { width: 100% } }
-@keyframes pulse-glow {
-  0%,100% { text-shadow: 0 0 40px var(--neon-cyan), 0 0 80px rgba(0,245,255,0.3); }
-  50% { text-shadow: 0 0 60px var(--neon-cyan), 0 0 120px rgba(0,245,255,0.5), 0 0 180px rgba(0,245,255,0.2); }
-}
+/* Step indicator */
+.step-indicator{display:flex;gap:8px;align-items:center;margin-bottom:24px}
+.step-dot{width:36px;height:36px;border-radius:50%;border:2px solid rgba(0,245,255,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.65rem;color:var(--tm);transition:all .4s;cursor:default;position:relative}
+.step-dot.active{border-color:var(--c);color:var(--c);box-shadow:0 0 16px rgba(0,245,255,0.5),inset 0 0 10px rgba(0,245,255,0.1)}
+.step-dot.done{border-color:var(--g);background:rgba(57,255,20,0.12);color:var(--g);box-shadow:0 0 12px rgba(57,255,20,0.3)}
+.step-line{width:28px;height:2px;background:rgba(0,245,255,0.15);border-radius:1px;transition:all .4s}
+.step-line.done{background:var(--g);box-shadow:0 0 8px var(--g)}
 
-/* ── SCREEN SYSTEM ── */
-.screen { display: none; min-height: 100vh; }
-.screen.active { display: block; }
+/* Setup step panels */
+.setup-step{width:100%;max-width:600px;display:none;animation:stepIn .4s ease}
+.setup-step.active{display:block}
+@keyframes stepIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.step-title{font-family:var(--fd);font-size:.72rem;color:var(--c);letter-spacing:3px;text-transform:uppercase;
+  margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid rgba(0,245,255,0.15);display:flex;align-items:center;gap:10px}
+.step-num{width:26px;height:26px;background:rgba(0,245,255,0.12);border:1px solid var(--bn);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
 
-/* ── SETUP SCREEN ── */
-#setup-screen {
-  background: radial-gradient(ellipse at 50% 0%, rgba(131,56,236,0.3) 0%, transparent 60%),
-              radial-gradient(ellipse at 80% 80%, rgba(0,245,255,0.15) 0%, transparent 50%),
-              var(--bg-deep);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.setup-logo {
-  font-family: var(--font-display);
-  font-size: clamp(1.4rem, 5vw, 2.5rem);
-  font-weight: 900;
-  color: var(--neon-cyan);
-  text-shadow: 0 0 30px var(--neon-cyan);
-  letter-spacing: 4px;
-  text-align: center;
-  margin: 30px 0 8px;
-}
-.setup-tagline {
-  font-family: var(--font-display);
-  font-size: 0.6rem;
-  color: var(--neon-pink);
-  letter-spacing: 3px;
-  text-shadow: 0 0 15px var(--neon-pink);
-  margin-bottom: 30px;
-}
-.setup-section {
-  width: 100%;
-  max-width: 500px;
-  margin-bottom: 24px;
-}
-.setup-section h3 {
-  font-family: var(--font-display);
-  font-size: 0.65rem;
-  color: var(--neon-cyan);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-neon);
-}
-.name-input {
-  width: 100%;
-  background: var(--bg-card);
-  border: 1px solid var(--border-neon);
-  border-radius: 8px;
-  color: var(--text-primary);
-  font-family: var(--font-fa);
-  font-size: 1.1rem;
-  padding: 14px 18px;
-  outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  text-align: right;
-}
-.name-input:focus {
-  border-color: var(--neon-cyan);
-  box-shadow: 0 0 20px rgba(0,245,255,0.2), inset 0 0 20px rgba(0,245,255,0.05);
-}
-.class-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
-.class-card {
-  background: var(--bg-card);
-  border: 1px solid rgba(0,245,255,0.1);
-  border-radius: 10px;
-  padding: 14px;
-  cursor: pointer;
-  transition: all 0.25s;
-  position: relative;
-  overflow: hidden;
-}
-.class-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.3s;
-  border-radius: 10px;
-}
-.class-card.selected {
-  border-color: var(--neon-cyan);
-  box-shadow: 0 0 20px rgba(0,245,255,0.3);
-}
-.class-card.selected::before { opacity: 1; background: rgba(0,245,255,0.05); }
-.class-card:hover { border-color: rgba(0,245,255,0.4); transform: translateY(-2px); }
-.class-icon { font-size: 1.8rem; margin-bottom: 6px; }
-.class-name {
-  font-family: var(--font-display);
-  font-size: 0.7rem;
-  color: var(--neon-cyan);
-  letter-spacing: 1px;
-  display: block;
-}
-.class-desc { font-size: 0.72rem; color: var(--text-muted); margin-top: 3px; line-height: 1.4; }
-.class-branch {
-  font-size: 0.6rem;
-  color: var(--neon-pink);
-  font-family: var(--font-display);
-  letter-spacing: 1px;
-  margin-bottom: 4px;
-  display: block;
-}
+/* ══ STEP 1 – NAME ══ */
+.name-section{background:var(--bgc);border:1px solid var(--bn);border-radius:16px;padding:24px;margin-bottom:16px}
+.name-input{width:100%;background:var(--bgc2);border:1px solid var(--bn);border-radius:12px;color:var(--tx);
+  font-family:var(--ff);font-size:1.1rem;padding:18px 20px;outline:none;transition:all .3s;text-align:right;
+  box-shadow:inset 0 2px 10px rgba(0,0,0,0.3)}
+.name-input:focus{border-color:var(--c);box-shadow:0 0 30px rgba(0,245,255,0.2),inset 0 0 20px rgba(0,245,255,0.04)}
+.name-hint{font-size:.65rem;color:var(--tm);margin-top:8px;text-align:right}
 
-.avatar-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-.avatar-card {
-  background: var(--bg-card);
-  border: 1px solid rgba(0,245,255,0.1);
-  border-radius: 10px;
-  padding: 12px 8px;
-  cursor: pointer;
-  transition: all 0.25s;
-  text-align: center;
-}
-.avatar-card.selected { border-color: var(--neon-gold); box-shadow: 0 0 15px rgba(255,214,10,0.3); }
-.avatar-card:hover { border-color: rgba(255,214,10,0.3); transform: translateY(-2px); }
-.avatar-emoji { font-size: 2.2rem; display: block; margin-bottom: 4px; }
-.avatar-label { font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-display); letter-spacing: 1px; }
-.avatar-card.locked { opacity: 0.4; cursor: not-allowed; }
-.avatar-card.locked:hover { transform: none; }
-.lock-badge {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  font-size: 0.55rem;
-  background: var(--neon-gold);
-  color: #000;
-  border-radius: 4px;
-  padding: 1px 4px;
-  font-family: var(--font-display);
-}
+/* ══ STEP 2 – CLASS ══ */
+.class-section{background:var(--bgc);border:1px solid var(--bn);border-radius:16px;padding:18px;margin-bottom:16px}
+.class-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-height:480px;overflow-y:auto;padding-right:4px}
+.class-grid::-webkit-scrollbar{width:3px}
+.class-grid::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.2);border-radius:2px}
+.class-card{background:var(--bgc2);border:1px solid rgba(0,245,255,0.08);border-radius:14px;padding:14px;
+  cursor:pointer;transition:all .25s;position:relative;overflow:hidden;transform-style:preserve-3d}
+.class-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,245,255,0.06),transparent);
+  opacity:0;transition:opacity .3s;border-radius:14px}
+.class-card.selected{border-color:var(--c);box-shadow:0 0 24px rgba(0,245,255,0.3),0 8px 24px rgba(0,0,0,0.5)}
+.class-card.selected::before{opacity:1}
+.class-card:hover:not(.selected){border-color:rgba(0,245,255,0.3);transform:translateY(-3px) rotateX(4deg);
+  box-shadow:0 10px 30px rgba(0,0,0,0.4)}
+.class-icon{font-size:2.2rem;margin-bottom:6px;filter:drop-shadow(0 0 10px rgba(0,245,255,0.3));
+  transition:transform .3s;display:block}
+.class-card:hover .class-icon,.class-card.selected .class-icon{transform:scale(1.15) rotateY(20deg)}
+.class-name{font-family:var(--fd);font-size:.72rem;color:var(--c);letter-spacing:1px;display:block}
+.class-branch{font-size:.56rem;color:var(--p);font-family:var(--fd);letter-spacing:1px;margin-bottom:4px;display:block}
+.class-desc{font-size:.68rem;color:var(--tm);margin-top:3px;line-height:1.4}
+.class-stat-bonus{font-size:.6rem;color:var(--g);margin-top:5px;font-family:var(--fd)}
+.class-selected-mark{position:absolute;top:8px;right:8px;width:20px;height:20px;background:var(--c);
+  border-radius:50%;display:none;align-items:center;justify-content:center;font-size:.65rem;color:#000;box-shadow:0 0 10px var(--c)}
+.class-card.selected .class-selected-mark{display:flex}
 
-.start-btn {
-  width: 100%;
-  max-width: 500px;
-  background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
-  border: none;
-  border-radius: 12px;
-  color: #fff;
-  font-family: var(--font-display);
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 3px;
-  padding: 18px;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 0 30px rgba(131,56,236,0.4);
-  margin-bottom: 40px;
-}
-.start-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 50px rgba(131,56,236,0.7), 0 15px 30px rgba(0,0,0,0.4);
-}
-.start-btn:active { transform: translateY(0); }
+/* ══ STEP 3 – AVATAR ══ */
+.avatar-section{background:var(--bgc);border:1px solid var(--bn);border-radius:16px;padding:18px;margin-bottom:16px}
+.avatar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-height:360px;overflow-y:auto}
+.avatar-grid::-webkit-scrollbar{width:3px}
+.avatar-grid::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.2);border-radius:2px}
+.avatar-card{background:var(--bgc2);border:1px solid rgba(0,245,255,0.08);border-radius:14px;padding:14px 10px;
+  cursor:pointer;transition:all .25s;text-align:center;position:relative;transform-style:preserve-3d}
+.avatar-card.selected{border-color:var(--gold);box-shadow:0 0 22px rgba(255,214,10,0.35)}
+.avatar-card:hover:not(.locked):not(.selected){border-color:rgba(255,214,10,0.3);transform:translateY(-3px) rotateX(5deg) rotateY(5deg)}
+.avatar-emoji{font-size:2.8rem;display:block;margin-bottom:5px;transition:transform .25s;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,0.6))}
+.avatar-card:hover .avatar-emoji,.avatar-card.selected .avatar-emoji{transform:scale(1.15) translateY(-3px) rotateY(20deg)}
+.avatar-label{font-size:.6rem;color:var(--tm);font-family:var(--fd);letter-spacing:1px}
+.avatar-card.locked{opacity:.45;cursor:not-allowed}
+.avatar-card.locked:hover{transform:none}
+.lock-badge{position:absolute;top:5px;right:5px;font-size:.48rem;background:var(--gold);color:#000;
+  border-radius:4px;padding:2px 5px;font-family:var(--fd)}
 
-/* ── MAIN GAME ── */
-#game-screen {
-  background: var(--bg-deep);
-  padding-bottom: 80px;
-}
+/* Avatar 3D preview */
+.avatar-preview-box{background:linear-gradient(135deg,var(--bgc2),var(--bgc));border:1px solid var(--bn);
+  border-radius:18px;padding:28px;text-align:center;margin-top:16px;position:relative;overflow:hidden}
+.avatar-preview-box::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(0,245,255,0.1),transparent 70%);pointer-events:none}
+.avatar-3d-scene{width:140px;height:140px;margin:0 auto;perspective:600px;position:relative}
+.avatar-3d-spin{width:100%;height:100%;transform-style:preserve-3d;animation:spin3d 8s linear infinite;
+  display:flex;align-items:center;justify-content:center}
+@keyframes spin3d{0%{transform:rotateY(0deg) rotateX(8deg)}100%{transform:rotateY(360deg) rotateX(8deg)}}
+.avatar-3d-emoji{font-size:5.5rem;filter:drop-shadow(0 0 25px rgba(0,245,255,0.5)) drop-shadow(0 10px 20px rgba(0,0,0,0.8));
+  display:block;line-height:1}
+.avatar-3d-glow{position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,245,255,0.12),transparent 70%);animation:pulseGlow 2s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{opacity:.7}50%{opacity:1}}
+.avatar-3d-ring{width:90px;height:14px;background:radial-gradient(ellipse,rgba(0,245,255,0.35),transparent);
+  border-radius:50%;margin:8px auto 0;animation:ringPulse 2s ease-in-out infinite}
+@keyframes ringPulse{0%,100%{transform:scaleX(1);opacity:.7}50%{transform:scaleX(1.25);opacity:1}}
+.avatar-3d-name{font-family:var(--fd);font-size:.8rem;color:var(--c);letter-spacing:3px;margin-top:12px;
+  text-shadow:0 0 15px var(--c)}
+
+/* Step nav */
+.step-nav{display:flex;gap:10px;margin-top:20px;width:100%;max-width:600px}
+.step-btn{flex:1;padding:16px;border-radius:12px;font-family:var(--fd);font-size:.78rem;letter-spacing:2px;
+  cursor:pointer;transition:all .3s;border:none}
+.step-btn.next{background:linear-gradient(135deg,var(--v),var(--p));color:#fff;box-shadow:0 0 30px rgba(131,56,236,0.4)}
+.step-btn.next:hover{transform:translateY(-3px);box-shadow:0 0 50px rgba(131,56,236,0.7)}
+.step-btn.back{background:transparent;border:1px solid var(--bn);color:var(--tm)}
+.step-btn.back:hover{background:rgba(0,245,255,0.05);color:var(--c);border-color:var(--c)}
+.start-btn{width:100%;max-width:600px;background:linear-gradient(135deg,#00f5ff,#8338ec,#ff006e);
+  background-size:200% auto;animation:gradShift 3s ease infinite;
+  border:none;border-radius:14px;color:#fff;font-family:var(--fd);font-size:.9rem;font-weight:700;
+  letter-spacing:3px;padding:20px;cursor:pointer;transition:all .3s;
+  box-shadow:0 0 40px rgba(131,56,236,0.5);margin-top:20px}
+@keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.start-btn:hover{transform:translateY(-4px);box-shadow:0 0 60px rgba(131,56,236,0.8),0 20px 40px rgba(0,0,0,0.4)}
+
+/* ══════════════════════════════════════════
+   GAME SCREEN
+══════════════════════════════════════════ */
+#game-screen{background:var(--bg);padding-bottom:80px}
 
 /* TOP BAR */
-.top-bar {
-  background: rgba(6,13,22,0.95);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border-neon);
-  padding: 10px 16px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.player-avatar-small {
-  width: 44px;
-  height: 44px;
-  background: var(--bg-card2);
-  border: 2px solid var(--neon-cyan);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  flex-shrink: 0;
-  box-shadow: 0 0 15px rgba(0,245,255,0.3);
-  cursor: pointer;
-}
-.top-info { flex: 1; }
-.top-name {
-  font-family: var(--font-display);
-  font-size: 0.75rem;
-  color: var(--neon-cyan);
-  letter-spacing: 2px;
-  font-weight: 700;
-}
-.top-class { font-size: 0.65rem; color: var(--text-muted); margin-top: 1px; }
-.xp-bar-wrap { margin-top: 4px; }
-.xp-bar-bg {
-  height: 4px;
-  background: rgba(0,245,255,0.1);
-  border-radius: 2px;
-  overflow: hidden;
-}
-.xp-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
-  border-radius: 2px;
-  transition: width 0.5s ease;
-  box-shadow: 0 0 8px var(--neon-cyan);
-}
-.xp-text { font-size: 0.55rem; color: var(--text-muted); margin-top: 2px; font-family: var(--font-display); }
-.top-stats {
-  display: flex;
-  gap: 8px;
-  flex-shrink: 0;
-}
-.stat-badge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: var(--bg-card);
-  border: 1px solid var(--border-neon);
-  border-radius: 8px;
-  padding: 4px 8px;
-  min-width: 44px;
-}
-.stat-val {
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 700;
-}
-.stat-lbl { font-size: 0.5rem; color: var(--text-muted); font-family: var(--font-display); letter-spacing: 1px; }
-.stat-badge.level .stat-val { color: var(--neon-gold); text-shadow: 0 0 10px var(--neon-gold); }
-.stat-badge.gold .stat-val { color: var(--neon-gold); }
-.stat-badge.gems .stat-val { color: var(--neon-pink); }
+.top-bar{background:rgba(6,13,22,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--bn);
+  padding:10px 14px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:10px}
+.player-avatar-small{width:48px;height:48px;background:var(--bgc2);border:2px solid var(--c);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:1.7rem;flex-shrink:0;
+  box-shadow:0 0 18px rgba(0,245,255,0.35);cursor:pointer;transition:all .25s;transform-style:preserve-3d}
+.player-avatar-small:hover{transform:scale(1.1) rotateY(20deg);box-shadow:0 0 30px rgba(0,245,255,0.6)}
+.top-info{flex:1}
+.top-name{font-family:var(--fd);font-size:.75rem;color:var(--c);letter-spacing:2px;font-weight:700}
+.top-class{font-size:.62rem;color:var(--tm);margin-top:1px}
+.xp-bar-bg{height:4px;background:rgba(0,245,255,0.1);border-radius:2px;overflow:hidden;margin-top:4px}
+.xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--c),var(--v));border-radius:2px;transition:width .6s ease;box-shadow:0 0 10px var(--c)}
+.xp-text{font-size:.52rem;color:var(--tm);margin-top:2px;font-family:var(--fd)}
+.top-stats{display:flex;gap:6px;flex-shrink:0}
+.stat-badge{display:flex;flex-direction:column;align-items:center;background:var(--bgc);border:1px solid var(--bn);border-radius:8px;padding:4px 8px;min-width:44px}
+.stat-val{font-family:var(--fd);font-size:.85rem;font-weight:700}
+.stat-lbl{font-size:.48rem;color:var(--tm);font-family:var(--fd);letter-spacing:1px}
+.stat-badge.level .stat-val{color:var(--gold);text-shadow:0 0 10px var(--gold)}
+.stat-badge.gold-stat .stat-val{color:var(--gold)}
 
-/* NAV TABS */
-.nav-tabs {
-  position: fixed;
-  bottom: 0;
-  left: 0; right: 0;
-  background: rgba(6,13,22,0.97);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid var(--border-neon);
-  display: flex;
-  z-index: 100;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-.nav-tab {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-  gap: 3px;
-  border: none;
-  background: none;
-}
-.nav-tab .tab-icon { font-size: 1.3rem; transition: all 0.2s; }
-.nav-tab .tab-lbl {
-  font-family: var(--font-display);
-  font-size: 0.52rem;
-  letter-spacing: 1px;
-  color: var(--text-muted);
-  transition: color 0.2s;
-}
-.nav-tab.active .tab-icon { filter: drop-shadow(0 0 8px var(--neon-cyan)); }
-.nav-tab.active .tab-lbl { color: var(--neon-cyan); }
+/* NAV */
+.nav-tabs{position:fixed;bottom:0;left:0;right:0;background:rgba(6,13,22,0.98);backdrop-filter:blur(20px);
+  border-top:1px solid var(--bn);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
+.nav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:10px 4px;cursor:pointer;transition:all .2s;gap:3px;border:none;background:none}
+.nav-tab .ti{font-size:1.3rem;transition:all .25s}
+.nav-tab .tl{font-family:var(--fd);font-size:.5rem;letter-spacing:1px;color:var(--tm);transition:color .2s}
+.nav-tab.active .ti{filter:drop-shadow(0 0 10px var(--c));transform:translateY(-3px) scale(1.1)}
+.nav-tab.active .tl{color:var(--c)}
 
 /* TAB PAGES */
-.tab-page { display: none; padding: 16px; }
-.tab-page.active { display: block; }
+.tab-page{display:none;padding:16px}
+.tab-page.active{display:block}
 
 /* SECTION TITLE */
-.sec-title {
-  font-family: var(--font-display);
-  font-size: 0.65rem;
-  color: var(--neon-cyan);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.sec-title::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, var(--border-neon), transparent);
-}
+.sec-title{font-family:var(--fd);font-size:.65rem;color:var(--c);letter-spacing:3px;text-transform:uppercase;
+  margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--bn),transparent)}
 
-/* HERO BANNER */
-.hero-banner {
-  background: linear-gradient(135deg, var(--bg-card2), var(--bg-card));
-  border: 1px solid var(--border-neon);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-}
-.hero-banner::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(131,56,236,0.15) 0%, transparent 70%);
-  pointer-events: none;
-}
-.hero-avatar {
-  width: 90px;
-  height: 90px;
-  background: var(--bg-deep);
-  border: 2px solid var(--neon-cyan);
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3.5rem;
-  flex-shrink: 0;
-  position: relative;
-  box-shadow: 0 0 25px rgba(0,245,255,0.25), inset 0 0 20px rgba(0,245,255,0.05);
-}
-.hero-info { flex: 1; }
-.hero-name {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--neon-cyan);
-  text-shadow: 0 0 20px var(--neon-cyan);
-  letter-spacing: 2px;
-}
-.hero-class-tag {
-  display: inline-block;
-  background: rgba(131,56,236,0.2);
-  border: 1px solid rgba(131,56,236,0.5);
-  color: #a78bf5;
-  font-family: var(--font-display);
-  font-size: 0.55rem;
-  letter-spacing: 2px;
-  padding: 3px 8px;
-  border-radius: 4px;
-  margin-top: 4px;
-}
-.hero-stats-row {
-  display: flex;
-  gap: 12px;
-  margin-top: 10px;
-}
-.hstat {
-  display: flex;
-  flex-direction: column;
-}
-.hstat-val {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  font-weight: 700;
-}
-.hstat-lbl { font-size: 0.6rem; color: var(--text-muted); }
+/* ══ 3D CHARACTER CARD ══ */
+.hero-banner{background:linear-gradient(135deg,var(--bgc2),var(--bgc));border:1px solid var(--bn);
+  border-radius:18px;padding:20px;margin-bottom:16px;display:flex;gap:16px;align-items:center;
+  position:relative;overflow:hidden;transform-style:preserve-3d}
+.hero-banner::before{content:'';position:absolute;top:-30%;right:-10%;width:240px;height:240px;
+  background:radial-gradient(circle,rgba(131,56,236,0.18) 0%,transparent 70%);pointer-events:none}
+.hero-banner::after{content:'';position:absolute;bottom:-30%;left:-10%;width:200px;height:200px;
+  background:radial-gradient(circle,rgba(0,245,255,0.1) 0%,transparent 70%);pointer-events:none}
 
-/* DAILY QUEST */
-.quest-card {
-  background: var(--bg-card);
-  border: 1px solid rgba(0,245,255,0.1);
-  border-radius: 12px;
-  padding: 14px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
-  overflow: hidden;
-}
-.quest-card:hover { border-color: rgba(0,245,255,0.3); transform: translateX(-4px); }
-.quest-card.completed { opacity: 0.6; }
-.quest-card.completed::after {
-  content: '✓';
-  position: absolute;
-  top: 10px; right: 12px;
-  color: var(--neon-green);
-  font-size: 1rem;
-  font-family: var(--font-display);
-}
-.quest-icon { font-size: 2rem; flex-shrink: 0; }
-.quest-info { flex: 1; }
-.quest-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 3px; }
-.quest-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; }
-.quest-rewards {
-  display: flex;
-  gap: 6px;
-  margin-top: 6px;
-}
-.reward-chip {
-  font-family: var(--font-display);
-  font-size: 0.55rem;
-  letter-spacing: 1px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  border: 1px solid;
-}
-.reward-chip.xp { color: var(--neon-cyan); border-color: rgba(0,245,255,0.3); background: rgba(0,245,255,0.08); }
-.reward-chip.gold { color: var(--neon-gold); border-color: rgba(255,214,10,0.3); background: rgba(255,214,10,0.08); }
-.quest-progress {
-  height: 3px;
-  background: rgba(0,245,255,0.1);
-  border-radius: 2px;
-  margin-top: 8px;
-  overflow: hidden;
-}
-.quest-progress-fill {
-  height: 100%;
-  background: var(--neon-cyan);
-  border-radius: 2px;
-  box-shadow: 0 0 6px var(--neon-cyan);
-}
+/* 3D HERO STAGE */
+.hero-3d-stage{width:110px;height:130px;flex-shrink:0;perspective:500px;cursor:pointer;position:relative}
+.hero-3d-inner{width:100%;height:100%;transform-style:preserve-3d;
+  animation:heroRock 10s ease-in-out infinite;transition:animation-duration .3s;
+  display:flex;align-items:center;justify-content:center;position:relative}
+.hero-3d-stage:hover .hero-3d-inner{animation-duration:2s}
+@keyframes heroRock{0%,100%{transform:rotateY(-15deg) rotateX(5deg) translateY(0)}
+  25%{transform:rotateY(15deg) rotateX(3deg) translateY(-5px)}
+  50%{transform:rotateY(20deg) rotateX(6deg) translateY(-8px)}
+  75%{transform:rotateY(-10deg) rotateX(4deg) translateY(-3px)}}
+.hero-3d-emoji{font-size:4.8rem;position:relative;z-index:2;
+  filter:drop-shadow(0 0 18px rgba(0,245,255,0.45)) drop-shadow(0 10px 20px rgba(0,0,0,0.8));
+  transition:filter .3s}
+/* Equipped items on hero */
+.hero-eq-helmet{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:2rem;z-index:3;
+  filter:drop-shadow(0 0 10px rgba(255,214,10,0.6))}
+.hero-eq-weapon{position:absolute;left:-20px;bottom:10px;font-size:1.8rem;z-index:3;
+  filter:drop-shadow(0 0 8px rgba(255,0,110,0.6));animation:weaponIdle 3s ease-in-out infinite}
+@keyframes weaponIdle{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+.hero-eq-armor{position:absolute;inset:-4px;border:1px solid rgba(0,245,255,0.2);border-radius:50%;z-index:0;opacity:0}
+.hero-eq-armor.on{opacity:1}
+.hero-eq-wings-l{position:absolute;left:-18px;top:20%;font-size:2.4rem;z-index:1;
+  transform:scaleX(-1);animation:wingsL 2s ease-in-out infinite}
+.hero-eq-wings-r{position:absolute;right:-18px;top:20%;font-size:2.4rem;z-index:1;
+  animation:wingsR 2s ease-in-out infinite}
+@keyframes wingsL{0%,100%{transform:scaleX(-1) rotateZ(-5deg)}50%{transform:scaleX(-1) rotateZ(12deg)}}
+@keyframes wingsR{0%,100%{transform:rotateZ(5deg)}50%{transform:rotateZ(-12deg)}}
+.hero-eq-aura{position:absolute;inset:-16px;border-radius:50%;z-index:0;animation:auraSpin 5s linear infinite}
+@keyframes auraSpin{to{transform:rotate(360deg)}}
+.hero-eq-pet{position:absolute;bottom:-6px;right:-26px;font-size:1.8rem;z-index:4;
+  animation:petFloat 3s ease-in-out infinite}
+@keyframes petFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-10px) rotate(6deg)}}
+.hero-3d-shadow{width:75px;height:12px;background:rgba(0,245,255,0.15);border-radius:50%;
+  margin:4px auto 0;filter:blur(4px);animation:shadowPulse 2s ease-in-out infinite}
+@keyframes shadowPulse{0%,100%{transform:scaleX(.8);opacity:.5}50%{transform:scaleX(1.1);opacity:.9}}
 
-/* ADD QUEST */
-.add-quest-btn {
-  width: 100%;
-  background: transparent;
-  border: 1px dashed rgba(0,245,255,0.3);
-  border-radius: 12px;
-  color: var(--neon-cyan);
-  font-family: var(--font-fa);
-  font-size: 0.85rem;
-  padding: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.add-quest-btn:hover { background: rgba(0,245,255,0.05); border-style: solid; }
+.hero-info{flex:1;min-width:0}
+.hero-name{font-family:var(--fd);font-size:1.05rem;font-weight:700;color:var(--c);
+  text-shadow:0 0 20px var(--c);letter-spacing:2px}
+.hero-class-tag{display:inline-block;background:rgba(131,56,236,0.2);border:1px solid rgba(131,56,236,0.5);
+  color:#a78bf5;font-family:var(--fd);font-size:.55rem;letter-spacing:2px;padding:3px 8px;
+  border-radius:4px;margin-top:4px}
+.multiclass-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.mclass-tag{font-family:var(--fd);font-size:.52rem;letter-spacing:1px;padding:3px 8px;border-radius:4px;
+  background:rgba(131,56,236,0.15);border:1px solid rgba(131,56,236,0.3);color:#a78bf5}
+.mclass-tag.add{background:transparent;border-style:dashed;color:var(--tm);cursor:pointer;transition:all .2s}
+.mclass-tag.add:hover{border-color:rgba(0,245,255,0.3);color:var(--c)}
+.hero-stats-row{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+.hstat{display:flex;flex-direction:column}
+.hstat-val{font-family:var(--fd);font-size:.95rem;font-weight:700}
+.hstat-lbl{font-size:.58rem;color:var(--tm)}
 
-/* MAP ZONES */
-.zone-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.zone-row::-webkit-scrollbar { display: none; }
-.zone-card {
-  background: var(--bg-card);
-  border: 1px solid rgba(0,245,255,0.1);
-  border-radius: 12px;
-  padding: 14px 16px;
-  flex-shrink: 0;
-  width: 140px;
-  cursor: pointer;
-  transition: all 0.25s;
-  position: relative;
-}
-.zone-card.unlocked { border-color: rgba(0,245,255,0.25); }
-.zone-card.current { border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0,245,255,0.2); }
-.zone-card.locked { opacity: 0.4; cursor: not-allowed; }
-.zone-emoji { font-size: 2rem; margin-bottom: 6px; }
-.zone-name { font-family: var(--font-display); font-size: 0.65rem; color: var(--neon-cyan); letter-spacing: 1px; }
-.zone-levels { font-size: 0.6rem; color: var(--text-muted); margin-top: 2px; }
-.zone-current-badge {
-  position: absolute;
-  top: 6px; right: 6px;
-  background: var(--neon-cyan);
-  color: var(--bg-deep);
-  font-family: var(--font-display);
-  font-size: 0.5rem;
-  padding: 2px 5px;
-  border-radius: 3px;
-  letter-spacing: 1px;
-}
+/* EQUIPPED STRIPS BELOW HERO */
+.equipped-strip{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
+.equipped-strip::-webkit-scrollbar{display:none}
+.eq-chip{background:var(--bgc);border:1px solid rgba(0,245,255,0.12);border-radius:10px;
+  padding:6px 10px;display:flex;align-items:center;gap:6px;flex-shrink:0;cursor:pointer;transition:all .2s}
+.eq-chip:hover{border-color:var(--c);background:rgba(0,245,255,0.06)}
+.eq-chip-icon{font-size:1.3rem}
+.eq-chip-info{display:flex;flex-direction:column}
+.eq-chip-slot{font-family:var(--fd);font-size:.45rem;color:var(--tm);letter-spacing:1px}
+.eq-chip-name{font-family:var(--fd);font-size:.6rem;color:var(--c)}
+.eq-chip.empty .eq-chip-name{color:var(--tm)}
+
+/* QUESTS */
+.quest-card{background:var(--bgc);border:1px solid rgba(0,245,255,0.1);border-radius:14px;
+  padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;
+  transition:all .25s;position:relative;overflow:hidden}
+.quest-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--c);transform:scaleY(0);transition:transform .25s;border-radius:0 2px 2px 0}
+.quest-card:hover::before,.quest-card.completed::before{transform:scaleY(1)}
+.quest-card.completed::before{background:var(--g)}
+.quest-card:hover{border-color:rgba(0,245,255,0.3);transform:translateX(-4px)}
+.quest-card.completed{opacity:.6}
+.quest-card.completed::after{content:'✓';position:absolute;top:10px;right:12px;color:var(--g);font-size:1rem}
+.quest-icon{font-size:2rem;flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5))}
+.quest-info{flex:1}
+.quest-name{font-size:.88rem;font-weight:700;margin-bottom:3px}
+.quest-desc{font-size:.7rem;color:var(--tm);line-height:1.4}
+.quest-rewards{display:flex;gap:6px;margin-top:6px}
+.reward-chip{font-family:var(--fd);font-size:.55rem;letter-spacing:1px;padding:2px 6px;border-radius:4px;border:1px solid}
+.reward-chip.xp{color:var(--c);border-color:rgba(0,245,255,0.3);background:rgba(0,245,255,0.08)}
+.reward-chip.gold{color:var(--gold);border-color:rgba(255,214,10,0.3);background:rgba(255,214,10,0.08)}
+.quest-progress{height:3px;background:rgba(0,245,255,0.1);border-radius:2px;margin-top:8px;overflow:hidden}
+.quest-progress-fill{height:100%;background:var(--c);border-radius:2px;box-shadow:0 0 6px var(--c)}
+.add-quest-btn{width:100%;background:transparent;border:1px dashed rgba(0,245,255,0.3);
+  border-radius:14px;color:var(--c);font-family:var(--ff);font-size:.85rem;padding:14px;
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.add-quest-btn:hover{background:rgba(0,245,255,0.05);border-style:solid}
+
+/* MAP */
+.zone-row{display:flex;gap:8px;margin-bottom:8px;overflow-x:auto;padding-bottom:4px;-ms-overflow-style:none;scrollbar-width:none}
+.zone-row::-webkit-scrollbar{display:none}
+.zone-card{background:var(--bgc);border:1px solid rgba(0,245,255,0.1);border-radius:14px;padding:14px 16px;
+  flex-shrink:0;width:148px;cursor:pointer;transition:all .28s;position:relative;transform-style:preserve-3d}
+.zone-card:hover:not(.locked){transform:translateY(-5px) rotateX(6deg) rotateY(4deg);
+  box-shadow:0 14px 35px rgba(0,0,0,0.6),0 0 24px rgba(0,245,255,0.12)}
+.zone-card.unlocked{border-color:rgba(0,245,255,0.25)}
+.zone-card.current{border-color:var(--c);box-shadow:0 0 24px rgba(0,245,255,0.25)}
+.zone-card.locked{opacity:.4;cursor:not-allowed}
+.zone-emoji{font-size:2.2rem;margin-bottom:7px;display:block}
+.zone-name{font-family:var(--fd);font-size:.65rem;color:var(--c);letter-spacing:1px}
+.zone-levels{font-size:.6rem;color:var(--tm);margin-top:2px}
+.zone-current-badge{position:absolute;top:6px;right:6px;background:var(--c);color:var(--bg);
+  font-family:var(--fd);font-size:.5rem;padding:2px 6px;border-radius:3px;letter-spacing:1px}
+
+/* BOSS */
+.boss-card{background:linear-gradient(135deg,var(--bgc2),rgba(255,0,110,0.07));
+  border:1px solid rgba(255,0,110,0.3);border-radius:18px;padding:22px;margin-bottom:16px;
+  text-align:center;cursor:pointer;transition:all .3s;transform-style:preserve-3d;position:relative;overflow:hidden}
+.boss-card::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,0,110,0.1),transparent 60%);pointer-events:none}
+.boss-card:hover:not(.boss-locked){border-color:var(--p);box-shadow:0 0 40px rgba(255,0,110,0.25);
+  transform:translateY(-5px) rotateX(4deg)}
+.boss-emoji{font-size:4.5rem;margin-bottom:10px;
+  filter:drop-shadow(0 0 25px rgba(255,0,110,0.5));transition:transform .3s;display:block}
+.boss-card:hover .boss-emoji{transform:scale(1.12) rotateY(20deg)}
+.boss-name{font-family:var(--fd);font-size:1rem;font-weight:700;color:var(--p);
+  letter-spacing:2px;text-shadow:0 0 25px var(--p)}
+.boss-level{font-size:.65rem;color:var(--tm);font-family:var(--fd);letter-spacing:2px;margin-top:4px}
+.boss-desc{font-size:.74rem;color:var(--tm);margin-top:8px;line-height:1.6}
+.boss-rewards{display:flex;gap:8px;justify-content:center;margin-top:12px}
+.boss-fight-btn{background:linear-gradient(135deg,var(--p),var(--o));border:none;border-radius:10px;
+  color:#fff;font-family:var(--fd);font-size:.7rem;letter-spacing:2px;padding:11px 26px;
+  cursor:pointer;margin-top:14px;transition:all .25s;box-shadow:0 0 24px rgba(255,0,110,0.35)}
+.boss-fight-btn:hover{transform:scale(1.06);box-shadow:0 0 40px rgba(255,0,110,0.6)}
+.boss-locked{opacity:.5;cursor:not-allowed;background:var(--bgc);border-color:rgba(255,255,255,0.08)}
 
 /* SHOP */
-.shop-categories {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-  overflow-x: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.shop-categories::-webkit-scrollbar { display: none; }
-.cat-btn {
-  background: var(--bg-card);
-  border: 1px solid rgba(0,245,255,0.15);
-  border-radius: 20px;
-  color: var(--text-muted);
-  font-family: var(--font-display);
-  font-size: 0.6rem;
-  letter-spacing: 1px;
-  padding: 6px 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.cat-btn.active { background: rgba(0,245,255,0.12); border-color: var(--neon-cyan); color: var(--neon-cyan); }
-
-.item-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-.item-card {
-  background: var(--bg-card);
-  border: 1px solid rgba(0,245,255,0.1);
-  border-radius: 12px;
-  padding: 14px;
-  cursor: pointer;
-  transition: all 0.25s;
-  position: relative;
-}
-.item-card:hover { border-color: rgba(0,245,255,0.3); transform: translateY(-3px); }
-.item-card.owned { border-color: rgba(57,255,20,0.3); }
-.item-card.equipped { border-color: var(--neon-gold); box-shadow: 0 0 15px rgba(255,214,10,0.2); }
-.item-emoji { font-size: 2.5rem; display: block; margin-bottom: 8px; text-align: center; }
-.item-name { font-family: var(--font-display); font-size: 0.65rem; color: var(--text-primary); letter-spacing: 1px; text-align: center; margin-bottom: 4px; }
-.item-rarity {
-  font-family: var(--font-display);
-  font-size: 0.5rem;
-  letter-spacing: 1px;
-  text-align: center;
-  margin-bottom: 6px;
-}
-.rarity-common { color: #aaa; }
-.rarity-rare { color: #4fc3f7; }
-.rarity-epic { color: #ce93d8; }
-.rarity-legendary { color: var(--neon-gold); text-shadow: 0 0 8px var(--neon-gold); }
-.rarity-mythic { color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink); animation: mythic-pulse 2s ease-in-out infinite; }
-@keyframes mythic-pulse {
-  0%,100% { text-shadow: 0 0 10px var(--neon-pink); }
-  50% { text-shadow: 0 0 25px var(--neon-pink), 0 0 50px rgba(255,0,110,0.4); }
-}
-.item-price {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  font-family: var(--font-display);
-  font-size: 0.7rem;
-  color: var(--neon-gold);
-}
-.item-stat-bonus {
-  font-size: 0.6rem;
-  color: var(--neon-green);
-  text-align: center;
-  margin-top: 4px;
-  font-family: var(--font-display);
-}
-.owned-tag {
-  position: absolute;
-  top: 6px; right: 6px;
-  background: rgba(57,255,20,0.2);
-  color: var(--neon-green);
-  font-family: var(--font-display);
-  font-size: 0.5rem;
-  padding: 2px 5px;
-  border-radius: 3px;
-  border: 1px solid rgba(57,255,20,0.3);
-}
-.equipped-tag {
-  position: absolute;
-  top: 6px; right: 6px;
-  background: rgba(255,214,10,0.2);
-  color: var(--neon-gold);
-  font-family: var(--font-display);
-  font-size: 0.5rem;
-  padding: 2px 5px;
-  border-radius: 3px;
-  border: 1px solid rgba(255,214,10,0.4);
-}
+.shop-categories{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}
+.shop-categories::-webkit-scrollbar{display:none}
+.cat-btn{background:var(--bgc);border:1px solid rgba(0,245,255,0.15);border-radius:20px;color:var(--tm);
+  font-family:var(--fd);font-size:.6rem;letter-spacing:1px;padding:7px 14px;cursor:pointer;
+  transition:all .2s;white-space:nowrap;flex-shrink:0}
+.cat-btn.active{background:rgba(0,245,255,0.12);border-color:var(--c);color:var(--c);
+  box-shadow:0 0 12px rgba(0,245,255,0.2)}
+.item-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.item-card{background:var(--bgc);border:1px solid rgba(0,245,255,0.1);border-radius:14px;padding:14px;
+  cursor:pointer;transition:all .28s;position:relative;transform-style:preserve-3d}
+.item-card:hover{border-color:rgba(0,245,255,0.3);
+  transform:translateY(-5px) rotateX(7deg) rotateY(4deg);
+  box-shadow:0 12px 35px rgba(0,0,0,0.6),0 0 24px rgba(0,245,255,0.1)}
+.item-card.owned{border-color:rgba(57,255,20,0.3)}
+.item-card.equipped{border-color:var(--gold);box-shadow:0 0 24px rgba(255,214,10,0.3)}
+.item-emoji{font-size:3rem;display:block;margin-bottom:8px;text-align:center;
+  filter:drop-shadow(0 4px 14px rgba(0,0,0,0.6));transition:transform .25s}
+.item-card:hover .item-emoji{transform:scale(1.18) rotateY(25deg) translateY(-5px)}
+.item-name{font-family:var(--fd);font-size:.65rem;color:var(--tx);letter-spacing:1px;text-align:center;margin-bottom:4px}
+.item-rarity{font-family:var(--fd);font-size:.5rem;letter-spacing:1px;text-align:center;margin-bottom:6px}
+.rarity-common{color:#aaa}
+.rarity-rare{color:#4fc3f7}
+.rarity-epic{color:#ce93d8}
+.rarity-legendary{color:var(--gold);text-shadow:0 0 8px var(--gold)}
+.rarity-mythic{color:var(--p);text-shadow:0 0 10px var(--p);animation:mythpulse 2s ease-in-out infinite}
+@keyframes mythpulse{0%,100%{text-shadow:0 0 10px var(--p)}50%{text-shadow:0 0 25px var(--p),0 0 50px rgba(255,0,110,0.4)}}
+.item-price{display:flex;align-items:center;justify-content:center;gap:4px;font-family:var(--fd);font-size:.7rem;color:var(--gold)}
+.item-stat-bonus{font-size:.58rem;color:var(--g);text-align:center;margin-top:4px;font-family:var(--fd)}
+.owned-tag,.equipped-tag{position:absolute;top:6px;right:6px;font-family:var(--fd);font-size:.48rem;padding:2px 5px;border-radius:3px;border:1px solid}
+.owned-tag{background:rgba(57,255,20,0.2);color:var(--g);border-color:rgba(57,255,20,0.3)}
+.equipped-tag{background:rgba(255,214,10,0.2);color:var(--gold);border-color:rgba(255,214,10,0.4)}
 
 /* PETS */
-.pet-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-.pet-card {
-  background: var(--bg-card);
-  border: 1px solid rgba(0,245,255,0.1);
-  border-radius: 12px;
-  padding: 16px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.25s;
-  position: relative;
-}
-.pet-card:hover { transform: translateY(-3px); border-color: rgba(0,245,255,0.3); }
-.pet-card.owned { border-color: rgba(57,255,20,0.3); }
-.pet-card.active-pet { border-color: var(--neon-pink); box-shadow: 0 0 20px rgba(255,0,110,0.2); }
-.pet-emoji { font-size: 3rem; display: block; margin-bottom: 8px; }
-.pet-name { font-family: var(--font-display); font-size: 0.7rem; color: var(--text-primary); letter-spacing: 1px; }
-.pet-bonus { font-size: 0.6rem; color: var(--neon-green); margin-top: 4px; font-family: var(--font-display); }
-.pet-rarity-bar { height: 2px; border-radius: 1px; margin-top: 8px; }
-.common-bar { background: #aaa; }
-.rare-bar { background: #4fc3f7; box-shadow: 0 0 6px #4fc3f7; }
-.epic-bar { background: #ce93d8; box-shadow: 0 0 6px #ce93d8; }
-.legendary-bar { background: var(--neon-gold); box-shadow: 0 0 8px var(--neon-gold); }
-.mythic-bar { background: linear-gradient(90deg, var(--neon-pink), var(--neon-purple)); box-shadow: 0 0 10px var(--neon-pink); }
+.pet-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.pet-card{background:var(--bgc);border:1px solid rgba(0,245,255,0.1);border-radius:16px;padding:18px;
+  text-align:center;cursor:pointer;transition:all .28s;position:relative;transform-style:preserve-3d}
+.pet-card:hover{transform:translateY(-5px) rotateX(7deg);box-shadow:0 12px 35px rgba(0,0,0,0.5)}
+.pet-card.owned{border-color:rgba(57,255,20,0.3)}
+.pet-card.active-pet{border-color:var(--p);box-shadow:0 0 24px rgba(255,0,110,0.25)}
+.pet-emoji{font-size:3.2rem;display:block;margin-bottom:8px;
+  filter:drop-shadow(0 4px 14px rgba(0,0,0,0.5));transition:transform .25s;animation:petBob 3s ease-in-out infinite}
+@keyframes petBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-7px) rotate(4deg)}}
+.pet-card:hover .pet-emoji{animation-duration:.7s;transform:scale(1.12) rotateY(20deg)}
+.pet-name{font-family:var(--fd);font-size:.7rem;color:var(--tx);letter-spacing:1px}
+.pet-bonus{font-size:.6rem;color:var(--g);margin-top:4px;font-family:var(--fd)}
+.pet-rarity-bar{height:2px;border-radius:1px;margin-top:8px}
+.common-bar{background:#aaa}
+.rare-bar{background:#4fc3f7;box-shadow:0 0 6px #4fc3f7}
+.epic-bar{background:#ce93d8;box-shadow:0 0 6px #ce93d8}
+.legendary-bar{background:var(--gold);box-shadow:0 0 8px var(--gold)}
+.mythic-bar{background:linear-gradient(90deg,var(--p),var(--v));box-shadow:0 0 10px var(--p)}
 
-/* PROFILE / INVENTORY */
-.equipped-display {
-  background: var(--bg-card);
-  border: 1px solid var(--border-neon);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 20px;
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-.char-3d-container {
-  width: 110px;
-  height: 140px;
-  flex-shrink: 0;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.char-main { font-size: 5rem; position: relative; z-index: 2; }
-.char-helmet { position: absolute; top: -5px; font-size: 2.2rem; z-index: 3; }
-.char-wings { position: absolute; font-size: 2.5rem; z-index: 1; }
-.char-wings.left { left: -10px; transform: scaleX(-1); }
-.char-wings.right { right: -10px; }
-.char-aura {
-  position: absolute;
-  inset: -10px;
-  border-radius: 50%;
-  animation: aura-spin 6s linear infinite;
-  z-index: 0;
-}
-@keyframes aura-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-.char-pet-follow {
-  position: absolute;
-  bottom: 0;
-  right: -15px;
-  font-size: 1.5rem;
-  animation: pet-float 3s ease-in-out infinite;
-}
-@keyframes pet-float {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-.equipment-slots {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-}
-.eq-slot {
-  background: rgba(0,0,0,0.3);
-  border: 1px dashed rgba(0,245,255,0.15);
-  border-radius: 8px;
-  padding: 8px;
-  text-align: center;
-  min-height: 54px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.eq-slot:hover { border-color: rgba(0,245,255,0.3); background: rgba(0,245,255,0.05); }
-.eq-slot-lbl { font-family: var(--font-display); font-size: 0.45rem; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 2px; }
-.eq-slot-item { font-size: 1.3rem; }
-.eq-slot-name { font-family: var(--font-display); font-size: 0.5rem; color: var(--neon-cyan); }
+/* PROFILE */
+.profile-3d-wrap{background:var(--bgc);border:1px solid var(--bn);border-radius:18px;padding:24px;
+  margin-bottom:20px;display:flex;gap:20px;align-items:center}
+.char-3d-stage{width:150px;height:180px;flex-shrink:0;perspective:700px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center}
+.char-3d-inner{transform-style:preserve-3d;animation:charIdle 7s ease-in-out infinite;
+  position:relative;width:120px;height:150px;display:flex;align-items:center;justify-content:center}
+@keyframes charIdle{
+  0%,100%{transform:rotateY(-12deg) rotateX(5deg) translateY(0)}
+  25%{transform:rotateY(12deg) rotateX(3deg) translateY(-5px)}
+  50%{transform:rotateY(18deg) rotateX(7deg) translateY(-8px)}
+  75%{transform:rotateY(-7deg) rotateX(4deg) translateY(-3px)}}
+.char-main-emoji{font-size:6rem;filter:drop-shadow(0 0 22px rgba(0,245,255,0.35)) drop-shadow(0 12px 22px rgba(0,0,0,0.8));position:relative;z-index:2}
+.char-helmet-eq{position:absolute;top:-10px;font-size:2.5rem;z-index:3;filter:drop-shadow(0 0 10px rgba(255,214,10,0.7))}
+.char-wings-eq{position:absolute;font-size:2.8rem;z-index:1}
+.char-wings-eq.l{left:-18px;transform:scaleX(-1)}
+.char-wings-eq.r{right:-18px}
+.char-aura-eq{position:absolute;inset:-16px;border-radius:50%;z-index:0;animation:auraSpin 5s linear infinite}
+.char-pet-eq{position:absolute;bottom:-12px;right:-28px;font-size:2rem;animation:petFloat 3s ease-in-out infinite;z-index:4}
+.char-weapon-eq{position:absolute;left:-22px;bottom:15px;font-size:2rem;z-index:3;
+  filter:drop-shadow(0 0 8px rgba(255,0,110,0.5));animation:weaponIdle 3s ease-in-out infinite}
+.char-shadow{width:80px;height:12px;background:rgba(0,245,255,0.12);border-radius:50%;margin-top:8px;filter:blur(3px);animation:shadowPulse 2s ease-in-out infinite}
+.equip-grid{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.eq-slot{background:rgba(0,0,0,0.3);border:1px dashed rgba(0,245,255,0.15);border-radius:10px;
+  padding:10px;text-align:center;min-height:65px;cursor:pointer;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;transform-style:preserve-3d}
+.eq-slot:hover{border-color:rgba(0,245,255,0.3);background:rgba(0,245,255,0.05);
+  transform:translateY(-2px) rotateX(5deg)}
+.eq-slot-lbl{font-family:var(--fd);font-size:.44rem;color:var(--tm);letter-spacing:1px;margin-bottom:2px}
+.eq-slot-item{font-size:1.6rem;transition:transform .2s}
+.eq-slot:hover .eq-slot-item{transform:scale(1.2) rotateY(25deg)}
+.eq-slot-name{font-family:var(--fd);font-size:.5rem;color:var(--c);margin-top:2px}
 
-/* SKILLS */
-.skill-tree {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.skill-item {
-  background: var(--bg-card);
-  border: 1px solid rgba(0,245,255,0.1);
-  border-radius: 12px;
-  padding: 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.skill-item:hover { border-color: rgba(0,245,255,0.3); }
-.skill-icon-wrap {
-  width: 46px;
-  height: 46px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  flex-shrink: 0;
-  position: relative;
-}
-.skill-icon-wrap.unlocked { background: rgba(0,245,255,0.1); border: 1px solid rgba(0,245,255,0.3); }
-.skill-icon-wrap.locked { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); filter: grayscale(1); }
-.skill-lvl-badge {
-  position: absolute;
-  bottom: -4px; right: -4px;
-  background: var(--neon-purple);
-  color: #fff;
-  font-family: var(--font-display);
-  font-size: 0.5rem;
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--bg-deep);
-}
-.skill-info { flex: 1; }
-.skill-name { font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 3px; }
-.skill-desc { font-size: 0.68rem; color: var(--text-muted); line-height: 1.4; }
-.skill-upgrade-btn {
-  background: rgba(131,56,236,0.2);
-  border: 1px solid rgba(131,56,236,0.4);
-  color: #a78bf5;
-  font-family: var(--font-display);
-  font-size: 0.55rem;
-  letter-spacing: 1px;
-  padding: 5px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-.skill-upgrade-btn:hover { background: rgba(131,56,236,0.4); }
-.skill-upgrade-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+/* STAT BARS */
+.stat-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.stat-bar-row{display:flex;align-items:center;gap:10px}
+.stat-bar-label{font-family:var(--fd);font-size:.6rem;color:var(--tm);letter-spacing:1px;width:60px;text-align:right;flex-shrink:0}
+.stat-bar-bg{flex:1;height:7px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden}
+.stat-bar-fill{height:100%;border-radius:4px;transition:width .8s ease}
+.stat-bar-val{font-family:var(--fd);font-size:.65rem;width:34px;text-align:left;flex-shrink:0}
 
-/* BOSS PORTAL */
-.boss-card {
-  background: linear-gradient(135deg, var(--bg-card2), rgba(255,0,110,0.05));
-  border: 1px solid rgba(255,0,110,0.3);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-.boss-card:hover {
-  border-color: var(--neon-pink);
-  box-shadow: 0 0 30px rgba(255,0,110,0.2);
-  transform: translateY(-3px);
-}
-.boss-emoji { font-size: 4rem; margin-bottom: 10px; filter: drop-shadow(0 0 20px rgba(255,0,110,0.5)); }
-.boss-name { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--neon-pink); letter-spacing: 2px; text-shadow: 0 0 20px var(--neon-pink); }
-.boss-level { font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-display); letter-spacing: 2px; margin-top: 4px; }
-.boss-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 8px; line-height: 1.5; }
-.boss-rewards { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
-.boss-fight-btn {
-  background: linear-gradient(135deg, var(--neon-pink), var(--neon-orange));
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-  font-family: var(--font-display);
-  font-size: 0.7rem;
-  letter-spacing: 2px;
-  padding: 10px 24px;
-  cursor: pointer;
-  margin-top: 14px;
-  transition: all 0.2s;
-  box-shadow: 0 0 20px rgba(255,0,110,0.3);
-}
-.boss-fight-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,0,110,0.5); }
-.boss-locked {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background: var(--bg-card);
-  border-color: rgba(255,255,255,0.1);
-}
-
-/* MODAL */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(8px);
-  z-index: 500;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal-box {
-  background: var(--bg-card);
-  border: 1px solid var(--border-neon);
-  border-radius: 20px 20px 0 0;
-  width: 100%;
-  max-width: 500px;
-  max-height: 85vh;
-  overflow-y: auto;
-  padding: 24px;
-  transform: translateY(100%);
-  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-}
-.modal-overlay.open .modal-box { transform: translateY(0); }
-.modal-close {
-  float: right;
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  font-size: 1.4rem;
-  cursor: pointer;
-  line-height: 1;
-}
-.modal-title {
-  font-family: var(--font-display);
-  font-size: 0.9rem;
-  color: var(--neon-cyan);
-  letter-spacing: 2px;
-  margin-bottom: 16px;
-}
-.modal-action-btn {
-  width: 100%;
-  background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-  font-family: var(--font-display);
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-  padding: 14px;
-  cursor: pointer;
-  margin-top: 16px;
-  transition: all 0.2s;
-}
-.modal-action-btn:hover { opacity: 0.9; transform: translateY(-2px); }
-
-/* TOAST */
-.toast-wrap {
-  position: fixed;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-.toast {
-  background: var(--bg-card2);
-  border: 1px solid var(--neon-cyan);
-  border-radius: 10px;
-  padding: 10px 20px;
-  font-family: var(--font-display);
-  font-size: 0.7rem;
-  color: var(--neon-cyan);
-  letter-spacing: 1px;
-  box-shadow: 0 0 20px rgba(0,245,255,0.3);
-  animation: toast-in 0.3s ease, toast-out 0.3s ease 2.5s forwards;
-  white-space: nowrap;
-}
-.toast.success { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 20px rgba(57,255,20,0.3); }
-.toast.xp { border-color: var(--neon-purple); color: #a78bf5; box-shadow: 0 0 20px rgba(131,56,236,0.3); }
-.toast.gold { border-color: var(--neon-gold); color: var(--neon-gold); box-shadow: 0 0 20px rgba(255,214,10,0.3); }
-@keyframes toast-in { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes toast-out { from { opacity: 1; } to { opacity: 0; } }
-
-/* ADD QUEST FORM */
-.form-group { margin-bottom: 14px; }
-.form-label { font-family: var(--font-display); font-size: 0.6rem; color: var(--neon-cyan); letter-spacing: 2px; margin-bottom: 6px; display: block; }
-.form-input, .form-select {
-  width: 100%;
-  background: var(--bg-card2);
-  border: 1px solid rgba(0,245,255,0.2);
-  border-radius: 8px;
-  color: var(--text-primary);
-  font-family: var(--font-fa);
-  font-size: 0.9rem;
-  padding: 10px 14px;
-  outline: none;
-  transition: border-color 0.2s;
-  text-align: right;
-}
-.form-input:focus, .form-select:focus { border-color: var(--neon-cyan); }
-.form-select option { background: var(--bg-card); }
-
-/* LEVEL UP OVERLAY */
-.levelup-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.9);
-  z-index: 9000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s;
-}
-.levelup-overlay.show { opacity: 1; pointer-events: all; }
-.levelup-text {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 10vw, 5rem);
-  font-weight: 900;
-  color: var(--neon-gold);
-  text-shadow: 0 0 40px var(--neon-gold), 0 0 80px rgba(255,214,10,0.4);
-  letter-spacing: 4px;
-  animation: lvl-bounce 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite alternate;
-}
-@keyframes lvl-bounce { from { transform: scale(0.95); } to { transform: scale(1.05); } }
-.levelup-num {
-  font-family: var(--font-display);
-  font-size: clamp(4rem, 20vw, 10rem);
-  font-weight: 900;
-  color: var(--neon-gold);
-  line-height: 1;
-  text-shadow: 0 0 60px var(--neon-gold), 0 0 120px rgba(255,214,10,0.5);
-}
-.levelup-close-btn {
-  margin-top: 30px;
-  background: var(--neon-gold);
-  color: #000;
-  border: none;
-  border-radius: 10px;
-  font-family: var(--font-display);
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-  padding: 14px 32px;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-/* STATS BARS */
-.stat-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-.stat-bar-row { display: flex; align-items: center; gap: 10px; }
-.stat-bar-label { font-family: var(--font-display); font-size: 0.6rem; color: var(--text-muted); letter-spacing: 1px; width: 60px; text-align: right; flex-shrink: 0; }
-.stat-bar-bg { flex: 1; height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; }
-.stat-bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
-.stat-bar-val { font-family: var(--font-display); font-size: 0.65rem; width: 30px; text-align: left; flex-shrink: 0; }
+/* SKILL TREE */
+.skill-tree{display:flex;flex-direction:column;gap:10px}
+.skill-item{background:var(--bgc);border:1px solid rgba(0,245,255,0.1);border-radius:14px;padding:14px;
+  display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s}
+.skill-item:hover{border-color:rgba(0,245,255,0.3);transform:translateX(-3px)}
+.skill-icon-wrap{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:1.7rem;flex-shrink:0;position:relative;transition:transform .25s}
+.skill-item:hover .skill-icon-wrap{transform:rotateY(25deg) scale(1.08)}
+.skill-icon-wrap.unlocked{background:rgba(0,245,255,0.1);border:1px solid rgba(0,245,255,0.3)}
+.skill-icon-wrap.locked{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);filter:grayscale(1)}
+.skill-lvl-badge{position:absolute;bottom:-4px;right:-4px;background:var(--v);color:#fff;
+  font-family:var(--fd);font-size:.5rem;width:18px;height:18px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;border:1px solid var(--bg)}
+.skill-info{flex:1}
+.skill-name{font-family:var(--fd);font-size:.75rem;letter-spacing:1px;margin-bottom:3px}
+.skill-desc{font-size:.68rem;color:var(--tm);line-height:1.4}
+.skill-upgrade-btn{background:rgba(131,56,236,0.2);border:1px solid rgba(131,56,236,0.4);
+  color:#a78bf5;font-family:var(--fd);font-size:.55rem;letter-spacing:1px;padding:6px 11px;
+  border-radius:6px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.skill-upgrade-btn:hover:not(:disabled){background:rgba(131,56,236,0.5)}
+.skill-upgrade-btn:disabled{opacity:.4;cursor:not-allowed}
 
 /* BOSS FIGHT */
-.fight-arena {
-  background: linear-gradient(135deg, var(--bg-card2), rgba(255,0,110,0.08));
-  border: 1px solid rgba(255,0,110,0.4);
-  border-radius: 16px;
-  padding: 24px;
-}
-.fight-vs { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-.fight-entity { text-align: center; }
-.fight-entity .fig-emoji { font-size: 4rem; }
-.fight-entity .fig-name { font-family: var(--font-display); font-size: 0.65rem; letter-spacing: 1px; margin-top: 4px; }
-.fight-hp-bar { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-top: 6px; overflow: hidden; }
-.fight-hp-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
-.player-hp { background: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
-.boss-hp { background: var(--neon-pink); box-shadow: 0 0 8px var(--neon-pink); }
-.fight-log {
-  background: rgba(0,0,0,0.3);
-  border-radius: 8px;
-  padding: 10px;
-  height: 80px;
-  overflow-y: auto;
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  margin: 12px 0;
-  font-family: var(--font-display);
-  letter-spacing: 1px;
-}
-.fight-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.fight-btn {
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid;
-  font-family: var(--font-display);
-  font-size: 0.65rem;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: transparent;
-}
-.fight-btn.attack { color: var(--neon-pink); border-color: rgba(255,0,110,0.4); }
-.fight-btn.attack:hover { background: rgba(255,0,110,0.1); }
-.fight-btn.skill-btn { color: var(--neon-cyan); border-color: rgba(0,245,255,0.4); }
-.fight-btn.skill-btn:hover { background: rgba(0,245,255,0.1); }
-.fight-btn.defend { color: var(--neon-gold); border-color: rgba(255,214,10,0.4); }
-.fight-btn.defend:hover { background: rgba(255,214,10,0.1); }
-.fight-btn.flee { color: var(--text-muted); border-color: rgba(255,255,255,0.15); }
-.fight-btn.flee:hover { background: rgba(255,255,255,0.05); }
-.vs-divider { font-family: var(--font-display); font-size: 1.5rem; color: var(--neon-pink); text-shadow: 0 0 20px var(--neon-pink); }
+.fight-arena{background:linear-gradient(135deg,var(--bgc2),rgba(255,0,110,0.09));
+  border:1px solid rgba(255,0,110,0.4);border-radius:18px;padding:24px}
+.fight-vs{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;perspective:500px}
+.fight-entity{text-align:center;flex:1}
+.fight-entity .fig-emoji{font-size:4.5rem;transition:transform .25s;display:block;
+  filter:drop-shadow(0 4px 14px rgba(0,0,0,0.7));animation:fightIdle 3s ease-in-out infinite}
+@keyframes fightIdle{0%,100%{transform:translateY(0) rotateY(-10deg)}50%{transform:translateY(-6px) rotateY(10deg)}}
+.fight-entity .fig-name{font-family:var(--fd);font-size:.65rem;letter-spacing:1px;margin-top:4px}
+.fight-hp-bar{height:9px;background:rgba(255,255,255,0.1);border-radius:5px;margin-top:6px;overflow:hidden}
+.fight-hp-fill{height:100%;border-radius:5px;transition:width .5s}
+.player-hp{background:var(--c);box-shadow:0 0 10px var(--c)}
+.boss-hp{background:var(--p);box-shadow:0 0 10px var(--p)}
+.fight-log{background:rgba(0,0,0,0.4);border-radius:10px;padding:10px;height:85px;overflow-y:auto;
+  font-size:.7rem;color:var(--tm);margin:12px 0;font-family:var(--fd);letter-spacing:1px}
+.fight-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fight-btn{padding:13px;border-radius:10px;border:1px solid;font-family:var(--fd);font-size:.65rem;
+  letter-spacing:1px;cursor:pointer;transition:all .2s;background:transparent}
+.fight-btn.attack{color:var(--p);border-color:rgba(255,0,110,0.4)}
+.fight-btn.attack:hover{background:rgba(255,0,110,0.12);transform:scale(1.04);box-shadow:0 0 15px rgba(255,0,110,0.2)}
+.fight-btn.skill-btn{color:var(--c);border-color:rgba(0,245,255,0.4)}
+.fight-btn.skill-btn:hover{background:rgba(0,245,255,0.1);transform:scale(1.04)}
+.fight-btn.defend{color:var(--gold);border-color:rgba(255,214,10,0.4)}
+.fight-btn.defend:hover{background:rgba(255,214,10,0.1);transform:scale(1.04)}
+.fight-btn.flee{color:var(--tm);border-color:rgba(255,255,255,0.15)}
+.fight-btn.flee:hover{background:rgba(255,255,255,0.05)}
+.vs-divider{font-family:var(--fd);font-size:1.6rem;color:var(--p);text-shadow:0 0 25px var(--p);
+  animation:vsPulse 1s ease-in-out infinite;flex-shrink:0}
+@keyframes vsPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(10px);
+  z-index:500;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--bgc);border:1px solid var(--bn);border-top:2px solid var(--c);
+  border-radius:24px 24px 0 0;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;
+  padding:24px;transform:translateY(100%);transition:transform .38s cubic-bezier(0.32,0.72,0,1)}
+.modal-box::-webkit-scrollbar{width:3px}
+.modal-box::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.2)}
+.modal-overlay.open .modal-box{transform:translateY(0)}
+.modal-close{float:right;background:none;border:none;color:var(--tm);font-size:1.5rem;cursor:pointer;line-height:1;transition:color .2s}
+.modal-close:hover{color:var(--c)}
+.modal-title{font-family:var(--fd);font-size:.9rem;color:var(--c);letter-spacing:2px;margin-bottom:16px}
+.modal-action-btn{width:100%;background:linear-gradient(135deg,var(--v),var(--p));border:none;border-radius:12px;
+  color:#fff;font-family:var(--fd);font-size:.8rem;letter-spacing:2px;padding:14px;cursor:pointer;
+  margin-top:16px;transition:all .2s}
+.modal-action-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(131,56,236,0.4)}
+
+/* TOAST */
+.toast-wrap{position:fixed;top:80px;left:50%;transform:translateX(-50%);z-index:1000;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:8px}
+.toast{background:var(--bgc2);border:1px solid var(--c);border-radius:10px;padding:10px 20px;
+  font-family:var(--fd);font-size:.7rem;color:var(--c);letter-spacing:1px;
+  box-shadow:0 0 24px rgba(0,245,255,0.3);animation:toastIn .3s ease,toastOut .3s ease 2.5s forwards;white-space:nowrap}
+.toast.success{border-color:var(--g);color:var(--g);box-shadow:0 0 24px rgba(57,255,20,0.3)}
+.toast.xp{border-color:var(--v);color:#a78bf5;box-shadow:0 0 24px rgba(131,56,236,0.3)}
+.toast.gold{border-color:var(--gold);color:var(--gold);box-shadow:0 0 24px rgba(255,214,10,0.3)}
+@keyframes toastIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes toastOut{from{opacity:1}to{opacity:0}}
+
+/* LEVEL UP */
+.levelup-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.94);z-index:9000;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  opacity:0;pointer-events:none;transition:opacity .5s}
+.levelup-overlay.show{opacity:1;pointer-events:all}
+.levelup-text{font-family:var(--fd);font-size:clamp(2rem,10vw,5rem);font-weight:900;color:var(--gold);
+  text-shadow:0 0 40px var(--gold),0 0 80px rgba(255,214,10,0.4);letter-spacing:4px;
+  animation:lvlBounce .5s ease infinite alternate}
+@keyframes lvlBounce{from{transform:scale(.94)}to{transform:scale(1.06)}}
+.levelup-num{font-family:var(--fd);font-size:clamp(5rem,22vw,12rem);font-weight:900;color:var(--gold);
+  line-height:1;text-shadow:0 0 60px var(--gold),0 0 120px rgba(255,214,10,0.5)}
+.levelup-close-btn{margin-top:30px;background:var(--gold);color:#000;border:none;border-radius:12px;
+  font-family:var(--fd);font-size:.85rem;letter-spacing:2px;padding:15px 36px;cursor:pointer;font-weight:700;
+  transition:all .2s}
+.levelup-close-btn:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(255,214,10,0.5)}
+
+/* FORMS */
+.form-group{margin-bottom:14px}
+.form-label{font-family:var(--fd);font-size:.6rem;color:var(--c);letter-spacing:2px;margin-bottom:6px;display:block}
+.form-input,.form-select{width:100%;background:var(--bgc2);border:1px solid rgba(0,245,255,0.2);
+  border-radius:10px;color:var(--tx);font-family:var(--ff);font-size:.9rem;padding:11px 14px;
+  outline:none;transition:border-color .2s;text-align:right}
+.form-input:focus,.form-select:focus{border-color:var(--c);box-shadow:0 0 16px rgba(0,245,255,0.15)}
+.form-select option{background:var(--bgc)}
 
 /* SCROLLBAR */
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(0,245,255,0.2); border-radius: 2px; }
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.2);border-radius:2px}
 
 /* PARTICLES */
-.particle {
-  position: fixed;
-  pointer-events: none;
-  z-index: 9001;
-  font-size: 1.2rem;
-  animation: particle-fly 1.5s ease-out forwards;
-}
-@keyframes particle-fly {
-  from { opacity: 1; transform: translate(0,0) scale(1); }
-  to { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0); }
-}
+.particle{position:fixed;pointer-events:none;z-index:9001;font-size:1.2rem;animation:partFly 1.5s ease-out forwards}
+@keyframes partFly{from{opacity:1;transform:translate(0,0) scale(1)}to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0)}}
 
-/* MULTICLASS TAGS */
-.multiclass-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
-.mclass-tag {
-  font-family: var(--font-display);
-  font-size: 0.55rem;
-  letter-spacing: 1px;
-  padding: 3px 8px;
-  border-radius: 4px;
-  background: rgba(131,56,236,0.15);
-  border: 1px solid rgba(131,56,236,0.3);
-  color: #a78bf5;
-}
-.mclass-tag.add {
-  background: transparent;
-  border-style: dashed;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.mclass-tag.add:hover { border-color: rgba(0,245,255,0.3); color: var(--neon-cyan); }
+/* CURRENT ZONE */
+#currentZoneInfo .quest-card{cursor:default}
+#currentZoneInfo .quest-card:hover{transform:none}
+
+/* 3D FLOATING CARDS */
+.card-3d{transform-style:preserve-3d;transition:transform .3s}
+.card-3d:hover{transform:perspective(600px) rotateX(8deg) rotateY(5deg)}
+
+/* GEMS BADGE */
+.stat-badge.gems .stat-val{color:var(--v);text-shadow:0 0 10px var(--v)}
 </style>
 </head>
 <body>
 
-<!-- LOADING -->
 <div id="loading">
   <h1>NEON QUEST</h1>
-  <div class="sub">ULTIMATE EDITION</div>
+  <div class="sub">ULTIMATE V3 EDITION</div>
   <div class="load-bar"><div class="load-bar-fill"></div></div>
 </div>
 
-<!-- TOAST -->
 <div class="toast-wrap" id="toastWrap"></div>
-
-<!-- LEVEL UP -->
 <div class="levelup-overlay" id="lvlOverlay">
   <div class="levelup-text">LEVEL UP!</div>
   <div class="levelup-num" id="lvlNum">2</div>
-  <button class="levelup-close-btn" onclick="closeLvlUp()">ادامه ← </button>
+  <button class="levelup-close-btn" onclick="closeLvlUp()">ادامه ←</button>
 </div>
 
-<!-- SETUP SCREEN -->
+<!-- ════════ SETUP SCREEN ════════ -->
 <div id="setup-screen" class="screen active">
   <div class="setup-logo">⚔ NEON QUEST</div>
-  <div class="setup-tagline">ULTIMATE RPG LIFE EDITION</div>
+  <div class="setup-tagline">ULTIMATE V3 — LIFE RPG EDITION</div>
 
-  <div class="setup-section">
-    <h3>نام کاراکتر</h3>
-    <input class="name-input" id="playerName" placeholder="نام خود را وارد کنید..." maxlength="20">
+  <div class="step-indicator">
+    <div class="step-dot active" id="sd1">1</div>
+    <div class="step-line" id="sl1"></div>
+    <div class="step-dot" id="sd2">2</div>
+    <div class="step-line" id="sl2"></div>
+    <div class="step-dot" id="sd3">3</div>
   </div>
 
-  <div class="setup-section">
-    <h3>انتخاب کلاس اصلی</h3>
-    <div class="class-grid" id="classGrid"></div>
+  <!-- STEP 1: NAME -->
+  <div class="setup-step active" id="step1">
+    <div class="step-title"><span class="step-num">1</span>نام کاراکتر</div>
+    <div class="name-section">
+      <input class="name-input" id="playerName" placeholder="نام قهرمان خود را وارد کنید..." maxlength="20">
+      <div class="name-hint">این نام در طول بازی نمایش داده می‌شود</div>
+    </div>
+    <div class="step-nav">
+      <button class="step-btn next" onclick="goStep(2)">بعدی: انتخاب کلاس ←</button>
+    </div>
   </div>
 
-  <div class="setup-section">
-    <h3>انتخاب آواتار</h3>
-    <div class="avatar-grid" id="avatarGrid"></div>
+  <!-- STEP 2: CLASS -->
+  <div class="setup-step" id="step2">
+    <div class="step-title"><span class="step-num">2</span>انتخاب کلاس اصلی</div>
+    <div class="class-section">
+      <div class="class-grid" id="classGrid"></div>
+    </div>
+    <div class="step-nav">
+      <button class="step-btn back" onclick="goStep(1)">← قبلی</button>
+      <button class="step-btn next" onclick="goStep(3)">بعدی: آواتار ←</button>
+    </div>
   </div>
 
-  <button class="start-btn" onclick="startGame()">شروع ماجراجویی ←</button>
+  <!-- STEP 3: AVATAR -->
+  <div class="setup-step" id="step3">
+    <div class="step-title"><span class="step-num">3</span>انتخاب آواتار</div>
+    <div class="avatar-section">
+      <div class="avatar-grid" id="avatarGrid"></div>
+    </div>
+    <div class="avatar-preview-box">
+      <div class="avatar-3d-scene">
+        <div class="avatar-3d-spin" id="preview3DSpin">
+          <span class="avatar-3d-emoji" id="preview3DEmoji">🧑‍💻</span>
+        </div>
+        <div class="avatar-3d-glow"></div>
+      </div>
+      <div class="avatar-3d-name" id="preview3DName">CODER</div>
+      <div class="avatar-3d-ring"></div>
+    </div>
+    <div class="step-nav">
+      <button class="step-btn back" onclick="goStep(2)">← قبلی</button>
+    </div>
+    <button class="start-btn" onclick="startGame()">⚔ شروع ماجراجویی ⚔</button>
+  </div>
 </div>
 
-<!-- GAME SCREEN -->
+<!-- ════════ GAME SCREEN ════════ -->
 <div id="game-screen" class="screen">
   <!-- TOP BAR -->
   <div class="top-bar">
@@ -1213,95 +632,99 @@ body::before {
     <div class="top-info">
       <div class="top-name" id="topName">HERO</div>
       <div class="top-class" id="topClass">Programmer</div>
-      <div class="xp-bar-wrap">
-        <div class="xp-bar-bg"><div class="xp-bar-fill" id="xpBarFill" style="width:0%"></div></div>
-        <div class="xp-text" id="xpText">0 / 100 XP</div>
-      </div>
+      <div class="xp-bar-bg"><div class="xp-bar-fill" id="xpBarFill" style="width:0%"></div></div>
+      <div class="xp-text" id="xpText">0 / 100 XP</div>
     </div>
     <div class="top-stats">
       <div class="stat-badge level"><span class="stat-val" id="topLevel">1</span><span class="stat-lbl">LEVEL</span></div>
-      <div class="stat-badge gold"><span class="stat-val" id="topGold">500</span><span class="stat-lbl">GOLD</span></div>
+      <div class="stat-badge gold-stat"><span class="stat-val" id="topGold">500</span><span class="stat-lbl">GOLD</span></div>
     </div>
   </div>
 
-  <!-- TAB PAGES -->
-  <!-- HOME -->
+  <!-- HOME TAB -->
   <div class="tab-page active" id="tab-home">
+    <!-- 3D HERO BANNER -->
     <div class="hero-banner">
-      <div class="hero-avatar" id="heroAvatar">🧑‍💻</div>
+      <div>
+        <div class="hero-3d-stage" id="hero3dStage">
+          <div class="hero-3d-inner" id="hero3dInner">
+            <span class="hero-3d-emoji" id="hero3dEmoji">🧑‍💻</span>
+          </div>
+        </div>
+        <div class="hero-3d-shadow"></div>
+      </div>
       <div class="hero-info">
         <div class="hero-name" id="heroName">HERO</div>
         <div class="hero-class-tag" id="heroClassTag">PROGRAMMER</div>
         <div class="multiclass-row" id="multiclassRow"></div>
         <div class="hero-stats-row">
-          <div class="hstat"><span class="hstat-val" style="color:var(--neon-cyan)" id="hStatStr">10</span><span class="hstat-lbl">STR</span></div>
-          <div class="hstat"><span class="hstat-val" style="color:var(--neon-purple)" id="hStatInt">10</span><span class="hstat-lbl">INT</span></div>
-          <div class="hstat"><span class="hstat-val" style="color:var(--neon-green)" id="hStatAgi">10</span><span class="hstat-lbl">AGI</span></div>
-          <div class="hstat"><span class="hstat-val" style="color:var(--neon-gold)" id="hStatEnd">10</span><span class="hstat-lbl">END</span></div>
+          <div class="hstat"><span class="hstat-val" style="color:var(--c)" id="hStatStr">10</span><span class="hstat-lbl">STR</span></div>
+          <div class="hstat"><span class="hstat-val" style="color:var(--v)" id="hStatInt">10</span><span class="hstat-lbl">INT</span></div>
+          <div class="hstat"><span class="hstat-val" style="color:var(--g)" id="hStatAgi">10</span><span class="hstat-lbl">AGI</span></div>
+          <div class="hstat"><span class="hstat-val" style="color:var(--gold)" id="hStatEnd">10</span><span class="hstat-lbl">END</span></div>
         </div>
       </div>
     </div>
 
+    <!-- EQUIPPED CHIPS -->
+    <div class="equipped-strip" id="equippedStrip"></div>
+
     <div class="sec-title">مأموریت‌های امروز</div>
     <div id="questList"></div>
     <button class="add-quest-btn" onclick="openAddQuest()">+ افزودن مأموریت جدید</button>
-
     <div class="sec-title" style="margin-top:24px">منطقه فعلی</div>
     <div id="currentZoneInfo"></div>
   </div>
 
-  <!-- MAP -->
+  <!-- MAP TAB -->
   <div class="tab-page" id="tab-map">
     <div class="sec-title">نقشه جهان</div>
     <div class="zone-row" id="zoneRow1"></div>
     <div class="zone-row" id="zoneRow2"></div>
-
     <div class="sec-title" style="margin-top:20px">پورتال باس</div>
     <div id="bossList"></div>
   </div>
 
-  <!-- SHOP -->
+  <!-- SHOP TAB -->
   <div class="tab-page" id="tab-shop">
     <div class="sec-title">فروشگاه نئون</div>
     <div class="shop-categories" id="shopCats"></div>
     <div class="item-grid" id="itemGrid"></div>
   </div>
 
-  <!-- PETS -->
+  <!-- PETS TAB -->
   <div class="tab-page" id="tab-pets">
-    <div class="sec-title">پت‌های من</div>
+    <div class="sec-title">پت‌های من (۴۰ پت)</div>
     <div class="pet-grid" id="petGrid"></div>
   </div>
 
-  <!-- PROFILE -->
+  <!-- PROFILE TAB -->
   <div class="tab-page" id="tab-profile">
     <div class="sec-title">کاراکتر من</div>
-    <div class="equipped-display" id="charDisplay"></div>
-
+    <div class="profile-3d-wrap">
+      <div>
+        <div class="char-3d-stage" onclick="renderProfile()">
+          <div class="char-3d-inner" id="char3dInner">
+            <span class="char-main-emoji" id="charMainEmoji">🧑‍💻</span>
+          </div>
+          <div class="char-shadow"></div>
+        </div>
+      </div>
+      <div class="equip-grid" id="equipGrid"></div>
+    </div>
     <div class="sec-title">آمار</div>
     <div class="stat-bars" id="statBars"></div>
-
     <div class="sec-title">درخت مهارت</div>
     <div class="skill-tree" id="skillTree"></div>
   </div>
 
   <!-- NAV -->
   <nav class="nav-tabs">
-    <button class="nav-tab active" onclick="showTab('home')">
-      <span class="tab-icon">🏠</span><span class="tab-lbl">خانه</span>
-    </button>
-    <button class="nav-tab" onclick="showTab('map')">
-      <span class="tab-icon">🗺️</span><span class="tab-lbl">نقشه</span>
-    </button>
-    <button class="nav-tab" onclick="showTab('shop')">
-      <span class="tab-icon">🛒</span><span class="tab-lbl">فروشگاه</span>
-    </button>
-    <button class="nav-tab" onclick="showTab('pets')">
-      <span class="tab-icon">🐾</span><span class="tab-lbl">پت‌ها</span>
-    </button>
-    <button class="nav-tab" onclick="showTab('profile')">
-      <span class="tab-icon">👤</span><span class="tab-lbl">پروفایل</span>
-    </button>
+    <button class="nav-tab active" onclick="showTab('home')"><span class="ti">🏠</span><span class="tl">خانه</span></button>
+    <button class="nav-tab" onclick="showTab('map')"><span class="ti">🗺️</span><span class="tl">نقشه</span></button>
+    <button class="nav-tab" onclick="showTab('shop')"><span class="ti">🛒</span><span class="tl">فروشگاه</span></button>
+    <button class="nav-tab" onclick="showTab('pets')"><span class="ti">🐾</span><span class="tl">پت‌ها</span></button>
+    <button class="nav-tab" onclick="showTab('profile')"><span class="ti">👤</span><span class="tl">پروفایل</span></button>
   </nav>
 </div>
 
@@ -1313,8 +736,8 @@ body::before {
   </div>
 </div>
 
-<!-- BOSS FIGHT OVERLAY -->
-<div class="modal-overlay" id="fightOverlay" onclick="">
+<!-- FIGHT OVERLAY -->
+<div class="modal-overlay" id="fightOverlay">
   <div class="modal-box" id="fightBox">
     <button class="modal-close" onclick="closeFight()">✕</button>
     <div id="fightContent"></div>
@@ -1322,286 +745,503 @@ body::before {
 </div>
 
 <script>
-// ─────────────────────────────────────────────
-// DATA
-// ─────────────────────────────────────────────
+// ══════════════════════════════════════════════════
+// DATA — 20 Classes, 18 Avatars, 40 Pets, 60 Items
+// ══════════════════════════════════════════════════
+
 const CLASSES = [
-  { id:'programmer', name:'Programmer', icon:'💻', branch:'TECH', desc:'کد + منطق + هوش مصنوعی', bonus:'INT +3, Focus +2' },
-  { id:'athlete', name:'Athlete', icon:'🏋️', branch:'SPORTS', desc:'قدرت + استقامت + سرعت', bonus:'STR +3, AGI +2' },
-  { id:'entrepreneur', name:'Entrepreneur', icon:'💼', branch:'BUSINESS', desc:'سرمایه + رهبری + شبکه', bonus:'Gold +50%' },
-  { id:'artist', name:'Artist', icon:'🎨', branch:'LIFESTYLE', desc:'خلاقیت + زیبایی + بیان', bonus:'Luck +3, INT +2' },
-  { id:'monk', name:'Monk', icon:'🧘', branch:'MIND', desc:'تمرکز + آرامش + بینش', bonus:'Focus +5' },
-  { id:'engineer', name:'Engineer', icon:'⚙️', branch:'ENGINEERING', desc:'ساخت + تحلیل + دقت', bonus:'STR +2, INT +2' },
+  {id:'programmer',name:'Programmer',icon:'💻',branch:'TECH',desc:'کد + منطق + هوش مصنوعی',bonus:'INT +3, Focus +2'},
+  {id:'athlete',name:'Athlete',icon:'🏋️',branch:'SPORTS',desc:'قدرت + استقامت + سرعت',bonus:'STR +3, AGI +2'},
+  {id:'entrepreneur',name:'Entrepreneur',icon:'💼',branch:'BUSINESS',desc:'سرمایه + رهبری + شبکه',bonus:'Gold +50%'},
+  {id:'artist',name:'Artist',icon:'🎨',branch:'LIFESTYLE',desc:'خلاقیت + زیبایی + بیان',bonus:'Luck +3, INT +2'},
+  {id:'monk',name:'Monk',icon:'🧘',branch:'MIND',desc:'تمرکز + آرامش + بینش',bonus:'Focus +5'},
+  {id:'engineer',name:'Engineer',icon:'⚙️',branch:'ENGINEERING',desc:'ساخت + تحلیل + دقت',bonus:'STR +2, INT +2'},
+  {id:'writer',name:'Writer',icon:'✍️',branch:'CREATIVE',desc:'داستان + قلم + بیان ادبی',bonus:'INT +4, Luck +1'},
+  {id:'musician',name:'Musician',icon:'🎸',branch:'ARTS',desc:'موسیقی + ریتم + خلاقیت',bonus:'AGI +3, Focus +2'},
+  {id:'chef',name:'Chef',icon:'👨‍🍳',branch:'LIFESTYLE',desc:'آشپزی + خلاقیت + تغذیه',bonus:'END +3, Luck +2'},
+  {id:'doctor',name:'Doctor',icon:'🩺',branch:'SCIENCE',desc:'پزشکی + تحقیق + نجات',bonus:'INT +4, END +2'},
+  {id:'gamer',name:'Gamer',icon:'🎮',branch:'DIGITAL',desc:'استراتژی + رفلکس + مهارت',bonus:'AGI +4, Focus +2'},
+  {id:'designer',name:'Designer',icon:'🖌️',branch:'CREATIVE',desc:'طراحی + رنگ + فرم',bonus:'INT +2, Luck +3'},
+  {id:'teacher',name:'Teacher',icon:'📖',branch:'EDUCATION',desc:'آموزش + منتورینگ + دانش',bonus:'INT +3, Focus +3'},
+  {id:'scientist',name:'Scientist',icon:'🔬',branch:'RESEARCH',desc:'تحقیق + آزمایش + کشف',bonus:'INT +5'},
+  {id:'trader',name:'Trader',icon:'📈',branch:'FINANCE',desc:'تجارت + تحلیل بازار + ریسک',bonus:'Gold +70%'},
+  {id:'photographer',name:'Photographer',icon:'📷',branch:'ARTS',desc:'دیدن + فریم + لحظه',bonus:'AGI +2, Luck +4'},
+  {id:'youtuber',name:'Youtuber',icon:'🎬',branch:'CONTENT',desc:'محتوا + ادیت + جامعه',bonus:'Luck +3, Gold +30%'},
+  {id:'hacker',name:'Hacker',icon:'🕵️',branch:'CYBER',desc:'امنیت + نفوذ + رمزگشایی',bonus:'INT +4, AGI +2'},
+  {id:'linguist',name:'Linguist',icon:'🌐',branch:'LANGUAGE',desc:'زبان + فرهنگ + ترجمه',bonus:'INT +3, Luck +2'},
+  {id:'architect',name:'Architect',icon:'🏛️',branch:'DESIGN',desc:'معماری + فضا + زیبایی',bonus:'STR +1, INT +3, End +1'},
 ];
 
 const AVATARS = [
-  { id:'coder', emoji:'🧑‍💻', label:'Coder', free:true },
-  { id:'warrior', emoji:'⚔️', label:'Warrior', free:true },
-  { id:'mage', emoji:'🧙', label:'Mage', free:true },
-  { id:'cyber', emoji:'🤖', label:'Cyber', free:false },
-  { id:'samurai', emoji:'🥷', label:'Ninja', free:false },
-  { id:'astro', emoji:'👨‍🚀', label:'Astronaut', free:false },
+  {id:'coder',emoji:'🧑‍💻',label:'Coder',free:true},
+  {id:'warrior',emoji:'🧝‍♂️',label:'Warrior',free:true},
+  {id:'mage',emoji:'🧙',label:'Mage',free:true},
+  {id:'ninja',emoji:'🥷',label:'Ninja',free:true},
+  {id:'astronaut',emoji:'👨‍🚀',label:'Astro',free:true},
+  {id:'knight',emoji:'🫡',label:'Knight',free:true},
+  {id:'cyber',emoji:'🤖',label:'Cyber',free:false},
+  {id:'vampire',emoji:'🧛',label:'Vampire',free:false},
+  {id:'alien',emoji:'👽',label:'Alien',free:false},
+  {id:'wizard',emoji:'🧝',label:'Wizard',free:false},
+  {id:'samurai',emoji:'⛩️',label:'Samurai',free:false},
+  {id:'demon',emoji:'😈',label:'Demon',free:false},
+  {id:'angel',emoji:'😇',label:'Angel',free:false},
+  {id:'ghost',emoji:'👻',label:'Ghost',free:false},
+  {id:'phoenix',emoji:'🦅',label:'Phoenix',free:false},
+  {id:'witch',emoji:'🧙‍♀️',label:'Witch',free:false},
+  {id:'pirate',emoji:'🏴‍☠️',label:'Pirate',free:false},
+  {id:'dragon',emoji:'🐲',label:'Dragon Lord',free:false},
 ];
 
 const ZONES = [
-  { id:'village', name:'Starter Village', emoji:'🏘️', levels:'1-5', minLvl:1 },
-  { id:'forest', name:'Dark Forest', emoji:'🌲', levels:'6-10', minLvl:5 },
-  { id:'crystal', name:'Crystal Mtns', emoji:'💎', levels:'11-15', minLvl:10 },
-  { id:'desert', name:'Desert Empire', emoji:'🏜️', levels:'16-20', minLvl:15 },
-  { id:'frozen', name:'Frozen Kingdom', emoji:'❄️', levels:'21-25', minLvl:20 },
-  { id:'sky', name:'Sky Islands', emoji:'☁️', levels:'26-30', minLvl:25 },
-  { id:'cyber', name:'Cyber City', emoji:'🌆', levels:'31-35', minLvl:30 },
-  { id:'dark', name:'Dark Dimension', emoji:'🌑', levels:'36-40', minLvl:35 },
-  { id:'dragon', name:'Dragon Realm', emoji:'🐉', levels:'41-45', minLvl:40 },
-  { id:'neon', name:'Neon Empire', emoji:'⚡', levels:'46-50', minLvl:45 },
+  {id:'village',name:'Starter Village',emoji:'🏘️',levels:'1-5',minLvl:1},
+  {id:'forest',name:'Dark Forest',emoji:'🌲',levels:'6-10',minLvl:5},
+  {id:'crystal',name:'Crystal Mtns',emoji:'💎',levels:'11-15',minLvl:10},
+  {id:'desert',name:'Desert Empire',emoji:'🏜️',levels:'16-20',minLvl:15},
+  {id:'frozen',name:'Frozen Kingdom',emoji:'❄️',levels:'21-25',minLvl:20},
+  {id:'sky',name:'Sky Islands',emoji:'☁️',levels:'26-30',minLvl:25},
+  {id:'cyber',name:'Cyber City',emoji:'🌆',levels:'31-35',minLvl:30},
+  {id:'dark',name:'Dark Dimension',emoji:'🌑',levels:'36-40',minLvl:35},
+  {id:'dragon',name:'Dragon Realm',emoji:'🐉',levels:'41-45',minLvl:40},
+  {id:'neon',name:'Neon Empire',emoji:'⚡',levels:'46-50',minLvl:45},
 ];
 
 const BOSSES = [
-  { id:'goblin', name:'Lazy Goblin', emoji:'👺', lvl:5, desc:'دشمن تنبلی، مانع پیشرفت روزانه', xp:200, gold:150, hp:100 },
-  { id:'thief', name:'Time Thief', emoji:'🕐', lvl:10, desc:'وقتت رو می‌دزده، تمرکزت رو می‌شکنه', xp:500, gold:300, hp:200 },
-  { id:'scroller', name:'Doom Scroller', emoji:'📱', lvl:15, desc:'اعتیاد به اسکرول بی‌هدف', xp:900, gold:500, hp:350 },
-  { id:'burnout', name:'Burnout Titan', emoji:'😩', lvl:20, desc:'فرسودگی و خستگی مزمن', xp:1500, gold:800, hp:500 },
-  { id:'fear', name:'Fear Dragon', emoji:'😱', lvl:25, desc:'ترس از شکست و قضاوت دیگران', xp:2500, gold:1200, hp:750 },
-  { id:'overmind', name:'Neon Overmind', emoji:'🌐', lvl:30, desc:'کنترل ذهن، اوج چالش', xp:5000, gold:2000, hp:1000 },
+  {id:'goblin',name:'Lazy Goblin',emoji:'👺',lvl:5,desc:'دشمن تنبلی، مانع پیشرفت روزانه',xp:200,gold:150,hp:100},
+  {id:'thief',name:'Time Thief',emoji:'🕐',lvl:10,desc:'وقتت رو می‌دزده، تمرکزت رو می‌شکنه',xp:500,gold:300,hp:200},
+  {id:'scroller',name:'Doom Scroller',emoji:'📱',lvl:15,desc:'اعتیاد به اسکرول بی‌هدف',xp:900,gold:500,hp:350},
+  {id:'burnout',name:'Burnout Titan',emoji:'😩',lvl:20,desc:'فرسودگی و خستگی مزمن',xp:1500,gold:800,hp:500},
+  {id:'fear',name:'Fear Dragon',emoji:'😱',lvl:25,desc:'ترس از شکست و قضاوت دیگران',xp:2500,gold:1200,hp:750},
+  {id:'overmind',name:'Neon Overmind',emoji:'🌐',lvl:30,desc:'کنترل ذهن، اوج چالش',xp:5000,gold:2000,hp:1000},
 ];
 
+// ─── 60 ITEMS ───
 const ITEMS = {
-  weapon: [
-    { id:'iron_sword', name:'Iron Sword', emoji:'⚔️', rarity:'common', price:100, bonus:'+5 STR', type:'weapon' },
-    { id:'neon_katana', name:'Neon Katana', emoji:'🗡️', rarity:'rare', price:500, bonus:'+15 STR, +5 AGI', type:'weapon' },
-    { id:'plasma_blade', name:'Plasma Blade', emoji:'⚡', rarity:'epic', price:1500, bonus:'+30 STR, +10 INT', type:'weapon' },
-    { id:'quantum_saber', name:'Quantum Saber', emoji:'🌀', rarity:'legendary', price:5000, bonus:'+60 ALL', type:'weapon' },
-    { id:'dragon_slayer', name:'Dragon Slayer', emoji:'🐲', rarity:'mythic', price:15000, bonus:'+100 STR', type:'weapon' },
+  weapon:[
+    {id:'iron_sword',name:'Iron Sword',emoji:'⚔️',rarity:'common',price:100,bonus:'+5 STR',type:'weapon'},
+    {id:'wood_staff',name:'Wood Staff',emoji:'🪄',rarity:'common',price:120,bonus:'+5 INT',type:'weapon'},
+    {id:'hunting_bow',name:'Hunting Bow',emoji:'🏹',rarity:'common',price:110,bonus:'+5 AGI',type:'weapon'},
+    {id:'neon_katana',name:'Neon Katana',emoji:'🗡️',rarity:'rare',price:500,bonus:'+15 STR,+5 AGI',type:'weapon'},
+    {id:'thunder_hammer',name:'Thunder Hammer',emoji:'🔨',rarity:'rare',price:480,bonus:'+18 STR',type:'weapon'},
+    {id:'frost_wand',name:'Frost Wand',emoji:'❄️',rarity:'rare',price:520,bonus:'+16 INT',type:'weapon'},
+    {id:'plasma_blade',name:'Plasma Blade',emoji:'⚡',rarity:'epic',price:1500,bonus:'+30 STR,+10 INT',type:'weapon'},
+    {id:'shadow_dagger',name:'Shadow Dagger',emoji:'🌑',rarity:'epic',price:1400,bonus:'+25 AGI,+15 STR',type:'weapon'},
+    {id:'arc_cannon',name:'Arc Cannon',emoji:'🔫',rarity:'epic',price:1600,bonus:'+35 INT',type:'weapon'},
+    {id:'quantum_saber',name:'Quantum Saber',emoji:'🌀',rarity:'legendary',price:5000,bonus:'+60 ALL',type:'weapon'},
+    {id:'void_scythe',name:'Void Scythe',emoji:'☠️',rarity:'legendary',price:5500,bonus:'+70 STR,+30 END',type:'weapon'},
+    {id:'dragon_slayer',name:'Dragon Slayer',emoji:'🐲',rarity:'mythic',price:15000,bonus:'+100 STR',type:'weapon'},
+    {id:'celestial_blade',name:'Celestial Blade',emoji:'🌟',rarity:'mythic',price:18000,bonus:'+80 ALL,+50 Luck',type:'weapon'},
   ],
-  armor: [
-    { id:'cyber_armor', name:'Cyber Armor', emoji:'🛡️', rarity:'rare', price:600, bonus:'+15 END', type:'armor' },
-    { id:'samurai_armor', name:'Samurai Armor', emoji:'⛩️', rarity:'epic', price:2000, bonus:'+30 END, +10 AGI', type:'armor' },
-    { id:'titan_armor', name:'Titan Armor', emoji:'🦾', rarity:'legendary', price:6000, bonus:'+50 END', type:'armor' },
-    { id:'neon_suit', name:'Neon Suit', emoji:'✨', rarity:'mythic', price:18000, bonus:'+80 ALL', type:'armor' },
+  armor:[
+    {id:'leather_armor',name:'Leather Armor',emoji:'🦺',rarity:'common',price:80,bonus:'+5 END',type:'armor'},
+    {id:'chain_mail',name:'Chain Mail',emoji:'🔗',rarity:'common',price:100,bonus:'+7 END',type:'armor'},
+    {id:'cyber_armor',name:'Cyber Armor',emoji:'🛡️',rarity:'rare',price:600,bonus:'+15 END',type:'armor'},
+    {id:'forest_cloak',name:'Forest Cloak',emoji:'🌿',rarity:'rare',price:560,bonus:'+12 AGI,+8 END',type:'armor'},
+    {id:'samurai_armor',name:'Samurai Armor',emoji:'⛩️',rarity:'epic',price:2000,bonus:'+30 END,+10 AGI',type:'armor'},
+    {id:'void_robe',name:'Void Robe',emoji:'🌑',rarity:'epic',price:1900,bonus:'+25 INT,+20 END',type:'armor'},
+    {id:'titan_armor',name:'Titan Armor',emoji:'🦾',rarity:'legendary',price:6000,bonus:'+50 END',type:'armor'},
+    {id:'neon_suit',name:'Neon Suit',emoji:'✨',rarity:'mythic',price:18000,bonus:'+80 ALL',type:'armor'},
   ],
-  wings: [
-    { id:'angel_wings', name:'Angel Wings', emoji:'🦋', rarity:'rare', price:800, bonus:'+10 AGI', type:'wings' },
-    { id:'neon_wings', name:'Neon Wings', emoji:'🦅', rarity:'epic', price:2500, bonus:'+20 AGI, +10 INT', type:'wings' },
-    { id:'void_wings', name:'Void Wings', emoji:'🦇', rarity:'legendary', price:8000, bonus:'+40 AGI', type:'wings' },
-    { id:'dragon_wings', name:'Dragon Wings', emoji:'🐉', rarity:'mythic', price:20000, bonus:'+60 ALL', type:'wings' },
+  wings:[
+    {id:'feather_wings',name:'Feather Wings',emoji:'🕊️',rarity:'common',price:200,bonus:'+5 AGI',type:'wings'},
+    {id:'angel_wings',name:'Angel Wings',emoji:'🦋',rarity:'rare',price:800,bonus:'+10 AGI',type:'wings'},
+    {id:'bat_wings',name:'Bat Wings',emoji:'🦇',rarity:'rare',price:750,bonus:'+12 AGI',type:'wings'},
+    {id:'neon_wings',name:'Neon Wings',emoji:'🦅',rarity:'epic',price:2500,bonus:'+20 AGI,+10 INT',type:'wings'},
+    {id:'storm_wings',name:'Storm Wings',emoji:'⛈️',rarity:'epic',price:2400,bonus:'+22 AGI',type:'wings'},
+    {id:'void_wings',name:'Void Wings',emoji:'🌑',rarity:'legendary',price:8000,bonus:'+40 AGI',type:'wings'},
+    {id:'phoenix_wings',name:'Phoenix Wings',emoji:'🔥',rarity:'legendary',price:8500,bonus:'+35 AGI,+20 STR',type:'wings'},
+    {id:'dragon_wings',name:'Dragon Wings',emoji:'🐉',rarity:'mythic',price:20000,bonus:'+60 ALL',type:'wings'},
+    {id:'cosmic_wings',name:'Cosmic Wings',emoji:'🌌',rarity:'mythic',price:22000,bonus:'+70 AGI,+40 INT',type:'wings'},
   ],
-  aura: [
-    { id:'fire_aura', name:'Fire Aura', emoji:'🔥', rarity:'rare', price:700, bonus:'+10 STR', type:'aura' },
-    { id:'ice_aura', name:'Ice Aura', emoji:'❄️', rarity:'epic', price:2200, bonus:'+20 INT', type:'aura' },
-    { id:'lightning_aura', name:'Lightning Aura', emoji:'⚡', rarity:'legendary', price:7000, bonus:'+40 AGI', type:'aura' },
-    { id:'cosmic_aura', name:'Cosmic Aura', emoji:'🌌', rarity:'mythic', price:22000, bonus:'+70 ALL', type:'aura' },
+  aura:[
+    {id:'flame_aura',name:'Flame Aura',emoji:'🔥',rarity:'rare',price:700,bonus:'+10 STR',type:'aura',color:'rgba(255,77,0,0.4)'},
+    {id:'ice_aura',name:'Ice Aura',emoji:'🧊',rarity:'rare',price:700,bonus:'+10 INT',type:'aura',color:'rgba(0,245,255,0.3)'},
+    {id:'thunder_aura',name:'Thunder Aura',emoji:'⚡',rarity:'epic',price:2200,bonus:'+20 AGI',type:'aura',color:'rgba(255,214,10,0.35)'},
+    {id:'void_aura',name:'Void Aura',emoji:'🌑',rarity:'epic',price:2400,bonus:'+20 INT,+10 END',type:'aura',color:'rgba(131,56,236,0.35)'},
+    {id:'nature_aura',name:'Nature Aura',emoji:'🌿',rarity:'epic',price:2100,bonus:'+15 END,+10 Luck',type:'aura',color:'rgba(57,255,20,0.3)'},
+    {id:'lightning_aura',name:'Lightning Aura',emoji:'🌩️',rarity:'legendary',price:7000,bonus:'+40 AGI',type:'aura',color:'rgba(255,214,10,0.4)'},
+    {id:'cosmic_aura',name:'Cosmic Aura',emoji:'🌌',rarity:'mythic',price:22000,bonus:'+70 ALL',type:'aura',color:'rgba(131,56,236,0.45)'},
+    {id:'neon_aura',name:'Neon Aura',emoji:'🌈',rarity:'mythic',price:25000,bonus:'+80 Focus,+50 Luck',type:'aura',color:'rgba(0,245,255,0.4)'},
   ],
-  helmet: [
-    { id:'knight_helm', name:'Knight Helmet', emoji:'⛑️', rarity:'common', price:150, bonus:'+8 END', type:'helmet' },
-    { id:'cyber_helm', name:'Cyber Helmet', emoji:'🥽', rarity:'rare', price:550, bonus:'+15 INT', type:'helmet' },
-    { id:'samurai_helm', name:'Samurai Helmet', emoji:'🎭', rarity:'epic', price:1800, bonus:'+25 END, +10 STR', type:'helmet' },
+  helmet:[
+    {id:'iron_helm',name:'Iron Helmet',emoji:'⛑️',rarity:'common',price:80,bonus:'+5 END',type:'helmet'},
+    {id:'leather_cap',name:'Leather Cap',emoji:'🎩',rarity:'common',price:70,bonus:'+4 END',type:'helmet'},
+    {id:'cyber_helm',name:'Cyber Helmet',emoji:'🥽',rarity:'rare',price:550,bonus:'+15 INT',type:'helmet'},
+    {id:'ninja_mask',name:'Ninja Mask',emoji:'🎭',rarity:'rare',price:520,bonus:'+12 AGI',type:'helmet'},
+    {id:'samurai_helm',name:'Samurai Helmet',emoji:'🏯',rarity:'epic',price:1800,bonus:'+25 END,+10 STR',type:'helmet'},
+    {id:'arcane_crown',name:'Arcane Crown',emoji:'👑',rarity:'legendary',price:6500,bonus:'+40 INT,+20 Luck',type:'helmet'},
+    {id:'dragon_crown',name:'Dragon Crown',emoji:'🐉',rarity:'mythic',price:16000,bonus:'+60 ALL',type:'helmet'},
   ],
 };
 
+// ─── 40 PETS ───
 const PETS = [
-  { id:'cat', name:'Cat', emoji:'🐱', rarity:'common', bonus:'+5 XP', price:200 },
-  { id:'dog', name:'Dog', emoji:'🐶', rarity:'common', bonus:'+10 Gold', price:200 },
-  { id:'fox', name:'Fox', emoji:'🦊', rarity:'common', bonus:'+3 AGI', price:250 },
-  { id:'wolf', name:'Wolf', emoji:'🐺', rarity:'rare', bonus:'+20 XP, +5 STR', price:800 },
-  { id:'tiger', name:'Tiger', emoji:'🐯', rarity:'rare', bonus:'+25 STR, +10 AGI', price:1000 },
-  { id:'eagle', name:'Eagle', emoji:'🦅', rarity:'rare', bonus:'+20 AGI, +10 INT', price:900 },
-  { id:'phoenix', name:'Phoenix', emoji:'🔥', rarity:'epic', bonus:'+50 XP, +20 STR', price:3000 },
-  { id:'griffin', name:'Griffin', emoji:'🦁', rarity:'epic', bonus:'+40 ALL', price:3500 },
-  { id:'hydra', name:'Hydra', emoji:'🐍', rarity:'epic', bonus:'+60 END', price:4000 },
-  { id:'fire_dragon', name:'Fire Dragon', emoji:'🐲', rarity:'legendary', bonus:'+100 XP, +50 ALL', price:10000 },
-  { id:'ice_dragon', name:'Ice Dragon', emoji:'🧊', rarity:'legendary', bonus:'+80 INT, +60 Focus', price:12000 },
-  { id:'neon_dragon', name:'Neon Dragon', emoji:'🌟', rarity:'mythic', bonus:'+200 XP, +100 ALL', price:50000 },
-  { id:'cosmic_wolf', name:'Cosmic Wolf', emoji:'🌌', rarity:'mythic', bonus:'+150 ALL, +100 Focus', price:45000 },
+  {id:'cat',name:'Cat',emoji:'🐱',rarity:'common',bonus:'+5 XP',price:200},
+  {id:'dog',name:'Dog',emoji:'🐶',rarity:'common',bonus:'+10 Gold',price:200},
+  {id:'fox',name:'Fox',emoji:'🦊',rarity:'common',bonus:'+3 AGI',price:250},
+  {id:'rabbit',name:'Rabbit',emoji:'🐰',rarity:'common',bonus:'+3 Luck',price:180},
+  {id:'hamster',name:'Hamster',emoji:'🐹',rarity:'common',bonus:'+4 Focus',price:160},
+  {id:'parrot',name:'Parrot',emoji:'🦜',rarity:'common',bonus:'+4 INT',price:220},
+  {id:'turtle',name:'Turtle',emoji:'🐢',rarity:'common',bonus:'+5 END',price:200},
+  {id:'frog',name:'Frog',emoji:'🐸',rarity:'common',bonus:'+3 AGI,+2 Luck',price:190},
+  {id:'wolf',name:'Wolf',emoji:'🐺',rarity:'rare',bonus:'+20 XP,+5 STR',price:800},
+  {id:'tiger',name:'Tiger',emoji:'🐯',rarity:'rare',bonus:'+25 STR,+10 AGI',price:1000},
+  {id:'eagle',name:'Eagle',emoji:'🦅',rarity:'rare',bonus:'+20 AGI,+10 INT',price:900},
+  {id:'bear',name:'Bear',emoji:'🐻',rarity:'rare',bonus:'+20 END,+10 STR',price:850},
+  {id:'shark',name:'Shark',emoji:'🦈',rarity:'rare',bonus:'+18 STR,+8 AGI',price:950},
+  {id:'lion',name:'Lion',emoji:'🦁',rarity:'rare',bonus:'+22 STR,+8 Focus',price:1100},
+  {id:'panda',name:'Panda',emoji:'🐼',rarity:'rare',bonus:'+15 END,+10 Focus',price:780},
+  {id:'owl',name:'Owl',emoji:'🦉',rarity:'rare',bonus:'+20 INT,+5 Luck',price:820},
+  {id:'phoenix',name:'Phoenix',emoji:'🔥',rarity:'epic',bonus:'+50 XP,+20 STR',price:3000},
+  {id:'griffin',name:'Griffin',emoji:'🦁',rarity:'epic',bonus:'+40 ALL',price:3500},
+  {id:'hydra',name:'Hydra',emoji:'🐍',rarity:'epic',bonus:'+60 END',price:4000},
+  {id:'kitsune',name:'Kitsune',emoji:'🦊',rarity:'epic',bonus:'+45 Luck,+20 INT',price:3200},
+  {id:'thunderbird',name:'Thunderbird',emoji:'⚡',rarity:'epic',bonus:'+50 AGI,+20 STR',price:3800},
+  {id:'unicorn',name:'Unicorn',emoji:'🦄',rarity:'epic',bonus:'+40 Focus,+30 Luck',price:3600},
+  {id:'cerberus',name:'Cerberus',emoji:'🐕',rarity:'epic',bonus:'+55 STR,+20 END',price:4200},
+  {id:'manticore',name:'Manticore',emoji:'🐈',rarity:'epic',bonus:'+50 STR,+30 AGI',price:4500},
+  {id:'fire_dragon',name:'Fire Dragon',emoji:'🐲',rarity:'legendary',bonus:'+100 XP,+50 ALL',price:10000},
+  {id:'ice_dragon',name:'Ice Dragon',emoji:'🧊',rarity:'legendary',bonus:'+80 INT,+60 Focus',price:12000},
+  {id:'storm_dragon',name:'Storm Dragon',emoji:'⛈️',rarity:'legendary',bonus:'+90 AGI,+50 STR',price:11000},
+  {id:'titan_wolf',name:'Titan Wolf',emoji:'🐺',rarity:'legendary',bonus:'+80 STR,+50 END',price:9500},
+  {id:'shadow_panther',name:'Shadow Panther',emoji:'🐆',rarity:'legendary',bonus:'+70 AGI,+60 Luck',price:10500},
+  {id:'ancient_turtle',name:'Ancient Turtle',emoji:'🐢',rarity:'legendary',bonus:'+100 END,+50 Focus',price:9000},
+  {id:'leviathan',name:'Leviathan',emoji:'🐋',rarity:'legendary',bonus:'+90 END,+60 STR',price:13000},
+  {id:'neon_dragon',name:'Neon Dragon',emoji:'🌟',rarity:'mythic',bonus:'+200 XP,+100 ALL',price:50000},
+  {id:'cosmic_wolf',name:'Cosmic Wolf',emoji:'🌌',rarity:'mythic',bonus:'+150 ALL,+100 Focus',price:45000},
+  {id:'void_serpent',name:'Void Serpent',emoji:'🌑',rarity:'mythic',bonus:'+130 INT,+120 Luck',price:48000},
+  {id:'celestial_lion',name:'Celestial Lion',emoji:'☀️',rarity:'mythic',bonus:'+160 STR,+100 END',price:52000},
+  {id:'time_dragon',name:'Time Dragon',emoji:'⏳',rarity:'mythic',bonus:'+180 ALL,+150 XP',price:60000},
+  {id:'chaos_hydra',name:'Chaos Hydra',emoji:'🌊',rarity:'mythic',bonus:'+140 END,+130 STR',price:55000},
+  {id:'quantum_phoenix',name:'Quantum Phoenix',emoji:'🌈',rarity:'mythic',bonus:'+170 ALL,+200 Focus',price:65000},
+  {id:'omega_dragon',name:'Omega Dragon',emoji:'♾️',rarity:'mythic',bonus:'+250 ALL',price:100000},
+  {id:'eternal_wolf',name:'Eternal Wolf',emoji:'🌙',rarity:'mythic',bonus:'+200 ALL,+200 Luck',price:95000},
 ];
 
+// ─── SKILLS ───
 const SKILLS = [
-  { id:'focus', name:'Deep Focus', icon:'🎯', desc:'تمرکز عمیق روی مأموریت‌ها', maxLvl:5, costPerLvl:50 },
-  { id:'speed', name:'Speed Learner', icon:'⚡', desc:'یادگیری سریع‌تر، XP بیشتر', maxLvl:5, costPerLvl:50 },
-  { id:'discipline', name:'Iron Discipline', icon:'🔩', desc:'تکمیل مأموریت‌های متوالی', maxLvl:3, costPerLvl:100 },
-  { id:'wisdom', name:'Ancient Wisdom', icon:'📚', desc:'باز کردن کلاس‌های جدید', maxLvl:3, costPerLvl:150 },
-  { id:'luck', name:'Neon Luck', icon:'🍀', desc:'شانس Drop آیتم‌های نادر', maxLvl:3, costPerLvl:120 },
-  { id:'power', name:'Raw Power', icon:'💪', desc:'آسیب بیشتر در Boss Fight', maxLvl:5, costPerLvl:80 },
+  {id:'focus',name:'Deep Focus',icon:'🎯',desc:'تمرکز عمیق روی مأموریت‌ها',maxLvl:5,costPerLvl:50},
+  {id:'speed',name:'Speed Learner',icon:'⚡',desc:'یادگیری سریع‌تر، XP بیشتر',maxLvl:5,costPerLvl:50},
+  {id:'discipline',name:'Iron Discipline',icon:'🔩',desc:'تکمیل مأموریت‌های متوالی',maxLvl:3,costPerLvl:100},
+  {id:'wisdom',name:'Ancient Wisdom',icon:'📚',desc:'باز کردن کلاس‌های جدید',maxLvl:3,costPerLvl:150},
+  {id:'luck',name:'Neon Luck',icon:'🍀',desc:'شانس Drop آیتم‌های نادر',maxLvl:3,costPerLvl:120},
+  {id:'power',name:'Raw Power',icon:'💪',desc:'آسیب بیشتر در Boss Fight',maxLvl:5,costPerLvl:80},
 ];
 
+// ─── QUEST TEMPLATES PER CLASS ───
 const QUEST_TEMPLATES = {
-  programmer: [
-    { name:'کدنویسی روزانه', icon:'💻', desc:'۴۵ دقیقه کدنویسی یا پروژه', xp:50, gold:30, category:'tech' },
-    { name:'یادگیری مفهوم جدید', icon:'📖', desc:'یک مفهوم برنامه‌نویسی جدید', xp:40, gold:25, category:'tech' },
+  programmer:[
+    {name:'کدنویسی روزانه',icon:'💻',desc:'۴۵ دقیقه کدنویسی یا پروژه',xp:50,gold:30},
+    {name:'یادگیری مفهوم جدید',icon:'📖',desc:'یک مفهوم برنامه‌نویسی جدید',xp:40,gold:25},
+    {name:'کامیت روزانه',icon:'🔧',desc:'یک Pull Request یا commit',xp:35,gold:20},
   ],
-  athlete: [
-    { name:'تمرین بدنی', icon:'🏋️', desc:'۳۰ دقیقه ورزش', xp:50, gold:30, category:'sports' },
-    { name:'دویدن صبح', icon:'🏃', desc:'۲۰ دقیقه دویدن', xp:35, gold:20, category:'sports' },
+  athlete:[
+    {name:'تمرین بدنی',icon:'🏋️',desc:'۳۰ دقیقه ورزش',xp:50,gold:30},
+    {name:'دویدن صبح',icon:'🏃',desc:'۲۰ دقیقه دویدن',xp:35,gold:20},
+    {name:'کشش و یوگا',icon:'🧘',desc:'۱۵ دقیقه کشش',xp:25,gold:15},
   ],
-  entrepreneur: [
-    { name:'ثبت هزینه‌ها', icon:'💰', desc:'ثبت درآمد و هزینه امروز', xp:30, gold:50, category:'business' },
-    { name:'ارتباط شبکه', icon:'🤝', desc:'با یک نفر جدید ارتباط بگیر', xp:40, gold:35, category:'business' },
+  entrepreneur:[
+    {name:'ثبت هزینه‌ها',icon:'💰',desc:'ثبت درآمد و هزینه امروز',xp:30,gold:50},
+    {name:'ارتباط شبکه',icon:'🤝',desc:'با یک نفر جدید ارتباط بگیر',xp:40,gold:35},
+    {name:'ایده پردازی',icon:'💡',desc:'ثبت ۳ ایده جدید کسب‌وکار',xp:45,gold:40},
   ],
-  artist: [
-    { name:'طراحی روزانه', icon:'🎨', desc:'۳۰ دقیقه خلق اثر', xp:45, gold:25, category:'art' },
-    { name:'مطالعه هنر', icon:'🖼️', desc:'یک اثر هنری تحلیل کن', xp:30, gold:20, category:'art' },
+  artist:[
+    {name:'طراحی روزانه',icon:'🎨',desc:'۳۰ دقیقه خلق اثر',xp:45,gold:25},
+    {name:'مطالعه هنر',icon:'🖼️',desc:'یک اثر هنری تحلیل کن',xp:30,gold:20},
+    {name:'اسکچ آزاد',icon:'✏️',desc:'۱۵ دقیقه طراحی آزاد',xp:25,gold:15},
   ],
-  monk: [
-    { name:'مدیتیشن صبح', icon:'🧘', desc:'۱۵ دقیقه مدیتیشن', xp:40, gold:20, category:'mind' },
-    { name:'خواندن کتاب', icon:'📗', desc:'۳۰ دقیقه مطالعه', xp:35, gold:20, category:'mind' },
+  monk:[
+    {name:'مدیتیشن صبح',icon:'🧘',desc:'۱۵ دقیقه مدیتیشن',xp:40,gold:20},
+    {name:'خواندن کتاب',icon:'📗',desc:'۳۰ دقیقه مطالعه',xp:35,gold:20},
+    {name:'تنفس آگاهانه',icon:'🌬️',desc:'۱۰ دقیقه تمرین تنفس',xp:25,gold:15},
   ],
-  engineer: [
-    { name:'طراحی پروژه', icon:'⚙️', desc:'یک ساعت کار مهندسی', xp:55, gold:35, category:'engineering' },
-    { name:'یادداشت‌برداری', icon:'📐', desc:'ثبت ایده‌های فنی امروز', xp:25, gold:15, category:'engineering' },
+  engineer:[
+    {name:'طراحی پروژه',icon:'⚙️',desc:'یک ساعت کار مهندسی',xp:55,gold:35},
+    {name:'یادداشت‌برداری',icon:'📐',desc:'ثبت ایده‌های فنی امروز',xp:25,gold:15},
+    {name:'مطالعه فنی',icon:'🔩',desc:'خواندن یک مقاله مهندسی',xp:35,gold:20},
+  ],
+  writer:[
+    {name:'نوشتن روزانه',icon:'✍️',desc:'۵۰۰ کلمه بنویس',xp:50,gold:30},
+    {name:'مطالعه ادبیات',icon:'📚',desc:'۳۰ دقیقه مطالعه ادبی',xp:35,gold:20},
+    {name:'یادداشت ایده',icon:'📓',desc:'ایده‌های داستانی ثبت کن',xp:25,gold:15},
+  ],
+  musician:[
+    {name:'تمرین موسیقی',icon:'🎸',desc:'۳۰ دقیقه ساز بزن',xp:50,gold:30},
+    {name:'گوش دادن آگاهانه',icon:'🎵',desc:'یک آلبوم کامل تحلیل کن',xp:30,gold:20},
+    {name:'ضبط صدا',icon:'🎤',desc:'یک کلیپ کوتاه ضبط کن',xp:40,gold:25},
+  ],
+  chef:[
+    {name:'آشپزی سالم',icon:'🥗',desc:'یک وعده سالم بپز',xp:45,gold:30},
+    {name:'دستور جدید',icon:'📋',desc:'یک دستور پخت جدید امتحان کن',xp:40,gold:25},
+    {name:'برنامه‌ریزی غذا',icon:'🥦',desc:'منوی هفته رو برنامه‌ریزی کن',xp:30,gold:20},
+  ],
+  doctor:[
+    {name:'مطالعه پزشکی',icon:'🩺',desc:'یک مقاله علمی بخوان',xp:55,gold:30},
+    {name:'ورزش سلامت',icon:'🏥',desc:'ورزش برای سلامتی',xp:40,gold:20},
+    {name:'یادداشت روزانه',icon:'📋',desc:'ثبت اطلاعات سلامت',xp:35,gold:25},
+  ],
+  gamer:[
+    {name:'تمرین مهارت',icon:'🎮',desc:'۱ ساعت تمرین هدفمند',xp:45,gold:25},
+    {name:'تحلیل بازی',icon:'🕹️',desc:'یک ماچ تحلیل کن',xp:35,gold:20},
+    {name:'یادگیری مکانیک',icon:'⚙️',desc:'مکانیک جدید یاد بگیر',xp:30,gold:15},
+  ],
+  designer:[
+    {name:'طراحی UI',icon:'🖌️',desc:'یک صفحه طراحی کن',xp:50,gold:30},
+    {name:'مطالعه طراحی',icon:'🎨',desc:'یک case study بخوان',xp:35,gold:20},
+    {name:'موکاپ جدید',icon:'✏️',desc:'یک موکاپ بساز',xp:40,gold:25},
+  ],
+  teacher:[
+    {name:'تدریس روزانه',icon:'📖',desc:'به یک نفر چیزی یاد بده',xp:55,gold:30},
+    {name:'آماده‌سازی درس',icon:'📝',desc:'محتوای فردا رو آماده کن',xp:40,gold:25},
+    {name:'بازخورد دانش‌آموز',icon:'✅',desc:'نظر دانش‌آموزان رو بگیر',xp:30,gold:20},
+  ],
+  scientist:[
+    {name:'تحقیق روزانه',icon:'🔬',desc:'یک ساعت تحقیق',xp:60,gold:35},
+    {name:'مقاله علمی',icon:'📄',desc:'یک مقاله بخوان',xp:45,gold:25},
+    {name:'آزمایش کوچک',icon:'🧪',desc:'یک فرضیه آزمایش کن',xp:50,gold:30},
+  ],
+  trader:[
+    {name:'تحلیل بازار',icon:'📈',desc:'بازار امروز رو تحلیل کن',xp:40,gold:60},
+    {name:'مطالعه مالی',icon:'💹',desc:'یک مقاله مالی بخوان',xp:35,gold:40},
+    {name:'ثبت معاملات',icon:'💰',desc:'معاملات امروز رو ثبت کن',xp:30,gold:50},
+  ],
+  photographer:[
+    {name:'عکاسی روزانه',icon:'📷',desc:'۱۰ عکس بگیر',xp:45,gold:25},
+    {name:'ویرایش تصویر',icon:'🖼️',desc:'یک عکس ویرایش کن',xp:35,gold:20},
+    {name:'مطالعه ترکیب‌بندی',icon:'📐',desc:'اصول ترکیب‌بندی مرور کن',xp:30,gold:15},
+  ],
+  youtuber:[
+    {name:'تولید محتوا',icon:'🎬',desc:'یک ویدیو ضبط کن',xp:55,gold:40},
+    {name:'ادیت ویدیو',icon:'✂️',desc:'یک ویدیو ادیت کن',xp:50,gold:35},
+    {name:'تحقیق موضوع',icon:'🔍',desc:'موضوع ویدیو بعدی پیدا کن',xp:35,gold:25},
+  ],
+  hacker:[
+    {name:'مطالعه امنیت',icon:'🕵️',desc:'یک مقاله امنیتی بخوان',xp:55,gold:30},
+    {name:'CTF چالش',icon:'🔐',desc:'یک چالش CTF حل کن',xp:60,gold:35},
+    {name:'کد آنالیز',icon:'🔍',desc:'یک کد رو reverse کن',xp:50,gold:28},
+  ],
+  linguist:[
+    {name:'تمرین زبان',icon:'🌐',desc:'۳۰ دقیقه زبان جدید',xp:50,gold:25},
+    {name:'مکالمه روزانه',icon:'💬',desc:'با یک نیتیو صحبت کن',xp:45,gold:30},
+    {name:'یادگیری لغت',icon:'📖',desc:'۱۰ لغت جدید یاد بگیر',xp:35,gold:20},
+  ],
+  architect:[
+    {name:'طراحی معماری',icon:'🏛️',desc:'یک طرح معماری بکش',xp:55,gold:35},
+    {name:'مطالعه ساختمان',icon:'🏗️',desc:'یک پروژه مشهور تحلیل کن',xp:40,gold:25},
+    {name:'اسکچ فضا',icon:'✏️',desc:'یک فضا طراحی کن',xp:35,gold:20},
   ],
 };
 
 const DEFAULT_QUESTS = [
-  { name:'خواب ۸ ساعته', icon:'😴', desc:'ساعت خواب منظم', xp:30, gold:20 },
-  { name:'آب کافی', icon:'💧', desc:'۸ لیوان آب در روز', xp:20, gold:15 },
-  { name:'مطالعه', icon:'📚', desc:'۳۰ دقیقه مطالعه', xp:35, gold:20 },
+  {name:'خواب ۸ ساعته',icon:'😴',desc:'ساعت خواب منظم',xp:30,gold:20},
+  {name:'آب کافی',icon:'💧',desc:'۸ لیوان آب در روز',xp:20,gold:15},
+  {name:'مطالعه',icon:'📚',desc:'۳۰ دقیقه مطالعه',xp:35,gold:20},
 ];
 
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════
 // STATE
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════
 let G = {
-  name: '',
-  avatar: 'coder',
-  avatarEmoji: '🧑‍💻',
-  class: 'programmer',
-  className: 'Programmer',
-  level: 1,
-  xp: 0,
-  xpNeeded: 100,
-  gold: 500,
-  gems: 10,
-  str: 10, int: 10, agi: 10, end: 10, focus: 10, luck: 10,
-  quests: [],
-  inventory: [],
-  equipped: { weapon: null, armor: null, wings: null, aura: null, helmet: null },
-  pets: [],
-  activePet: null,
-  skills: { focus: 0, speed: 0, discipline: 0, wisdom: 0, luck: 0, power: 0 },
-  multiClasses: [],
-  shopCat: 'weapon',
-  currentZone: 'village',
+  name:'',avatar:'coder',avatarEmoji:'🧑‍💻',
+  class:'programmer',className:'Programmer',
+  level:1,xp:0,xpNeeded:100,gold:500,gems:10,
+  str:10,int:10,agi:10,end:10,focus:10,luck:10,
+  quests:[],inventory:[],
+  equipped:{weapon:null,armor:null,wings:null,aura:null,helmet:null},
+  pets:[],activePet:null,
+  skills:{focus:0,speed:0,discipline:0,wisdom:0,luck:0,power:0},
+  multiClasses:[],shopCat:'weapon',currentZone:'village',
+  currentStep:1,
 };
 
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════
 // SETUP
-// ─────────────────────────────────────────────
-function initSetup() {
-  const cg = document.getElementById('classGrid');
-  CLASSES.forEach(c => {
-    const d = document.createElement('div');
-    d.className = 'class-card' + (G.class === c.id ? ' selected' : '');
-    d.innerHTML = `<span class="class-branch">${c.branch}</span>
-      <div class="class-icon">${c.icon}</div>
+// ═══════════════════════════════════════════════
+function initSetup(){
+  const cg=document.getElementById('classGrid');
+  CLASSES.forEach(c=>{
+    const d=document.createElement('div');
+    d.className='class-card'+(G.class===c.id?' selected':'');
+    d.innerHTML=`<span class="class-branch">${c.branch}</span>
+      <span class="class-icon">${c.icon}</span>
       <span class="class-name">${c.name}</span>
-      <div class="class-desc">${c.desc}</div>`;
-    d.onclick = () => {
-      document.querySelectorAll('.class-card').forEach(x => x.classList.remove('selected'));
+      <div class="class-desc">${c.desc}</div>
+      <div class="class-stat-bonus">${c.bonus}</div>
+      <div class="class-selected-mark">✓</div>`;
+    d.onclick=()=>{
+      document.querySelectorAll('.class-card').forEach(x=>x.classList.remove('selected'));
       d.classList.add('selected');
-      G.class = c.id;
-      G.className = c.name;
+      G.class=c.id; G.className=c.name;
     };
     cg.appendChild(d);
   });
 
-  const ag = document.getElementById('avatarGrid');
-  AVATARS.forEach(a => {
-    const d = document.createElement('div');
-    d.className = 'avatar-card' + (a.id === G.avatar ? ' selected' : '') + (!a.free ? ' locked' : '');
-    d.style.position = 'relative';
-    d.innerHTML = `<span class="avatar-emoji">${a.emoji}</span>
+  const ag=document.getElementById('avatarGrid');
+  AVATARS.forEach(a=>{
+    const d=document.createElement('div');
+    d.className='avatar-card'+(a.id===G.avatar?' selected':'')+(!a.free?' locked':'');
+    d.innerHTML=`<span class="avatar-emoji">${a.emoji}</span>
       <span class="avatar-label">${a.label}</span>
-      ${!a.free ? '<span class="lock-badge">💎 PRO</span>' : ''}`;
-    if (a.free) {
-      d.onclick = () => {
-        document.querySelectorAll('.avatar-card').forEach(x => x.classList.remove('selected'));
+      ${!a.free?'<span class="lock-badge">💎 PRO</span>':''}`;
+    if(a.free){
+      d.onclick=()=>{
+        document.querySelectorAll('.avatar-card').forEach(x=>x.classList.remove('selected'));
         d.classList.add('selected');
-        G.avatar = a.id;
-        G.avatarEmoji = a.emoji;
+        G.avatar=a.id; G.avatarEmoji=a.emoji;
+        document.getElementById('preview3DEmoji').textContent=a.emoji;
+        document.getElementById('preview3DName').textContent=a.label.toUpperCase();
       };
     }
     ag.appendChild(d);
   });
 }
 
-function startGame() {
-  const n = document.getElementById('playerName').value.trim();
-  if (!n) { showToast('نام کاراکتر را وارد کنید', 'default'); return; }
-  G.name = n;
+function goStep(n){
+  if(n===2&&!document.getElementById('playerName').value.trim()){
+    showToast('نام کاراکتر را وارد کنید','default'); return;
+  }
+  G.currentStep=n;
+  document.querySelectorAll('.setup-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+  for(let i=1;i<=3;i++){
+    const dot=document.getElementById('sd'+i);
+    dot.classList.remove('active','done');
+    if(i<n) dot.classList.add('done');
+    else if(i===n) dot.classList.add('active');
+  }
+  for(let i=1;i<=2;i++){
+    document.getElementById('sl'+i).classList.toggle('done',i<n);
+  }
+  window.scrollTo(0,0);
+}
 
-  // Apply class stats
-  const cls = CLASSES.find(c => c.id === G.class);
-  if (cls) G.className = cls.name;
-
-  // Load class quests
-  const cq = QUEST_TEMPLATES[G.class] || [];
-  G.quests = [...DEFAULT_QUESTS, ...cq].map((q, i) => ({ ...q, id: 'q' + i, done: false, progress: 0, total: 1 }));
-
+function startGame(){
+  const n=document.getElementById('playerName').value.trim();
+  if(!n){showToast('نام کاراکتر را وارد کنید','default');return;}
+  G.name=n;
+  const cls=CLASSES.find(c=>c.id===G.class);
+  if(cls) G.className=cls.name;
+  const cq=QUEST_TEMPLATES[G.class]||[];
+  G.quests=[...DEFAULT_QUESTS,...cq].map((q,i)=>({...q,id:'q'+i,done:false,progress:0,total:1}));
   document.getElementById('setup-screen').classList.remove('active');
   document.getElementById('game-screen').classList.add('active');
   renderAll();
-  showToast('خوش آمدی، ' + G.name + '! ⚔️', 'success');
+  showToast('خوش آمدی، '+G.name+'! ⚔️','success');
 }
 
-// ─────────────────────────────────────────────
-// RENDER ALL
-// ─────────────────────────────────────────────
-function renderAll() {
-  renderTopBar();
-  renderHome();
-  renderMap();
-  renderShop();
-  renderPets();
-  renderProfile();
+// ═══════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════
+function renderAll(){renderTopBar();renderHome();renderMap();renderShop();renderPets();renderProfile();}
+
+function renderTopBar(){
+  document.getElementById('topAvatar').textContent=G.avatarEmoji;
+  document.getElementById('topName').textContent=G.name.toUpperCase();
+  document.getElementById('topClass').textContent=G.className;
+  document.getElementById('topLevel').textContent=G.level;
+  document.getElementById('topGold').textContent=G.gold;
+  const pct=(G.xp/G.xpNeeded*100).toFixed(1);
+  document.getElementById('xpBarFill').style.width=pct+'%';
+  document.getElementById('xpText').textContent=G.xp+' / '+G.xpNeeded+' XP';
 }
 
-function renderTopBar() {
-  document.getElementById('topAvatar').textContent = G.avatarEmoji;
-  document.getElementById('topName').textContent = G.name.toUpperCase();
-  document.getElementById('topClass').textContent = G.className;
-  document.getElementById('topLevel').textContent = G.level;
-  document.getElementById('topGold').textContent = G.gold;
-  const pct = (G.xp / G.xpNeeded * 100).toFixed(1);
-  document.getElementById('xpBarFill').style.width = pct + '%';
-  document.getElementById('xpText').textContent = G.xp + ' / ' + G.xpNeeded + ' XP';
+function getAllItems(){return Object.values(ITEMS).flat();}
+
+function getEquippedItem(slot){
+  return G.equipped[slot]?getAllItems().find(x=>x.id===G.equipped[slot]):null;
 }
 
-function renderHome() {
-  document.getElementById('heroAvatar').textContent = G.avatarEmoji;
-  document.getElementById('heroName').textContent = G.name.toUpperCase();
-  document.getElementById('heroClassTag').textContent = G.className.toUpperCase();
+function renderHome(){
+  const inner=document.getElementById('hero3dInner');
+  document.getElementById('hero3dEmoji').textContent=G.avatarEmoji;
 
-  // Multiclass
-  const mr = document.getElementById('multiclassRow');
-  mr.innerHTML = '';
-  G.multiClasses.forEach(mc => {
-    const t = document.createElement('span');
-    t.className = 'mclass-tag';
-    t.textContent = mc;
-    mr.appendChild(t);
+  // Remove old equipped visuals
+  inner.querySelectorAll('.hero-eq-helmet,.hero-eq-weapon,.hero-eq-wings-l,.hero-eq-wings-r,.hero-eq-aura,.hero-eq-pet').forEach(x=>x.remove());
+
+  const eqW=getEquippedItem('wings');
+  const eqH=getEquippedItem('helmet');
+  const eqA=getEquippedItem('aura');
+  const eqWep=getEquippedItem('weapon');
+  const petD=G.activePet?PETS.find(p=>p.id===G.activePet):null;
+
+  if(eqH){
+    const s=document.createElement('span');s.className='hero-eq-helmet';s.textContent=eqH.emoji;inner.appendChild(s);
+  }
+  if(eqWep){
+    const s=document.createElement('span');s.className='hero-eq-weapon';s.textContent=eqWep.emoji;inner.appendChild(s);
+  }
+  if(eqW){
+    const sl=document.createElement('span');sl.className='hero-eq-wings-l';sl.textContent=eqW.emoji;inner.appendChild(sl);
+    const sr=document.createElement('span');sr.className='hero-eq-wings-r';sr.textContent=eqW.emoji;inner.appendChild(sr);
+  }
+  if(eqA){
+    const col=eqA.color||'rgba(0,245,255,0.3)';
+    const s=document.createElement('div');s.className='hero-eq-aura';
+    s.style.background=`conic-gradient(${col},transparent,${col})`;inner.appendChild(s);
+  }
+  if(petD){
+    const s=document.createElement('span');s.className='hero-eq-pet';s.textContent=petD.emoji;inner.appendChild(s);
+  }
+
+  document.getElementById('heroName').textContent=G.name.toUpperCase();
+  document.getElementById('heroClassTag').textContent=G.className.toUpperCase();
+  document.getElementById('hStatStr').textContent=G.str;
+  document.getElementById('hStatInt').textContent=G.int;
+  document.getElementById('hStatAgi').textContent=G.agi;
+  document.getElementById('hStatEnd').textContent=G.end;
+
+  const mr=document.getElementById('multiclassRow');
+  mr.innerHTML='';
+  G.multiClasses.forEach(mc=>{
+    const t=document.createElement('span');t.className='mclass-tag';t.textContent=mc;mr.appendChild(t);
   });
-  const addBtn = document.createElement('span');
-  addBtn.className = 'mclass-tag add';
-  addBtn.textContent = '+ کلاس';
-  addBtn.onclick = openMulticlass;
-  mr.appendChild(addBtn);
+  const ab=document.createElement('span');ab.className='mclass-tag add';ab.textContent='+ کلاس';ab.onclick=openMulticlass;mr.appendChild(ab);
 
-  document.getElementById('hStatStr').textContent = G.str;
-  document.getElementById('hStatInt').textContent = G.int;
-  document.getElementById('hStatAgi').textContent = G.agi;
-  document.getElementById('hStatEnd').textContent = G.end;
-
+  // Equipped strip
+  renderEquippedStrip();
   renderQuests();
   renderCurrentZone();
 }
 
-function renderQuests() {
-  const ql = document.getElementById('questList');
-  ql.innerHTML = '';
-  G.quests.forEach(q => {
-    const d = document.createElement('div');
-    d.className = 'quest-card' + (q.done ? ' completed' : '');
-    d.innerHTML = `
-      <div class="quest-icon">${q.icon}</div>
+function renderEquippedStrip(){
+  const strip=document.getElementById('equippedStrip');
+  strip.innerHTML='';
+  const slots=[
+    {key:'weapon',label:'سلاح'},
+    {key:'armor',label:'زره'},
+    {key:'helmet',label:'کلاه'},
+    {key:'wings',label:'بال'},
+    {key:'aura',label:'هاله'},
+    {key:'pet',label:'پت'},
+  ];
+  slots.forEach(s=>{
+    let item=null,icon='⬜',name='خالی';
+    if(s.key==='pet'){
+      item=G.activePet?PETS.find(p=>p.id===G.activePet):null;
+      if(item){icon=item.emoji;name=item.name;}
+    } else {
+      item=getEquippedItem(s.key);
+      if(item){icon=item.emoji;name=item.name;}
+    }
+    const d=document.createElement('div');
+    d.className='eq-chip'+(item?'':' empty');
+    d.innerHTML=`<span class="eq-chip-icon">${icon}</span>
+      <div class="eq-chip-info">
+        <span class="eq-chip-slot">${s.label}</span>
+        <span class="eq-chip-name">${name}</span>
+      </div>`;
+    d.onclick=()=>showTab(s.key==='pet'?'pets':'shop');
+    strip.appendChild(d);
+  });
+}
+
+function renderQuests(){
+  const ql=document.getElementById('questList');
+  ql.innerHTML='';
+  G.quests.forEach(q=>{
+    const d=document.createElement('div');
+    d.className='quest-card'+(q.done?' completed':'');
+    d.innerHTML=`<div class="quest-icon">${q.icon}</div>
       <div class="quest-info">
         <div class="quest-name">${q.name}</div>
         <div class="quest-desc">${q.desc}</div>
@@ -1611,541 +1251,454 @@ function renderQuests() {
         </div>
         <div class="quest-progress"><div class="quest-progress-fill" style="width:${q.done?100:0}%"></div></div>
       </div>`;
-    if (!q.done) d.onclick = () => completeQuest(q.id);
+    if(!q.done) d.onclick=()=>completeQuest(q.id);
     ql.appendChild(d);
   });
 }
 
-function renderCurrentZone() {
-  const z = ZONES.find(x => x.id === G.currentZone) || ZONES[0];
-  const el = document.getElementById('currentZoneInfo');
-  el.innerHTML = `<div class="quest-card" style="cursor:default">
+function renderCurrentZone(){
+  const z=ZONES.find(x=>x.id===G.currentZone)||ZONES[0];
+  document.getElementById('currentZoneInfo').innerHTML=`<div class="quest-card">
     <div class="quest-icon">${z.emoji}</div>
     <div class="quest-info">
       <div class="quest-name">${z.name}</div>
       <div class="quest-desc">منطقه لول ${z.levels} | لول فعلی شما: ${G.level}</div>
-    </div>
-  </div>`;
+    </div></div>`;
 }
 
-function renderMap() {
-  const r1 = document.getElementById('zoneRow1');
-  const r2 = document.getElementById('zoneRow2');
-  r1.innerHTML = '';
-  r2.innerHTML = '';
-  ZONES.forEach((z, i) => {
-    const unlocked = G.level >= z.minLvl;
-    const current = G.currentZone === z.id;
-    const d = document.createElement('div');
-    d.className = 'zone-card' + (current ? ' current' : unlocked ? ' unlocked' : ' locked');
-    d.innerHTML = `
-      ${current ? '<span class="zone-current-badge">NOW</span>' : ''}
-      <div class="zone-emoji">${z.emoji}</div>
+function renderMap(){
+  ['zoneRow1','zoneRow2'].forEach(id=>document.getElementById(id).innerHTML='');
+  ZONES.forEach((z,i)=>{
+    const unlocked=G.level>=z.minLvl,current=G.currentZone===z.id;
+    const d=document.createElement('div');
+    d.className='zone-card'+(current?' current':unlocked?' unlocked':' locked');
+    d.innerHTML=`${current?'<span class="zone-current-badge">NOW</span>':''}
+      <span class="zone-emoji">${z.emoji}</span>
       <div class="zone-name">${z.name}</div>
       <div class="zone-levels">Lv ${z.levels}</div>`;
-    if (unlocked && !current) d.onclick = () => { G.currentZone = z.id; renderMap(); renderCurrentZone(); showToast('وارد ' + z.name + ' شدی', 'success'); };
-    (i < 5 ? r1 : r2).appendChild(d);
+    if(unlocked&&!current) d.onclick=()=>{G.currentZone=z.id;renderMap();renderCurrentZone();showToast('وارد '+z.name+' شدی','success');};
+    document.getElementById(i<5?'zoneRow1':'zoneRow2').appendChild(d);
   });
 
-  // Bosses
-  const bl = document.getElementById('bossList');
-  bl.innerHTML = '';
-  BOSSES.forEach(b => {
-    const unlocked = G.level >= b.lvl - 4;
-    const d = document.createElement('div');
-    d.className = 'boss-card' + (!unlocked ? ' boss-locked' : '');
-    d.innerHTML = `
-      <div class="boss-emoji">${b.emoji}</div>
+  const bl=document.getElementById('bossList');
+  bl.innerHTML='';
+  BOSSES.forEach(b=>{
+    const unlocked=G.level>=b.lvl-4;
+    const d=document.createElement('div');
+    d.className='boss-card'+(unlocked?'':' boss-locked');
+    d.innerHTML=`<span class="boss-emoji">${b.emoji}</span>
       <div class="boss-name">${b.name}</div>
       <div class="boss-level">REQUIRED LEVEL ${b.lvl}</div>
       <div class="boss-desc">${b.desc}</div>
-      <div class="boss-rewards">
-        <span class="reward-chip xp">+${b.xp} XP</span>
-        <span class="reward-chip gold">+${b.gold} 🪙</span>
-      </div>
-      ${unlocked ? `<button class="boss-fight-btn" onclick="startFight('${b.id}')">⚔️ شروع مبارزه</button>` : `<div style="font-size:0.65rem;color:var(--text-muted);font-family:var(--font-display);letter-spacing:1px;margin-top:12px">🔒 LOCKED — REACH LEVEL ${b.lvl}</div>`}`;
+      <div class="boss-rewards"><span class="reward-chip xp">+${b.xp} XP</span><span class="reward-chip gold">+${b.gold} 🪙</span></div>
+      ${unlocked?`<button class="boss-fight-btn" onclick="startFight('${b.id}')">⚔️ شروع مبارزه</button>`:`<div style="font-size:.65rem;color:var(--tm);font-family:var(--fd);letter-spacing:1px;margin-top:12px">🔒 LOCKED — REACH LEVEL ${b.lvl}</div>`}`;
     bl.appendChild(d);
   });
 }
 
-function renderShop() {
-  const cats = document.getElementById('shopCats');
-  cats.innerHTML = '';
-  const catList = ['weapon','armor','wings','aura','helmet'];
-  const catNames = { weapon:'سلاح', armor:'زره', wings:'بال', aura:'هاله', helmet:'کلاه' };
-  catList.forEach(c => {
-    const btn = document.createElement('button');
-    btn.className = 'cat-btn' + (G.shopCat === c ? ' active' : '');
-    btn.textContent = catNames[c];
-    btn.onclick = () => { G.shopCat = c; renderShop(); };
-    cats.appendChild(btn);
+function renderShop(){
+  const cats=['weapon','armor','wings','aura','helmet'];
+  const catNames={weapon:'⚔️ سلاح',armor:'🛡️ زره',wings:'🦅 بال',aura:'✨ هاله',helmet:'⛑️ کلاه'};
+  const sc=document.getElementById('shopCats');
+  sc.innerHTML='';
+  cats.forEach(c=>{
+    const btn=document.createElement('button');
+    btn.className='cat-btn'+(G.shopCat===c?' active':'');
+    btn.textContent=catNames[c];
+    btn.onclick=()=>{G.shopCat=c;renderShop();};
+    sc.appendChild(btn);
   });
-
-  const ig = document.getElementById('itemGrid');
-  ig.innerHTML = '';
-  (ITEMS[G.shopCat] || []).forEach(item => {
-    const owned = G.inventory.includes(item.id);
-    const equipped = G.equipped[item.type] === item.id;
-    const d = document.createElement('div');
-    d.className = 'item-card' + (equipped ? ' equipped' : owned ? ' owned' : '');
-    d.innerHTML = `
-      ${equipped ? '<span class="equipped-tag">EQUIPPED</span>' : owned ? '<span class="owned-tag">OWNED</span>' : ''}
+  const ig=document.getElementById('itemGrid');
+  ig.innerHTML='';
+  (ITEMS[G.shopCat]||[]).forEach(item=>{
+    const owned=G.inventory.includes(item.id),equipped=G.equipped[item.type]===item.id;
+    const d=document.createElement('div');
+    d.className='item-card'+(equipped?' equipped':owned?' owned':'');
+    d.innerHTML=`${equipped?'<span class="equipped-tag">EQUIPPED</span>':owned?'<span class="owned-tag">OWNED</span>':''}
       <span class="item-emoji">${item.emoji}</span>
       <div class="item-name">${item.name}</div>
       <div class="item-rarity rarity-${item.rarity}">${item.rarity.toUpperCase()}</div>
       <div class="item-stat-bonus">${item.bonus}</div>
-      <div class="item-price">${owned ? (equipped ? '✓ تجهیز شده' : '🎯 تجهیز') : '🪙 ' + item.price}</div>`;
-    d.onclick = () => owned ? equipItem(item) : buyItem(item);
+      <div class="item-price">${owned?(equipped?'✓ تجهیز شده':'🎯 تجهیز'):'🪙 '+item.price}</div>`;
+    d.onclick=()=>owned?equipItem(item):buyItem(item);
     ig.appendChild(d);
   });
 }
 
-function renderPets() {
-  const pg = document.getElementById('petGrid');
-  pg.innerHTML = '';
-  PETS.forEach(pet => {
-    const owned = G.pets.includes(pet.id);
-    const active = G.activePet === pet.id;
-    const d = document.createElement('div');
-    d.className = 'pet-card' + (active ? ' active-pet' : owned ? ' owned' : '');
-    const rarityBar = { common:'common-bar', rare:'rare-bar', epic:'epic-bar', legendary:'legendary-bar', mythic:'mythic-bar' }[pet.rarity];
-    d.innerHTML = `
-      <span class="pet-emoji">${pet.emoji}</span>
+function renderPets(){
+  const pg=document.getElementById('petGrid');
+  pg.innerHTML='';
+  PETS.forEach(pet=>{
+    const owned=G.pets.includes(pet.id),active=G.activePet===pet.id;
+    const d=document.createElement('div');
+    d.className='pet-card'+(active?' active-pet':owned?' owned':'');
+    const rb={common:'common-bar',rare:'rare-bar',epic:'epic-bar',legendary:'legendary-bar',mythic:'mythic-bar'}[pet.rarity];
+    d.innerHTML=`<span class="pet-emoji">${pet.emoji}</span>
       <div class="pet-name">${pet.name}</div>
       <div class="item-rarity rarity-${pet.rarity}">${pet.rarity.toUpperCase()}</div>
       <div class="pet-bonus">${pet.bonus}</div>
-      <div class="item-price" style="margin-top:6px">${owned ? (active ? '✓ فعال' : '🐾 فعال‌سازی') : '🪙 ' + pet.price}</div>
-      <div class="pet-rarity-bar ${rarityBar}"></div>`;
-    d.onclick = () => owned ? activatePet(pet) : buyPet(pet);
+      <div class="item-price" style="margin-top:6px">${owned?(active?'✓ فعال':'🐾 فعال‌سازی'):'🪙 '+pet.price}</div>
+      <div class="pet-rarity-bar ${rb}"></div>`;
+    d.onclick=()=>owned?activatePet(pet):buyPet(pet);
     pg.appendChild(d);
   });
 }
 
-function renderProfile() {
-  // Char display
-  const cd = document.getElementById('charDisplay');
-  const eqHelmet = G.equipped.helmet ? ITEMS.helmet.find(x=>x.id===G.equipped.helmet) : null;
-  const eqWeapon = G.equipped.weapon ? (ITEMS.weapon.find(x=>x.id===G.equipped.weapon)||null) : null;
-  const eqWings  = G.equipped.wings  ? (ITEMS.wings.find(x=>x.id===G.equipped.wings)||null)  : null;
-  const eqAura   = G.equipped.aura   ? (ITEMS.aura.find(x=>x.id===G.equipped.aura)||null)   : null;
-  const petData  = G.activePet ? PETS.find(p=>p.id===G.activePet) : null;
-  const auraColors = { fire_aura:'rgba(255,77,0,0.3)', ice_aura:'rgba(0,245,255,0.2)', lightning_aura:'rgba(255,214,10,0.3)', cosmic_aura:'rgba(131,56,236,0.3)' };
-  const auraCol = eqAura ? (auraColors[eqAura.id] || 'transparent') : 'transparent';
+function renderProfile(){
+  const ci=document.getElementById('char3dInner');
+  document.getElementById('charMainEmoji').textContent=G.avatarEmoji;
 
-  cd.innerHTML = `
-    <div class="char-3d-container">
-      ${eqAura ? `<div class="char-aura" style="background:conic-gradient(${auraCol}, transparent, ${auraCol})"></div>` : ''}
-      ${eqWings ? `<span class="char-wings left">${eqWings.emoji}</span><span class="char-wings right">${eqWings.emoji}</span>` : ''}
-      ${eqHelmet ? `<span class="char-helmet">${eqHelmet.emoji}</span>` : ''}
-      <span class="char-main">${G.avatarEmoji}</span>
-      ${petData ? `<span class="char-pet-follow">${petData.emoji}</span>` : ''}
-    </div>
-    <div class="equipment-slots">
-      <div class="eq-slot" onclick="showTab('shop')">
-        <div class="eq-slot-lbl">سلاح</div>
-        <div class="eq-slot-item">${eqWeapon ? eqWeapon.emoji : '⬜'}</div>
-        <div class="eq-slot-name">${eqWeapon ? eqWeapon.name : 'خالی'}</div>
-      </div>
-      <div class="eq-slot" onclick="showTab('shop')">
-        <div class="eq-slot-lbl">زره</div>
-        <div class="eq-slot-item">${G.equipped.armor ? (ITEMS.armor.find(x=>x.id===G.equipped.armor)||{emoji:'⬜',name:'خالی'}).emoji : '⬜'}</div>
-        <div class="eq-slot-name">${G.equipped.armor ? (ITEMS.armor.find(x=>x.id===G.equipped.armor)||{name:'خالی'}).name : 'خالی'}</div>
-      </div>
-      <div class="eq-slot" onclick="showTab('shop')">
-        <div class="eq-slot-lbl">بال</div>
-        <div class="eq-slot-item">${eqWings ? eqWings.emoji : '⬜'}</div>
-        <div class="eq-slot-name">${eqWings ? eqWings.name : 'خالی'}</div>
-      </div>
-      <div class="eq-slot" onclick="showTab('pets')">
-        <div class="eq-slot-lbl">پت</div>
-        <div class="eq-slot-item">${petData ? petData.emoji : '⬜'}</div>
-        <div class="eq-slot-name">${petData ? petData.name : 'خالی'}</div>
-      </div>
-    </div>`;
+  // Remove old profile equipped visuals
+  ci.querySelectorAll('.char-helmet-eq,.char-wings-eq,.char-aura-eq,.char-pet-eq,.char-weapon-eq').forEach(x=>x.remove());
 
-  // Stat bars
-  const sb = document.getElementById('statBars');
-  const stats = [
-    { lbl:'STR', val:G.str, max:200, color:'var(--neon-pink)' },
-    { lbl:'INT', val:G.int, max:200, color:'var(--neon-purple)' },
-    { lbl:'AGI', val:G.agi, max:200, color:'var(--neon-cyan)' },
-    { lbl:'END', val:G.end, max:200, color:'var(--neon-green)' },
-    { lbl:'FOCUS', val:G.focus, max:200, color:'var(--neon-gold)' },
-    { lbl:'LUCK', val:G.luck, max:200, color:'var(--neon-orange)' },
+  const eqW=getEquippedItem('wings');
+  const eqH=getEquippedItem('helmet');
+  const eqA=getEquippedItem('aura');
+  const eqWep=getEquippedItem('weapon');
+  const petD=G.activePet?PETS.find(p=>p.id===G.activePet):null;
+
+  if(eqH){const s=document.createElement('span');s.className='char-helmet-eq';s.textContent=eqH.emoji;ci.appendChild(s);}
+  if(eqWep){const s=document.createElement('span');s.className='char-weapon-eq';s.textContent=eqWep.emoji;ci.appendChild(s);}
+  if(eqW){
+    const sl=document.createElement('span');sl.className='char-wings-eq l';sl.textContent=eqW.emoji;ci.appendChild(sl);
+    const sr=document.createElement('span');sr.className='char-wings-eq r';sr.textContent=eqW.emoji;ci.appendChild(sr);
+  }
+  if(eqA){
+    const col=eqA.color||'rgba(0,245,255,0.3)';
+    const s=document.createElement('div');s.className='char-aura-eq';
+    s.style.background=`conic-gradient(${col},transparent,${col})`;ci.appendChild(s);
+  }
+  if(petD){const s=document.createElement('span');s.className='char-pet-eq';s.textContent=petD.emoji;ci.appendChild(s);}
+
+  // Equipment slots grid
+  const eg=document.getElementById('equipGrid');
+  const eqAr=getEquippedItem('armor');
+  const slots=[
+    {lbl:'سلاح',item:eqWep,tab:'shop'},
+    {lbl:'زره',item:eqAr,tab:'shop'},
+    {lbl:'کلاه',item:eqH,tab:'shop'},
+    {lbl:'بال',item:eqW,tab:'shop'},
+    {lbl:'هاله',item:eqA,tab:'shop'},
+    {lbl:'پت',item:petD,tab:'pets'},
   ];
-  sb.innerHTML = stats.map(s => `
-    <div class="stat-bar-row">
-      <div class="stat-bar-label">${s.lbl}</div>
-      <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:${Math.min(s.val/s.max*100,100)}%;background:${s.color};box-shadow:0 0 8px ${s.color}"></div></div>
-      <div class="stat-bar-val" style="color:${s.color}">${s.val}</div>
+  eg.innerHTML=slots.map(s=>`
+    <div class="eq-slot" onclick="showTab('${s.tab}')">
+      <div class="eq-slot-lbl">${s.lbl}</div>
+      <div class="eq-slot-item">${s.item?s.item.emoji:'⬜'}</div>
+      <div class="eq-slot-name">${s.item?s.item.name:'خالی'}</div>
     </div>`).join('');
 
-  // Skills
-  const st = document.getElementById('skillTree');
-  st.innerHTML = '';
-  SKILLS.forEach(sk => {
-    const lvl = G.skills[sk.id] || 0;
-    const maxed = lvl >= sk.maxLvl;
-    const cost = sk.costPerLvl * (lvl + 1);
-    const d = document.createElement('div');
-    d.className = 'skill-item';
-    d.innerHTML = `
-      <div class="skill-icon-wrap ${lvl > 0 ? 'unlocked' : 'locked'}">
-        ${sk.icon}
-        ${lvl > 0 ? `<span class="skill-lvl-badge">${lvl}</span>` : ''}
-      </div>
-      <div class="skill-info">
-        <div class="skill-name" style="color:${lvl>0?'var(--neon-cyan)':'var(--text-muted)'}">${sk.name}</div>
-        <div class="skill-desc">${sk.desc}</div>
-      </div>
-      <button class="skill-upgrade-btn" onclick="upgradeSkill('${sk.id}')" ${maxed||G.xp<cost?'disabled':''}>
-        ${maxed ? 'MAX' : `↑ ${cost} XP`}
-      </button>`;
+  // Stat bars
+  const sb=document.getElementById('statBars');
+  const stats=[
+    {lbl:'STR',val:G.str,max:200,color:'var(--p)'},
+    {lbl:'INT',val:G.int,max:200,color:'var(--v)'},
+    {lbl:'AGI',val:G.agi,max:200,color:'var(--c)'},
+    {lbl:'END',val:G.end,max:200,color:'var(--g)'},
+    {lbl:'FOCUS',val:G.focus,max:200,color:'var(--gold)'},
+    {lbl:'LUCK',val:G.luck,max:200,color:'var(--o)'},
+  ];
+  sb.innerHTML=stats.map(s=>`<div class="stat-bar-row">
+    <div class="stat-bar-label">${s.lbl}</div>
+    <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:${Math.min(s.val/s.max*100,100)}%;background:${s.color};box-shadow:0 0 8px ${s.color}"></div></div>
+    <div class="stat-bar-val" style="color:${s.color}">${s.val}</div>
+  </div>`).join('');
+
+  // Skill tree
+  const st=document.getElementById('skillTree');
+  st.innerHTML='';
+  SKILLS.forEach(sk=>{
+    const lvl=G.skills[sk.id]||0,maxed=lvl>=sk.maxLvl,cost=sk.costPerLvl*(lvl+1);
+    const d=document.createElement('div');
+    d.className='skill-item';
+    d.innerHTML=`<div class="skill-icon-wrap ${lvl>0?'unlocked':'locked'}">
+      ${sk.icon}${lvl>0?`<span class="skill-lvl-badge">${lvl}</span>`:''}
+    </div>
+    <div class="skill-info">
+      <div class="skill-name" style="color:${lvl>0?'var(--c)':'var(--tm)'}">${sk.name}</div>
+      <div class="skill-desc">${sk.desc}</div>
+    </div>
+    <button class="skill-upgrade-btn" onclick="upgradeSkill('${sk.id}')" ${maxed||G.xp<cost?'disabled':''}>
+      ${maxed?'MAX':'↑ '+cost+' XP'}
+    </button>`;
     st.appendChild(d);
   });
 }
 
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════
 // ACTIONS
-// ─────────────────────────────────────────────
-function completeQuest(qid) {
-  const q = G.quests.find(x => x.id === qid);
-  if (!q || q.done) return;
-  q.done = true;
-
-  const xpGain = q.xp;
-  const goldGain = q.gold;
-  G.gold += goldGain;
-  addXP(xpGain);
-
-  spawnParticles('+' + xpGain + ' XP', '⭐');
-  showToast('+' + xpGain + ' XP | +' + goldGain + ' Gold', 'xp');
-
+// ═══════════════════════════════════════════════
+function completeQuest(qid){
+  const q=G.quests.find(x=>x.id===qid);
+  if(!q||q.done) return;
+  q.done=true;
+  G.gold+=q.gold;
+  addXP(q.xp);
+  spawnParticles('+'+q.xp+' XP','⭐','✨');
+  showToast('+'+q.xp+' XP | +'+q.gold+' Gold','xp');
   renderAll();
 }
 
-function addXP(amount) {
-  G.xp += amount;
-  while (G.xp >= G.xpNeeded) {
-    G.xp -= G.xpNeeded;
+function addXP(amount){
+  G.xp+=amount;
+  while(G.xp>=G.xpNeeded){
+    G.xp-=G.xpNeeded;
     G.level++;
-    G.xpNeeded = Math.floor(G.xpNeeded * 1.5);
-    G.str += 2; G.int += 2; G.agi += 1; G.end += 1; G.focus += 1;
+    G.xpNeeded=Math.floor(G.xpNeeded*1.5);
+    G.str+=2;G.int+=2;G.agi+=1;G.end+=1;G.focus+=1;
     updateCurrentZone();
     showLevelUp();
   }
 }
 
-function updateCurrentZone() {
-  for (let i = ZONES.length - 1; i >= 0; i--) {
-    if (G.level >= ZONES[i].minLvl) { G.currentZone = ZONES[i].id; break; }
+function updateCurrentZone(){
+  for(let i=ZONES.length-1;i>=0;i--){
+    if(G.level>=ZONES[i].minLvl){G.currentZone=ZONES[i].id;break;}
   }
 }
 
-function showLevelUp() {
-  const ov = document.getElementById('lvlOverlay');
-  document.getElementById('lvlNum').textContent = G.level;
-  ov.classList.add('show');
+function showLevelUp(){
+  document.getElementById('lvlNum').textContent=G.level;
+  document.getElementById('lvlOverlay').classList.add('show');
 }
-function closeLvlUp() {
-  document.getElementById('lvlOverlay').classList.remove('show');
+function closeLvlUp(){document.getElementById('lvlOverlay').classList.remove('show');renderAll();}
+
+function buyItem(item){
+  if(G.gold<item.price){showToast('Gold کافی نداری!','default');return;}
+  G.gold-=item.price;
+  G.inventory.push(item.id);
+  equipItem(item,false);
+  showToast(item.emoji+' '+item.name+' خریداری و تجهیز شد!','success');
+  spawnParticles(item.emoji,'✨');
   renderAll();
 }
 
-function buyItem(item) {
-  if (G.gold < item.price) { showToast('Gold کافی نداری!', 'default'); return; }
-  G.gold -= item.price;
-  G.inventory.push(item.id);
-  equipItem(item);
-  showToast(item.name + ' خریداری شد!', 'success');
-  renderShop();
-  renderTopBar();
-  renderProfile();
+function equipItem(item,showMsg=true){
+  G.equipped[item.type]=item.id;
+  if(showMsg){
+    showToast(item.emoji+' '+item.name+' تجهیز شد ✓','success');
+    spawnParticles(item.emoji);
+  }
+  renderAll();
 }
 
-function equipItem(item) {
-  G.equipped[item.type] = item.id;
-  showToast(item.name + ' تجهیز شد ✓', 'success');
-  renderShop();
-  renderProfile();
-}
-
-function buyPet(pet) {
-  if (G.gold < pet.price) { showToast('Gold کافی نداری!', 'default'); return; }
-  G.gold -= pet.price;
+function buyPet(pet){
+  if(G.gold<pet.price){showToast('Gold کافی نداری!','default');return;}
+  G.gold-=pet.price;
   G.pets.push(pet.id);
-  activatePet(pet);
-  showToast(pet.name + ' خریداری شد! 🐾', 'success');
-  renderTopBar();
+  activatePet(pet,false);
+  showToast(pet.emoji+' '+pet.name+' خریداری شد! 🐾','success');
+  spawnParticles(pet.emoji,'🐾');
+  renderAll();
 }
 
-function activatePet(pet) {
-  G.activePet = pet.id;
-  showToast(pet.name + ' فعال شد 🐾', 'success');
-  renderPets();
-  renderProfile();
+function activatePet(pet,showMsg=true){
+  G.activePet=pet.id;
+  if(showMsg){
+    showToast(pet.emoji+' '+pet.name+' فعال شد 🐾','success');
+    spawnParticles(pet.emoji);
+  }
+  renderAll();
 }
 
-function upgradeSkill(sid) {
-  const sk = SKILLS.find(s => s.id === sid);
-  const lvl = G.skills[sid] || 0;
-  if (lvl >= sk.maxLvl) return;
-  const cost = sk.costPerLvl * (lvl + 1);
-  if (G.xp < cost) { showToast('XP کافی نداری!', 'default'); return; }
-  G.xp -= cost;
-  G.skills[sid] = lvl + 1;
-  showToast(sk.name + ' ارتقا یافت!', 'xp');
-  renderProfile();
-  renderTopBar();
+function upgradeSkill(sid){
+  const sk=SKILLS.find(s=>s.id===sid);
+  const lvl=G.skills[sid]||0;
+  if(lvl>=sk.maxLvl) return;
+  const cost=sk.costPerLvl*(lvl+1);
+  if(G.xp<cost){showToast('XP کافی نداری!','default');return;}
+  G.xp-=cost;
+  G.skills[sid]=lvl+1;
+  showToast(sk.icon+' '+sk.name+' ارتقا یافت!','xp');
+  spawnParticles(sk.icon);
+  renderProfile();renderTopBar();
 }
 
-function openAddQuest() {
-  openModal(`
-    <div class="modal-title">+ مأموریت جدید</div>
-    <div class="form-group">
-      <label class="form-label">نام مأموریت</label>
-      <input class="form-input" id="qName" placeholder="مثلاً: یادگیری React" maxlength="40">
-    </div>
-    <div class="form-group">
-      <label class="form-label">توضیح</label>
-      <input class="form-input" id="qDesc" placeholder="توضیح کوتاه..." maxlength="60">
-    </div>
-    <div class="form-group">
-      <label class="form-label">دسته‌بندی</label>
-      <select class="form-select" id="qCat">
-        <option value="tech">💻 تکنولوژی</option>
-        <option value="sports">🏋️ ورزش</option>
-        <option value="business">💼 کسب‌وکار</option>
-        <option value="art">🎨 هنر</option>
-        <option value="mind">🧘 ذهن</option>
-        <option value="other">⭐ سایر</option>
-      </select>
-    </div>
-    <button class="modal-action-btn" onclick="saveNewQuest()">+ افزودن مأموریت</button>
-  `);
+function openAddQuest(){
+  openModal(`<div class="modal-title">+ مأموریت جدید</div>
+    <div class="form-group"><label class="form-label">نام مأموریت</label>
+    <input class="form-input" id="qName" placeholder="مثلاً: یادگیری React" maxlength="40"></div>
+    <div class="form-group"><label class="form-label">توضیح</label>
+    <input class="form-input" id="qDesc" placeholder="توضیح کوتاه..." maxlength="60"></div>
+    <div class="form-group"><label class="form-label">دسته‌بندی</label>
+    <select class="form-select" id="qCat">
+      <option value="tech">💻 تکنولوژی</option>
+      <option value="sports">🏋️ ورزش</option>
+      <option value="business">💼 کسب‌وکار</option>
+      <option value="art">🎨 هنر</option>
+      <option value="mind">🧘 ذهن</option>
+      <option value="other">⭐ سایر</option>
+    </select></div>
+    <button class="modal-action-btn" onclick="saveNewQuest()">+ افزودن مأموریت</button>`);
 }
 
-function saveNewQuest() {
-  const name = document.getElementById('qName').value.trim();
-  const desc = document.getElementById('qDesc').value.trim();
-  if (!name) { showToast('نام مأموریت را وارد کنید', 'default'); return; }
-  const catIcons = { tech:'💻', sports:'🏋️', business:'💼', art:'🎨', mind:'🧘', other:'⭐' };
-  const cat = document.getElementById('qCat').value;
-  G.quests.push({ id: 'q' + Date.now(), name, desc: desc || 'مأموریت شخصی', icon: catIcons[cat], xp: 40, gold: 25, done: false, progress: 0, total: 1 });
+function saveNewQuest(){
+  const name=document.getElementById('qName').value.trim();
+  const desc=document.getElementById('qDesc').value.trim();
+  if(!name){showToast('نام مأموریت را وارد کنید','default');return;}
+  const catIcons={tech:'💻',sports:'🏋️',business:'💼',art:'🎨',mind:'🧘',other:'⭐'};
+  const cat=document.getElementById('qCat').value;
+  G.quests.push({id:'q'+Date.now(),name,desc:desc||'مأموریت شخصی',icon:catIcons[cat],xp:40,gold:25,done:false,progress:0,total:1});
   closeModalDirect();
   renderQuests();
-  showToast('مأموریت اضافه شد!', 'success');
+  showToast('مأموریت اضافه شد!','success');
 }
 
-function openMulticlass() {
-  const available = CLASSES.filter(c => c.id !== G.class && !G.multiClasses.includes(c.name));
-  openModal(`
-    <div class="modal-title">Multi-Class System</div>
-    <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:16px;line-height:1.6">می‌تونی همزمان چند کلاس داشته باشی. مأموریت‌های ترکیبی باز می‌شن.</div>
-    ${available.map(c => `
-      <div class="quest-card" style="margin-bottom:8px" onclick="addMulticlass('${c.name}','${c.icon}')">
-        <div class="quest-icon">${c.icon}</div>
-        <div class="quest-info">
-          <div class="quest-name">${c.name}</div>
-          <div class="quest-desc">${c.desc}</div>
-        </div>
-      </div>`).join('')}
-  `);
+function openMulticlass(){
+  const available=CLASSES.filter(c=>c.id!==G.class&&!G.multiClasses.includes(c.name));
+  openModal(`<div class="modal-title">🔀 Multi-Class System</div>
+    <div style="font-size:.75rem;color:var(--tm);margin-bottom:16px;line-height:1.6">می‌تونی همزمان چند کلاس داشته باشی. مأموریت‌های ترکیبی باز می‌شن.</div>
+    ${available.map(c=>`<div class="quest-card" style="margin-bottom:8px" onclick="addMulticlass('${c.name}','${c.icon}','${c.id}')">
+      <div class="quest-icon">${c.icon}</div>
+      <div class="quest-info"><div class="quest-name">${c.name}</div><div class="quest-desc">${c.desc}</div></div>
+    </div>`).join('')}`);
 }
 
-function addMulticlass(name, icon) {
-  if (!G.multiClasses.includes(name)) {
+function addMulticlass(name,icon,classId){
+  if(!G.multiClasses.includes(name)){
     G.multiClasses.push(name);
-    // Add quests from new class
-    const classId = CLASSES.find(c => c.name === name)?.id;
-    if (classId && QUEST_TEMPLATES[classId]) {
-      QUEST_TEMPLATES[classId].forEach((q, i) => {
-        G.quests.push({ ...q, id: 'mc' + Date.now() + i, done: false, progress: 0, total: 1 });
+    if(classId&&QUEST_TEMPLATES[classId]){
+      QUEST_TEMPLATES[classId].forEach((q,i)=>{
+        G.quests.push({...q,id:'mc'+Date.now()+i,done:false,progress:0,total:1});
       });
     }
-    showToast(icon + ' کلاس ' + name + ' اضافه شد!', 'success');
+    showToast(icon+' کلاس '+name+' اضافه شد!','success');
+    spawnParticles(icon,'⭐');
   }
   closeModalDirect();
   renderHome();
 }
 
-// ─────────────────────────────────────────────
 // BOSS FIGHT
-// ─────────────────────────────────────────────
-let fightState = null;
+let fightState=null;
 
-function startFight(bid) {
-  const boss = BOSSES.find(b => b.id === bid);
-  if (!boss) return;
-  fightState = {
-    boss: { ...boss, currentHp: boss.hp },
-    playerHp: 100,
-    playerMaxHp: 100,
-    defending: false,
-    log: [`⚔️ مبارزه با ${boss.name} شروع شد!`],
-  };
+function startFight(bid){
+  const boss=BOSSES.find(b=>b.id===bid);
+  if(!boss) return;
+  const playerMaxHp=100+G.end*2;
+  fightState={boss:{...boss,currentHp:boss.hp},playerHp:playerMaxHp,playerMaxHp,defending:false,
+    log:['⚔️ مبارزه با '+boss.name+' شروع شد!']};
   renderFight();
   document.getElementById('fightOverlay').classList.add('open');
 }
 
-function renderFight() {
-  if (!fightState) return;
-  const { boss, playerHp, playerMaxHp } = fightState;
-  const bossHpPct = (boss.currentHp / boss.hp * 100).toFixed(0);
-  const playerHpPct = (playerHp / playerMaxHp * 100).toFixed(0);
-  document.getElementById('fightContent').innerHTML = `
-    <div class="fight-arena">
-      <div class="fight-vs">
-        <div class="fight-entity">
-          <div class="fig-emoji">${G.avatarEmoji}</div>
-          <div class="fig-name" style="color:var(--neon-cyan)">${G.name}</div>
-          <div style="font-size:0.6rem;color:var(--text-muted);font-family:var(--font-display)">HP: ${playerHp}/${playerMaxHp}</div>
-          <div class="fight-hp-bar"><div class="fight-hp-fill player-hp" style="width:${playerHpPct}%"></div></div>
-        </div>
-        <div class="vs-divider">VS</div>
-        <div class="fight-entity">
-          <div class="fig-emoji">${boss.emoji}</div>
-          <div class="fig-name" style="color:var(--neon-pink)">${boss.name}</div>
-          <div style="font-size:0.6rem;color:var(--text-muted);font-family:var(--font-display)">HP: ${boss.currentHp}/${boss.hp}</div>
-          <div class="fight-hp-bar"><div class="fight-hp-fill boss-hp" style="width:${bossHpPct}%"></div></div>
-        </div>
+function renderFight(){
+  if(!fightState) return;
+  const {boss,playerHp,playerMaxHp}=fightState;
+  const bHpPct=(boss.currentHp/boss.hp*100).toFixed(0);
+  const pHpPct=(playerHp/playerMaxHp*100).toFixed(0);
+  document.getElementById('fightContent').innerHTML=`<div class="fight-arena">
+    <div class="fight-vs">
+      <div class="fight-entity">
+        <span class="fig-emoji">${G.avatarEmoji}</span>
+        <div class="fig-name" style="color:var(--c)">${G.name}</div>
+        <div style="font-size:.6rem;color:var(--tm);font-family:var(--fd)">HP: ${playerHp}/${playerMaxHp}</div>
+        <div class="fight-hp-bar"><div class="fight-hp-fill player-hp" style="width:${pHpPct}%"></div></div>
       </div>
-      <div class="fight-log" id="fightLog">${fightState.log.slice(-5).map(l=>`<div>${l}</div>`).join('')}</div>
-      <div class="fight-actions">
-        <button class="fight-btn attack" onclick="fightAction('attack')">⚔️ حمله</button>
-        <button class="fight-btn skill-btn" onclick="fightAction('skill')">✨ مهارت</button>
-        <button class="fight-btn defend" onclick="fightAction('defend')">🛡️ دفاع</button>
-        <button class="fight-btn flee" onclick="closeFight()">🏃 فرار</button>
+      <div class="vs-divider">VS</div>
+      <div class="fight-entity">
+        <span class="fig-emoji">${boss.emoji}</span>
+        <div class="fig-name" style="color:var(--p)">${boss.name}</div>
+        <div style="font-size:.6rem;color:var(--tm);font-family:var(--fd)">HP: ${boss.currentHp}/${boss.hp}</div>
+        <div class="fight-hp-bar"><div class="fight-hp-fill boss-hp" style="width:${bHpPct}%"></div></div>
       </div>
-    </div>`;
+    </div>
+    <div class="fight-log" id="fightLog">${fightState.log.slice(-6).map(l=>`<div>${l}</div>`).join('')}</div>
+    <div class="fight-actions">
+      <button class="fight-btn attack" onclick="fightAction('attack')">⚔️ حمله</button>
+      <button class="fight-btn skill-btn" onclick="fightAction('skill')">✨ مهارت</button>
+      <button class="fight-btn defend" onclick="fightAction('defend')">🛡️ دفاع</button>
+      <button class="fight-btn flee" onclick="closeFight()">🏃 فرار</button>
+    </div>
+  </div>`;
 }
 
-function fightAction(type) {
-  if (!fightState) return;
-  const state = fightState;
-  const boss = state.boss;
-  let log = '';
-
-  if (type === 'attack') {
-    const dmg = Math.floor(Math.random() * 20 + 10 + G.str * 0.5);
-    boss.currentHp = Math.max(0, boss.currentHp - dmg);
-    log = `💥 ${dmg} ضربه به ${boss.name}!`;
-  } else if (type === 'skill') {
-    const dmg = Math.floor(Math.random() * 30 + 20 + G.int * 0.8);
-    boss.currentHp = Math.max(0, boss.currentHp - dmg);
-    log = `✨ مهارت: ${dmg} آسیب!`;
-  } else if (type === 'defend') {
-    state.defending = true;
-    log = `🛡️ دفاع!`;
+function fightAction(type){
+  if(!fightState) return;
+  const {boss}=fightState;
+  let log='';
+  if(type==='attack'){
+    const dmg=Math.floor(Math.random()*20+10+G.str*0.5);
+    boss.currentHp=Math.max(0,boss.currentHp-dmg);
+    log='💥 '+dmg+' ضربه به '+boss.name+'!';
+  }else if(type==='skill'){
+    const dmg=Math.floor(Math.random()*30+20+G.int*0.8);
+    boss.currentHp=Math.max(0,boss.currentHp-dmg);
+    log='✨ مهارت: '+dmg+' آسیب جادویی!';
+  }else if(type==='defend'){
+    fightState.defending=true;
+    log='🛡️ دفاع فعال شد!';
   }
-  state.log.push(log);
-
-  if (boss.currentHp <= 0) {
-    fightWin();
-    return;
-  }
-
-  // Boss turn
-  const bDmg = Math.floor(Math.random() * 15 + 8) * (state.defending ? 0.3 : 1);
-  const bDmgFinal = Math.floor(bDmg);
-  state.playerHp = Math.max(0, state.playerHp - bDmgFinal);
-  state.log.push(`👺 ${boss.name}: ${bDmgFinal} ضربه!`);
-  state.defending = false;
-
-  if (state.playerHp <= 0) {
-    fightLose();
-    return;
-  }
-
+  fightState.log.push(log);
+  if(boss.currentHp<=0){fightWin();return;}
+  const bDmg=Math.floor((Math.random()*15+8)*(fightState.defending?0.25:1));
+  fightState.playerHp=Math.max(0,fightState.playerHp-bDmg);
+  fightState.log.push('👺 '+boss.name+': '+bDmg+' ضربه!');
+  fightState.defending=false;
+  if(fightState.playerHp<=0){fightLose();return;}
   renderFight();
 }
 
-function fightWin() {
-  const boss = fightState.boss;
-  addXP(boss.xp);
-  G.gold += boss.gold;
-  closeFight();
-  renderAll();
-  showToast('🏆 پیروزی! +' + boss.xp + ' XP | +' + boss.gold + ' Gold', 'gold');
-  spawnParticles('🏆', '⚡');
+function fightWin(){
+  const boss=fightState.boss;
+  addXP(boss.xp);G.gold+=boss.gold;
+  closeFight();renderAll();
+  showToast('🏆 پیروزی! +'+boss.xp+' XP | +'+boss.gold+' Gold','gold');
+  spawnParticles('🏆','⚡','🌟');
 }
+function fightLose(){closeFight();showToast('💀 شکست خوردی! دوباره تلاش کن','default');}
+function closeFight(){document.getElementById('fightOverlay').classList.remove('open');fightState=null;}
 
-function fightLose() {
-  closeFight();
-  showToast('💀 شکست خوردی! دوباره تلاش کن', 'default');
-}
-
-function closeFight() {
-  document.getElementById('fightOverlay').classList.remove('open');
-  fightState = null;
-}
-
-// ─────────────────────────────────────────────
-// MODAL
-// ─────────────────────────────────────────────
-function openModal(html) {
-  document.getElementById('modalContent').innerHTML = html;
+// UI HELPERS
+function openModal(html){
+  document.getElementById('modalContent').innerHTML=html;
   document.getElementById('modalOverlay').classList.add('open');
 }
-function closeModal(e) {
-  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
-}
-function closeModalDirect() {
-  document.getElementById('modalOverlay').classList.remove('open');
+function closeModal(e){if(e.target===document.getElementById('modalOverlay')) closeModalDirect();}
+function closeModalDirect(){document.getElementById('modalOverlay').classList.remove('open');}
+
+function showTab(name){
+  document.querySelectorAll('.tab-page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  const tabs=['home','map','shop','pets','profile'];
+  const idx=tabs.indexOf(name);
+  if(idx>=0) document.querySelectorAll('.nav-tab')[idx]?.classList.add('active');
+  window.scrollTo(0,0);
 }
 
-// ─────────────────────────────────────────────
-// UI
-// ─────────────────────────────────────────────
-function showTab(name) {
-  document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  const tabs = ['home','map','shop','pets','profile'];
-  const idx = tabs.indexOf(name);
-  document.querySelectorAll('.nav-tab')[idx]?.classList.add('active');
-  window.scrollTo(0, 0);
-}
-
-function showToast(msg, type = 'default') {
-  const wrap = document.getElementById('toastWrap');
-  const t = document.createElement('div');
-  t.className = 'toast ' + type;
-  t.textContent = msg;
+function showToast(msg,type='default'){
+  const wrap=document.getElementById('toastWrap');
+  const t=document.createElement('div');
+  t.className='toast '+type;t.textContent=msg;
   wrap.appendChild(t);
-  setTimeout(() => t.remove(), 3000);
+  setTimeout(()=>t.remove(),3200);
 }
 
-function spawnParticles(...emojis) {
-  const cx = window.innerWidth / 2;
-  const cy = window.innerHeight / 2;
-  emojis.forEach(e => {
-    for (let i = 0; i < 4; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.textContent = e;
-      const angle = (Math.PI * 2 * i) / 4;
-      const dist = 80 + Math.random() * 60;
-      p.style.left = cx + 'px';
-      p.style.top = cy + 'px';
-      p.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
-      p.style.setProperty('--dy', Math.sin(angle) * dist - 40 + 'px');
+function spawnParticles(...emojis){
+  const cx=window.innerWidth/2,cy=window.innerHeight/2;
+  emojis.forEach(e=>{
+    for(let i=0;i<5;i++){
+      const p=document.createElement('div');
+      p.className='particle';p.textContent=e;
+      const angle=Math.PI*2*i/5,dist=90+Math.random()*70;
+      p.style.left=cx+'px';p.style.top=cy+'px';
+      p.style.setProperty('--dx',Math.cos(angle)*dist+'px');
+      p.style.setProperty('--dy',Math.sin(angle)*dist-50+'px');
       document.body.appendChild(p);
-      setTimeout(() => p.remove(), 1600);
+      setTimeout(()=>p.remove(),1600);
     }
   });
 }
 
-// ─────────────────────────────────────────────
 // INIT
-// ─────────────────────────────────────────────
-window.addEventListener('load', () => {
+window.addEventListener('load',()=>{
   initSetup();
-  setTimeout(() => {
-    const l = document.getElementById('loading');
-    l.style.opacity = '0';
-    setTimeout(() => l.style.display = 'none', 800);
-  }, 2300);
+  setTimeout(()=>{
+    const l=document.getElementById('loading');
+    l.style.opacity='0';
+    setTimeout(()=>l.style.display='none',800);
+  },2400);
 });
 </script>
 </body>
