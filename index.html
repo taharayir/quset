@@ -193,64 +193,6 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--bn),transparent)}
 
-/* ══ 3D CHARACTER CARD ══ */
-.hero-banner{background:linear-gradient(135deg,var(--bgc2),var(--bgc));border:1px solid var(--bn);
-  border-radius:18px;padding:20px;margin-bottom:16px;display:flex;gap:16px;align-items:center;
-  position:relative;overflow:hidden;transform-style:preserve-3d}
-.hero-banner::before{content:'';position:absolute;top:-30%;right:-10%;width:240px;height:240px;
-  background:radial-gradient(circle,rgba(131,56,236,0.18) 0%,transparent 70%);pointer-events:none}
-.hero-banner::after{content:'';position:absolute;bottom:-30%;left:-10%;width:200px;height:200px;
-  background:radial-gradient(circle,rgba(0,245,255,0.1) 0%,transparent 70%);pointer-events:none}
-
-/* 3D HERO STAGE */
-.hero-3d-stage{width:110px;height:130px;flex-shrink:0;perspective:500px;cursor:pointer;position:relative}
-.hero-3d-inner{width:100%;height:100%;transform-style:preserve-3d;
-  animation:heroRock 10s ease-in-out infinite;transition:animation-duration .3s;
-  display:flex;align-items:center;justify-content:center;position:relative}
-.hero-3d-stage:hover .hero-3d-inner{animation-duration:2s}
-@keyframes heroRock{0%,100%{transform:rotateY(-15deg) rotateX(5deg) translateY(0)}
-  25%{transform:rotateY(15deg) rotateX(3deg) translateY(-5px)}
-  50%{transform:rotateY(20deg) rotateX(6deg) translateY(-8px)}
-  75%{transform:rotateY(-10deg) rotateX(4deg) translateY(-3px)}}
-.hero-3d-art{width:80px;height:90px;position:relative;z-index:2;display:flex;align-items:center;justify-content:center}
-.hero-3d-art svg{width:80px;height:80px;filter:drop-shadow(0 0 18px rgba(0,245,255,0.45)) drop-shadow(0 10px 20px rgba(0,0,0,0.8));transition:filter .3s}
-/* Equipped items on hero */
-.hero-eq-helmet{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:2rem;z-index:3;
-  filter:drop-shadow(0 0 10px rgba(255,214,10,0.6))}
-.hero-eq-weapon{position:absolute;left:-20px;bottom:10px;font-size:1.8rem;z-index:3;
-  filter:drop-shadow(0 0 8px rgba(255,0,110,0.6));animation:weaponIdle 3s ease-in-out infinite}
-@keyframes weaponIdle{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
-.hero-eq-wings-l{position:absolute;left:-18px;top:20%;font-size:2.4rem;z-index:1;
-  transform:scaleX(-1);animation:wingsL 2s ease-in-out infinite}
-.hero-eq-wings-r{position:absolute;right:-18px;top:20%;font-size:2.4rem;z-index:1;
-  animation:wingsR 2s ease-in-out infinite}
-@keyframes wingsL{0%,100%{transform:scaleX(-1) rotateZ(-5deg)}50%{transform:scaleX(-1) rotateZ(12deg)}}
-@keyframes wingsR{0%,100%{transform:rotateZ(5deg)}50%{transform:rotateZ(-12deg)}}
-.hero-eq-aura{position:absolute;inset:-16px;border-radius:50%;z-index:0;animation:auraSpin 5s linear infinite}
-@keyframes auraSpin{to{transform:rotate(360deg)}}
-.hero-eq-pet{position:absolute;bottom:-6px;right:-26px;font-size:1.8rem;z-index:4;
-  animation:petFloat 3s ease-in-out infinite}
-@keyframes petFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-10px) rotate(6deg)}}
-.hero-3d-shadow{width:75px;height:12px;background:rgba(0,245,255,0.15);border-radius:50%;
-  margin:4px auto 0;filter:blur(4px);animation:shadowPulse 2s ease-in-out infinite}
-@keyframes shadowPulse{0%,100%{transform:scaleX(.8);opacity:.5}50%{transform:scaleX(1.1);opacity:.9}}
-
-.hero-info{flex:1;min-width:0}
-.hero-name{font-family:var(--fd);font-size:1.05rem;font-weight:700;color:var(--c);
-  text-shadow:0 0 20px var(--c);letter-spacing:2px}
-.hero-class-tag{display:inline-block;background:rgba(131,56,236,0.2);border:1px solid rgba(131,56,236,0.5);
-  color:#a78bf5;font-family:var(--fd);font-size:.55rem;letter-spacing:2px;padding:3px 8px;
-  border-radius:4px;margin-top:4px}
-.multiclass-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
-.mclass-tag{font-family:var(--fd);font-size:.52rem;letter-spacing:1px;padding:3px 8px;border-radius:4px;
-  background:rgba(131,56,236,0.15);border:1px solid rgba(131,56,236,0.3);color:#a78bf5}
-.mclass-tag.add{background:transparent;border-style:dashed;color:var(--tm);cursor:pointer;transition:all .2s}
-.mclass-tag.add:hover{border-color:rgba(0,245,255,0.3);color:var(--c)}
-.hero-stats-row{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
-.hstat{display:flex;flex-direction:column}
-.hstat-val{font-family:var(--fd);font-size:.95rem;font-weight:700}
-.hstat-lbl{font-size:.58rem;color:var(--tm)}
-
 /* EQUIPPED STRIPS BELOW HERO */
 .equipped-strip{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
 .equipped-strip::-webkit-scrollbar{display:none}
@@ -263,7 +205,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .eq-chip-name{font-family:var(--fd);font-size:.6rem;color:var(--c)}
 .eq-chip.empty .eq-chip-name{color:var(--tm)}
 
-/* ITEM CARDS - enhanced artwork */
+/* ITEM CARDS */
 .item-art-wrap{width:80px;height:80px;margin:0 auto 8px;position:relative;display:flex;align-items:center;justify-content:center}
 .item-art-wrap svg{width:72px;height:72px;filter:drop-shadow(0 4px 14px rgba(0,0,0,0.7));transition:transform .25s}
 .item-card:hover .item-art-wrap svg{transform:scale(1.18) rotateY(25deg) translateY(-5px)}
@@ -450,6 +392,18 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .skill-upgrade-btn:hover:not(:disabled){background:rgba(131,56,236,0.5)}
 .skill-upgrade-btn:disabled{opacity:.4;cursor:not-allowed}
 
+/* ── EDIT CHARACTER BUTTON (profile) ── */
+.edit-char-btn{width:100%;background:transparent;border:1px solid rgba(0,245,255,0.3);border-radius:12px;
+  color:var(--c);font-family:var(--fd);font-size:.72rem;letter-spacing:2px;padding:13px;
+  cursor:pointer;transition:all .25s;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px}
+.edit-char-btn:hover{background:rgba(0,245,255,0.07);border-color:var(--c);box-shadow:0 0 20px rgba(0,245,255,0.15)}
+
+/* ── RESET SAVE BUTTON ── */
+.reset-btn{width:100%;background:transparent;border:1px solid rgba(255,0,110,0.3);border-radius:12px;
+  color:var(--p);font-family:var(--fd);font-size:.65rem;letter-spacing:2px;padding:11px;
+  cursor:pointer;transition:all .25s;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:8px}
+.reset-btn:hover{background:rgba(255,0,110,0.08);border-color:var(--p)}
+
 /* BOSS FIGHT */
 .fight-arena{background:linear-gradient(135deg,var(--bgc2),rgba(255,0,110,0.09));
   border:1px solid rgba(255,0,110,0.4);border-radius:18px;padding:24px}
@@ -554,6 +508,20 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 @keyframes swordGlow{0%,100%{filter:drop-shadow(0 0 6px rgba(0,245,255,0.6))}50%{filter:drop-shadow(0 0 20px rgba(0,245,255,1))}}
 @keyframes dragonBreath{0%,100%{opacity:0.6}50%{opacity:1}}
 @keyframes samuraiSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+/* ── INLINE EDIT CLASS GRID ── */
+.edit-class-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-height:320px;overflow-y:auto}
+.edit-avatar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:280px;overflow-y:auto}
+.mini-class-card{background:var(--bgc2);border:1px solid rgba(0,245,255,0.08);border-radius:10px;
+  padding:10px;cursor:pointer;transition:all .2s;text-align:center}
+.mini-class-card.selected{border-color:var(--c);background:rgba(0,245,255,0.06)}
+.mini-class-card:hover:not(.selected){border-color:rgba(0,245,255,0.3)}
+.mini-avatar-card{background:var(--bgc2);border:1px solid rgba(0,245,255,0.08);border-radius:10px;
+  padding:8px;cursor:pointer;transition:all .2s;text-align:center}
+.mini-avatar-card.selected{border-color:var(--gold);background:rgba(255,214,10,0.06)}
+.mini-avatar-card:hover:not(.locked){border-color:rgba(255,214,10,0.3)}
+.mini-avatar-card.locked{opacity:.4;cursor:not-allowed}
+.mini-avatar-card svg{width:44px;height:44px}
 </style>
 </head>
 <body>
@@ -650,30 +618,8 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
   <!-- HOME TAB -->
   <div class="tab-page active" id="tab-home">
-    <div class="hero-banner">
-      <div>
-        <div class="hero-3d-stage" id="hero3dStage">
-          <div class="hero-3d-inner" id="hero3dInner">
-            <div class="hero-3d-art" id="hero3dArt"></div>
-          </div>
-        </div>
-        <div class="hero-3d-shadow"></div>
-      </div>
-      <div class="hero-info">
-        <div class="hero-name" id="heroName">HERO</div>
-        <div class="hero-class-tag" id="heroClassTag">PROGRAMMER</div>
-        <div class="multiclass-row" id="multiclassRow"></div>
-        <div class="hero-stats-row">
-          <div class="hstat"><span class="hstat-val" style="color:var(--c)" id="hStatStr">10</span><span class="hstat-lbl">STR</span></div>
-          <div class="hstat"><span class="hstat-val" style="color:var(--v)" id="hStatInt">10</span><span class="hstat-lbl">INT</span></div>
-          <div class="hstat"><span class="hstat-val" style="color:var(--g)" id="hStatAgi">10</span><span class="hstat-lbl">AGI</span></div>
-          <div class="hstat"><span class="hstat-val" style="color:var(--gold)" id="hStatEnd">10</span><span class="hstat-lbl">END</span></div>
-        </div>
-      </div>
-    </div>
-
+    <!-- hero-banner REMOVED — فقط از پروفایل قابل ویرایش است -->
     <div class="equipped-strip" id="equippedStrip"></div>
-
     <div class="sec-title">مأموریت‌های امروز</div>
     <div id="questList"></div>
     <button class="add-quest-btn" onclick="openAddQuest()">+ افزودن مأموریت جدید</button>
@@ -706,6 +652,10 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   <!-- PROFILE TAB -->
   <div class="tab-page" id="tab-profile">
     <div class="sec-title">کاراکتر من</div>
+
+    <!-- ✅ NEW: Edit Character Button -->
+    <button class="edit-char-btn" onclick="openEditCharacter()">✏️ ویرایش کاراکتر (نام / کلاس / آواتار)</button>
+
     <div class="profile-3d-wrap">
       <div>
         <div class="char-3d-stage" onclick="renderProfile()">
@@ -721,6 +671,9 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     <div class="stat-bars" id="statBars"></div>
     <div class="sec-title">درخت مهارت</div>
     <div class="skill-tree" id="skillTree"></div>
+
+    <!-- ✅ NEW: Reset Save Button -->
+    <button class="reset-btn" onclick="confirmReset()">🗑️ حذف پیشرفت و شروع مجدد</button>
   </div>
 
   <nav class="nav-tabs">
@@ -750,10 +703,9 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
 <script>
 // ══════════════════════════════════════════════════
-// SVG ART LIBRARY — Detailed character/item artwork
+// SVG ART LIBRARY
 // ══════════════════════════════════════════════════
 const SVG_ART = {
-  // ── AVATARS ──
   coder: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><radialGradient id="cg1" cx="50%" cy="40%"><stop offset="0%" stop-color="#00f5ff"/><stop offset="100%" stop-color="#0a3a8c"/></radialGradient></defs>
     <circle cx="40" cy="28" r="16" fill="#1a2a4a" stroke="#00f5ff" stroke-width="1.5"/>
@@ -770,60 +722,42 @@ const SVG_ART = {
     <circle cx="28" cy="14" r="2" fill="#00f5ff" opacity="0.4"/>
     <circle cx="52" cy="14" r="2" fill="#00f5ff" opacity="0.4"/>
   </svg>`,
-
   warrior: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="wg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c0c0c0"/><stop offset="100%" stop-color="#4a4a6a"/></linearGradient><linearGradient id="wg2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ff9944"/><stop offset="100%" stop-color="#cc4400"/></linearGradient></defs>
-    <!-- Helmet -->
     <path d="M26 26 Q40 8 54 26 L52 34 Q40 38 28 34 Z" fill="url(#wg1)" stroke="#888" stroke-width="1"/>
     <path d="M28 30 L52 30" stroke="#aaa" stroke-width="0.8"/>
-    <!-- Face -->
     <rect x="30" y="26" width="20" height="16" rx="4" fill="#d4956a"/>
     <rect x="32" y="30" width="5" height="4" rx="1" fill="#2a1a0a"/>
     <rect x="43" y="30" width="5" height="4" rx="1" fill="#2a1a0a"/>
     <path d="M34 38 Q40 42 46 38" stroke="#a0543a" stroke-width="1.5" fill="none"/>
-    <!-- Body armor -->
     <path d="M22 44 Q40 40 58 44 L62 70 Q40 74 18 70 Z" fill="url(#wg1)" stroke="#888" stroke-width="1"/>
     <path d="M36 44 L36 68 M44 44 L44 68" stroke="#888" stroke-width="0.8"/>
-    <!-- Shield hint -->
     <ellipse cx="16" cy="55" rx="6" ry="8" fill="#8338ec" stroke="#a06acc" stroke-width="1" opacity="0.9"/>
-    <path d="M16 47 L16 63" stroke="#c08aff" stroke-width="0.8"/>
-    <!-- Sword -->
     <rect x="62" y="30" width="3" height="30" rx="1" fill="url(#wg2)"/>
     <rect x="57" y="39" width="13" height="3" rx="1" fill="#888"/>
     <rect x="62" y="60" width="3" height="8" rx="1" fill="#c8a000"/>
   </svg>`,
-
   mage: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><radialGradient id="mg1" cx="50%" cy="30%"><stop offset="0%" stop-color="#ce93d8"/><stop offset="100%" stop-color="#4a0080"/></radialGradient></defs>
-    <!-- Hat -->
     <polygon points="40,2 20,36 60,36" fill="#3a0066" stroke="#8338ec" stroke-width="1.5"/>
     <rect x="16" y="34" width="48" height="5" rx="2" fill="#5a00aa" stroke="#8338ec" stroke-width="1"/>
     <circle cx="40" cy="8" r="4" fill="#ffd60a" opacity="0.9"/>
-    <!-- Robe -->
     <path d="M24 40 Q40 36 56 40 L62 76 Q40 80 18 76 Z" fill="#2a0055" stroke="#8338ec" stroke-width="1.2"/>
-    <!-- Stars on robe -->
     <text x="28" y="58" font-size="8" fill="#8338ec">✦</text>
     <text x="44" y="64" font-size="6" fill="#ce93d8">✦</text>
-    <!-- Staff -->
     <rect x="64" y="24" width="3" height="48" rx="1" fill="#5a3000"/>
     <circle cx="65" cy="20" r="6" fill="#8338ec" opacity="0.9"/>
     <circle cx="65" cy="20" r="3" fill="#ffd60a"/>
-    <!-- Sparkles -->
     <circle cx="70" cy="16" r="1.5" fill="#ce93d8" opacity="0.8"/>
-    <circle cx="60" cy="14" r="1" fill="#8338ec" opacity="0.8"/>
-    <!-- Arms/Hands -->
     <path d="M24 50 L14 58" stroke="#2a0055" stroke-width="6" stroke-linecap="round"/>
     <circle cx="13" cy="60" r="4" fill="#d4956a"/>
     <circle cx="11" cy="58" r="2" fill="#ffd60a" opacity="0.8"/>
     <path d="M56 50 L66 56" stroke="#2a0055" stroke-width="6" stroke-linecap="round"/>
     <circle cx="67" cy="57" r="4" fill="#d4956a"/>
   </svg>`,
-
   ninja: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="ng1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1a2e"/><stop offset="100%" stop-color="#0f3460"/></linearGradient></defs>
-    <!-- Body suit -->
     <circle cx="40" cy="26" r="14" fill="#111120" stroke="#333" stroke-width="1"/>
-    <!-- Mask with eyes only visible -->
     <rect x="26" y="18" width="28" height="16" rx="4" fill="#0a0a18"/>
     <ellipse cx="34" cy="26" rx="5" ry="4" fill="#1a1a30" stroke="#444" stroke-width="0.8"/>
     <ellipse cx="46" cy="26" rx="5" ry="4" fill="#1a1a30" stroke="#444" stroke-width="0.8"/>
@@ -831,71 +765,46 @@ const SVG_ART = {
     <circle cx="47" cy="26" r="2.5" fill="#ff006e"/>
     <circle cx="36" cy="25" r="1" fill="#fff"/>
     <circle cx="48" cy="25" r="1" fill="#fff"/>
-    <!-- Headband -->
     <rect x="24" y="16" width="32" height="5" rx="2" fill="#cc0044"/>
     <text x="37" y="21" font-size="5" fill="#fff" font-family="monospace">忍</text>
-    <!-- Body -->
     <path d="M20 44 Q40 40 60 44 L64 76 Q40 80 16 76 Z" fill="url(#ng1)" stroke="#333" stroke-width="1"/>
-    <!-- Crossed swords on back -->
     <line x1="28" y1="44" x2="52" y2="72" stroke="#888" stroke-width="2"/>
     <line x1="52" y1="44" x2="28" y2="72" stroke="#888" stroke-width="2"/>
-    <!-- Shuriken -->
     <g transform="translate(65,20)"><polygon points="0,-7 2,-2 7,0 2,2 0,7 -2,2 -7,0 -2,-2" fill="#666" stroke="#999" stroke-width="0.5"/></g>
   </svg>`,
-
   astronaut: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><radialGradient id="ag1" cx="45%" cy="40%"><stop offset="0%" stop-color="#fff"/><stop offset="60%" stop-color="#cce8ff"/><stop offset="100%" stop-color="#6699cc"/></radialGradient></defs>
-    <!-- Helmet -->
     <circle cx="40" cy="28" r="18" fill="#ddeeff" stroke="#aacce8" stroke-width="2"/>
     <circle cx="40" cy="28" r="14" fill="url(#ag1)" opacity="0.9"/>
-    <!-- Visor -->
     <ellipse cx="40" cy="30" rx="10" ry="8" fill="#0066cc" opacity="0.7"/>
     <ellipse cx="37" cy="27" rx="3" ry="2" fill="#66aaff" opacity="0.5"/>
-    <!-- Helmet details -->
     <path d="M22 26 Q22 10 40 10 Q58 10 58 26" stroke="#aacce8" stroke-width="1.5" fill="none"/>
-    <!-- Suit body -->
     <rect x="22" y="44" width="36" height="28" rx="8" fill="#ddeeff" stroke="#aacce8" stroke-width="1.5"/>
-    <!-- NASA patch -->
     <circle cx="36" cy="55" r="5" fill="#0033aa"/>
     <text x="32" y="58" font-size="4" fill="#fff" font-family="sans-serif">NASA</text>
-    <!-- Arms -->
     <rect x="10" y="46" width="12" height="18" rx="5" fill="#ddeeff" stroke="#aacce8" stroke-width="1.2"/>
     <rect x="58" y="46" width="12" height="18" rx="5" fill="#ddeeff" stroke="#aacce8" stroke-width="1.2"/>
-    <!-- Life support pack -->
     <rect x="48" y="50" width="8" height="12" rx="2" fill="#aacce8" stroke="#88aacc" stroke-width="0.8"/>
-    <!-- Stars -->
     <circle cx="8" cy="12" r="1" fill="#fff"/>
     <circle cx="72" cy="8" r="1.5" fill="#fff"/>
     <circle cx="68" cy="20" r="1" fill="#fff"/>
   </svg>`,
-
   knight: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="kg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#d4af37"/><stop offset="100%" stop-color="#8b6914"/></linearGradient><linearGradient id="kg2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#e8e8e8"/><stop offset="100%" stop-color="#999"/></linearGradient></defs>
-    <!-- Helmet plume -->
     <path d="M40 2 Q36 12 38 18" stroke="#cc0000" stroke-width="4" fill="none" stroke-linecap="round"/>
     <path d="M40 2 Q44 12 42 18" stroke="#ff4444" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <!-- Full helm -->
     <path d="M24 20 Q40 8 56 20 L58 40 Q40 46 22 40 Z" fill="url(#kg2)" stroke="#888" stroke-width="1.5"/>
     <rect x="28" y="28" width="24" height="8" rx="1" fill="#1a1a1a"/>
     <rect x="34" y="30" width="5" height="4" fill="#333"/>
     <rect x="41" y="30" width="5" height="4" fill="#333"/>
-    <line x1="28" y1="24" x2="52" y2="24" stroke="#aaa" stroke-width="1"/>
-    <!-- Gorget -->
     <path d="M26 40 Q40 44 54 40 L54 48 Q40 52 26 48 Z" fill="url(#kg2)" stroke="#888" stroke-width="1"/>
-    <!-- Armored torso -->
     <path d="M18 48 Q40 44 62 48 L66 76 Q40 80 14 76 Z" fill="url(#kg2)" stroke="#888" stroke-width="1.5"/>
-    <!-- Gold trim -->
     <path d="M18 48 Q40 44 62 48" stroke="url(#kg1)" stroke-width="2" fill="none"/>
     <rect x="34" y="50" width="12" height="20" fill="url(#kg1)" rx="2" opacity="0.8"/>
-    <!-- Lance -->
     <rect x="64" y="14" width="4" height="62" rx="2" fill="#8b6914"/>
     <polygon points="66,10 62,22 70,22" fill="#c0c0c0"/>
-    <!-- Shield -->
     <path d="M10 44 Q6 56 10 68 Q18 76 18 76 L18 44 Z" fill="#0044aa" stroke="url(#kg1)" stroke-width="1.5"/>
-    <path d="M10 52 L18 52" stroke="url(#kg1)" stroke-width="1"/>
-    <path d="M14 44 L14 68" stroke="url(#kg1)" stroke-width="1"/>
   </svg>`,
-
   cyber: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="cybg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00f5ff"/><stop offset="50%" stop-color="#8338ec"/><stop offset="100%" stop-color="#ff006e"/></linearGradient></defs>
     <rect x="22" y="14" width="36" height="32" rx="6" fill="#0a0a18" stroke="url(#cybg)" stroke-width="2"/>
@@ -912,171 +821,103 @@ const SVG_ART = {
     <circle cx="22" cy="56" r="3" fill="#ff006e" opacity="0.8"/>
     <circle cx="58" cy="56" r="3" fill="#00f5ff" opacity="0.8"/>
   </svg>`,
-
   vampire: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><radialGradient id="vmpg" cx="50%" cy="30%"><stop offset="0%" stop-color="#3a0066"/><stop offset="100%" stop-color="#0a0010"/></radialGradient></defs>
-    <!-- Cape -->
     <path d="M10 40 Q8 70 18 78 L40 72 L62 78 Q72 70 70 40 Z" fill="#1a0033" stroke="#4a0066" stroke-width="1.5"/>
-    <path d="M10 40 Q20 48 40 44 Q60 48 70 40" stroke="#8338ec" stroke-width="1" fill="none"/>
-    <!-- Body -->
     <path d="M22 44 Q40 40 58 44 L58 72 Q40 76 22 72 Z" fill="#1a0033"/>
-    <!-- White shirt front -->
     <path d="M32 46 Q40 44 48 46 L46 70 Q40 72 34 70 Z" fill="#eeeeff"/>
-    <!-- Bow tie -->
     <polygon points="36,50 40,53 44,50 40,47" fill="#ff006e"/>
-    <!-- Face -->
     <circle cx="40" cy="28" r="14" fill="#d4d0ee" stroke="#4a0066" stroke-width="1"/>
-    <!-- Slicked hair -->
     <path d="M26 22 Q40 10 54 22 Q50 18 40 16 Q30 18 26 22 Z" fill="#1a0033"/>
-    <!-- Eyes -->
     <ellipse cx="34" cy="28" rx="4" ry="5" fill="#cc0022"/>
     <ellipse cx="46" cy="28" rx="4" ry="5" fill="#cc0022"/>
     <circle cx="34" cy="28" r="2" fill="#330000"/>
     <circle cx="46" cy="28" r="2" fill="#330000"/>
-    <circle cx="33" cy="27" r="1" fill="#ff4466"/>
-    <circle cx="45" cy="27" r="1" fill="#ff4466"/>
-    <!-- Fangs -->
     <path d="M36 36 L34 42 L38 38" fill="white"/>
     <path d="M44 36 L46 42 L42 38" fill="white"/>
   </svg>`,
-
   alien: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><radialGradient id="alg" cx="50%" cy="30%"><stop offset="0%" stop-color="#39ff14"/><stop offset="100%" stop-color="#003300"/></radialGradient></defs>
     <ellipse cx="40" cy="22" rx="20" ry="18" fill="url(#alg)" stroke="#39ff14" stroke-width="1.5"/>
     <ellipse cx="30" cy="18" rx="8" ry="10" fill="#000" opacity="0.9"/>
     <ellipse cx="50" cy="18" rx="8" ry="10" fill="#000" opacity="0.9"/>
-    <ellipse cx="30" cy="18" rx="5" ry="6" fill="#000022"/>
-    <ellipse cx="50" cy="18" rx="5" ry="6" fill="#000022"/>
     <circle cx="30" cy="18" r="3" fill="#39ff14" opacity="0.7"/>
     <circle cx="50" cy="18" r="3" fill="#39ff14" opacity="0.7"/>
     <path d="M34 30 Q40 34 46 30" stroke="#39ff14" stroke-width="1.5" fill="none"/>
-    <ellipse cx="40" cy="36" rx="2" ry="3" fill="#39ff14" opacity="0.7"/>
     <path d="M20 36 Q14 48 12 66" stroke="#39ff14" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.6"/>
     <path d="M60 36 Q66 48 68 66" stroke="#39ff14" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.6"/>
     <path d="M20 40 Q40 36 60 40 L62 72 Q40 78 18 72 Z" fill="#003300" stroke="#39ff14" stroke-width="1"/>
-    <!-- Alien tech on chest -->
     <circle cx="40" cy="55" r="6" fill="#001100" stroke="#39ff14" stroke-width="1"/>
     <circle cx="40" cy="55" r="3" fill="#39ff14" opacity="0.8"/>
-    <path d="M34 55 L46 55 M40 49 L40 61" stroke="#39ff14" stroke-width="0.8"/>
   </svg>`,
-
-  // ── SAMURAI (detailed!) ──
   samurai: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="sg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c8102e"/><stop offset="100%" stop-color="#6b0014"/></linearGradient>
       <linearGradient id="sg2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#e8e0d0"/><stop offset="100%" stop-color="#a09080"/></linearGradient>
       <linearGradient id="sg3" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#d4af37"/><stop offset="100%" stop-color="#f5d060"/></linearGradient>
     </defs>
-    <!-- Kabuto helmet crest -->
     <path d="M30 10 Q40 2 50 10 Q46 8 40 7 Q34 8 30 10 Z" fill="#c8102e"/>
-    <path d="M35 8 Q40 4 45 8" stroke="#ff4444" stroke-width="1.5" fill="none"/>
-    <!-- Kabuto helmet -->
     <path d="M20 22 Q40 6 60 22 L58 34 Q40 38 22 34 Z" fill="url(#sg2)" stroke="#888" stroke-width="1.2"/>
-    <!-- Helmet rivets -->
     <circle cx="30" cy="22" r="1.5" fill="#d4af37"/>
     <circle cx="40" cy="18" r="1.5" fill="#d4af37"/>
     <circle cx="50" cy="22" r="1.5" fill="#d4af37"/>
-    <!-- Helmet horns / Kuwagata -->
     <path d="M24 18 Q18 10 22 6 Q24 14 28 18" fill="#d4af37"/>
     <path d="M56 18 Q62 10 58 6 Q56 14 52 18" fill="#d4af37"/>
-    <!-- Face Mask (menpo) -->
     <path d="M26 32 Q40 28 54 32 L54 44 Q40 48 26 44 Z" fill="#cc4400" stroke="#aa3300" stroke-width="1"/>
-    <!-- Fierce menpo features -->
     <ellipse cx="33" cy="36" rx="4" ry="3" fill="#1a0000"/>
     <ellipse cx="47" cy="36" rx="4" ry="3" fill="#1a0000"/>
     <circle cx="33" cy="36" r="2" fill="#ff2200"/>
     <circle cx="47" cy="36" r="2" fill="#ff2200"/>
-    <path d="M28 42 Q40 46 52 42 Q48 50 40 50 Q32 50 28 42 Z" fill="#aa3300"/>
-    <!-- Teeth in menpo -->
     <rect x="34" y="43" width="3" height="4" rx="1" fill="#eee"/>
     <rect x="38" y="43" width="3" height="4" rx="1" fill="#eee"/>
     <rect x="42" y="43" width="3" height="4" rx="1" fill="#eee"/>
-    <!-- Do (chest armor) -->
     <path d="M16 48 Q40 44 64 48 L66 76 Q40 80 14 76 Z" fill="url(#sg1)" stroke="#aa0022" stroke-width="1.5"/>
-    <!-- Armor plates lamellar pattern -->
     <rect x="20" y="50" width="40" height="5" rx="1" fill="#a0001e" stroke="#8b001a" stroke-width="0.5"/>
     <rect x="20" y="56" width="40" height="5" rx="1" fill="#a0001e" stroke="#8b001a" stroke-width="0.5"/>
     <rect x="20" y="62" width="40" height="5" rx="1" fill="#a0001e" stroke="#8b001a" stroke-width="0.5"/>
-    <!-- Gold trim lacing -->
     <line x1="20" y1="52" x2="60" y2="52" stroke="url(#sg3)" stroke-width="1"/>
     <line x1="20" y1="58" x2="60" y2="58" stroke="url(#sg3)" stroke-width="1"/>
     <line x1="20" y1="64" x2="60" y2="64" stroke="url(#sg3)" stroke-width="1"/>
-    <!-- Katana (massive, detailed) -->
     <rect x="62" y="16" width="3" height="50" rx="1" fill="#1a1a1a" transform="rotate(12,63,40)"/>
     <rect x="61" y="16" width="5" height="44" rx="1" fill="#c8c8d8" transform="rotate(12,63,40)" opacity="0.9"/>
     <rect x="59" y="36" width="9" height="4" rx="1" fill="url(#sg3)" transform="rotate(12,63,40)"/>
     <rect x="62" y="60" width="4" height="12" rx="2" fill="#8b4513" transform="rotate(12,63,40)"/>
-    <!-- Tsuba (guard) -->
     <ellipse cx="64" cy="42" rx="5" ry="3" fill="url(#sg3)" transform="rotate(12,64,42)"/>
-    <!-- Hamon line on blade -->
-    <path d="M62 20 Q64 32 62 60" stroke="#ddeeff" stroke-width="0.8" fill="none" opacity="0.7" transform="rotate(12,63,40)"/>
-    <!-- Sode (shoulder guards) -->
     <path d="M14 50 Q8 50 8 62 Q12 70 18 68 L16 48 Z" fill="url(#sg1)" stroke="#aa0022" stroke-width="1"/>
     <path d="M66 50 Q72 50 72 62 Q68 70 62 68 L64 48 Z" fill="url(#sg1)" stroke="#aa0022" stroke-width="1"/>
   </svg>`,
-
   demon: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><radialGradient id="dmg" cx="50%" cy="30%"><stop offset="0%" stop-color="#ff4400"/><stop offset="100%" stop-color="#330000"/></radialGradient></defs>
-    <!-- Horns -->
     <path d="M28 14 Q22 2 26 -2 Q30 8 34 16 Z" fill="#cc2200"/>
     <path d="M52 14 Q58 2 54 -2 Q50 8 46 16 Z" fill="#cc2200"/>
-    <!-- Head -->
     <circle cx="40" cy="26" r="16" fill="url(#dmg)" stroke="#ff4400" stroke-width="1.5"/>
-    <!-- Demonic eyes -->
     <ellipse cx="33" cy="24" rx="6" ry="5" fill="#000"/>
     <ellipse cx="47" cy="24" rx="6" ry="5" fill="#000"/>
     <ellipse cx="33" cy="24" rx="3" ry="4" fill="#ff6600"/>
     <ellipse cx="47" cy="24" rx="3" ry="4" fill="#ff6600"/>
     <path d="M32 30 Q40 35 48 30 Q46 38 40 40 Q34 38 32 30 Z" fill="#660000"/>
-    <!-- Fangs -->
     <polygon points="36,36 34,44 38,38" fill="white"/>
     <polygon points="44,36 46,44 42,38" fill="white"/>
-    <!-- Wings -->
     <path d="M16 44 Q4 30 8 16 Q18 28 24 44 Z" fill="#220000" stroke="#660000" stroke-width="1"/>
     <path d="M64 44 Q76 30 72 16 Q62 28 56 44 Z" fill="#220000" stroke="#660000" stroke-width="1"/>
-    <!-- Wing membranes -->
-    <path d="M8 16 L12 24 M8 16 L16 22" stroke="#440000" stroke-width="1"/>
-    <path d="M72 16 L68 24 M72 16 L64 22" stroke="#440000" stroke-width="1"/>
-    <!-- Body -->
     <path d="M22 44 Q40 40 58 44 L60 76 Q40 80 20 76 Z" fill="#220000" stroke="#660000" stroke-width="1.2"/>
-    <!-- Chest rune -->
     <circle cx="40" cy="58" r="8" fill="#330000" stroke="#ff4400" stroke-width="1"/>
     <path d="M40 50 L44 56 L40 62 L36 56 Z" stroke="#ff4400" stroke-width="1" fill="none"/>
-    <line x1="36" y1="54" x2="44" y2="62" stroke="#ff4400" stroke-width="0.8"/>
-    <line x1="44" y1="54" x2="36" y2="62" stroke="#ff4400" stroke-width="0.8"/>
   </svg>`,
-
   angel: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><radialGradient id="ang1" cx="50%" cy="30%"><stop offset="0%" stop-color="#fffef0"/><stop offset="100%" stop-color="#ffd60a"/></radialGradient></defs>
-    <!-- Holy wings -->
     <path d="M14 42 Q2 28 8 12 Q18 26 22 44 Z" fill="white" stroke="#ffd60a" stroke-width="1" opacity="0.9"/>
-    <path d="M16 38 Q6 32 10 20 Q16 30 20 40" stroke="#ffeebb" stroke-width="0.8" fill="none"/>
-    <path d="M18 36 Q10 30 12 20 Q17 28 20 38" stroke="#ffeebb" stroke-width="0.6" fill="none"/>
     <path d="M66 42 Q78 28 72 12 Q62 26 58 44 Z" fill="white" stroke="#ffd60a" stroke-width="1" opacity="0.9"/>
-    <path d="M64 38 Q74 32 70 20 Q64 30 60 40" stroke="#ffeebb" stroke-width="0.8" fill="none"/>
-    <!-- Halo -->
     <ellipse cx="40" cy="8" rx="14" ry="4" fill="none" stroke="#ffd60a" stroke-width="2.5" opacity="0.9"/>
-    <ellipse cx="40" cy="8" rx="14" ry="4" fill="none" stroke="#fff" stroke-width="1" opacity="0.6"/>
-    <!-- Head -->
     <circle cx="40" cy="26" r="14" fill="url(#ang1)"/>
-    <!-- Gentle features -->
     <ellipse cx="35" cy="24" rx="4" ry="4" fill="#fff"/>
     <ellipse cx="45" cy="24" rx="4" ry="4" fill="#fff"/>
     <circle cx="35" cy="24" r="2.5" fill="#6699ff"/>
     <circle cx="45" cy="24" r="2.5" fill="#6699ff"/>
-    <circle cx="34" cy="23" r="1" fill="#fff"/>
-    <circle cx="44" cy="23" r="1" fill="#fff"/>
-    <!-- Smile -->
     <path d="M33 32 Q40 37 47 32" stroke="#ffaa44" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <!-- Robe -->
     <path d="M20 42 Q40 38 60 42 L62 78 Q40 82 18 78 Z" fill="#fffff0" stroke="#ffd60a" stroke-width="1.2"/>
-    <!-- Gold trim -->
     <path d="M20 42 Q40 38 60 42" stroke="#ffd60a" stroke-width="2" fill="none"/>
-    <path d="M28 78 Q40 80 52 78" stroke="#ffd60a" stroke-width="2" fill="none"/>
-    <!-- Robe details -->
-    <line x1="40" y1="44" x2="40" y2="76" stroke="#ffd60a" stroke-width="0.8" opacity="0.5"/>
   </svg>`,
-
   ghost: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><radialGradient id="ghg" cx="50%" cy="30%"><stop offset="0%" stop-color="#ddeeff"/><stop offset="100%" stop-color="#8899bb" stop-opacity="0.5"/></radialGradient></defs>
     <path d="M16 30 Q16 8 40 8 Q64 8 64 30 L64 72 Q60 68 56 72 Q52 68 48 72 Q44 68 40 72 Q36 68 32 72 Q28 68 24 72 Q20 68 16 72 Z" fill="url(#ghg)" stroke="#aabbdd" stroke-width="1.5"/>
@@ -1087,452 +928,267 @@ const SVG_ART = {
     <circle cx="30" cy="34" r="2" fill="#fff" opacity="0.8"/>
     <circle cx="46" cy="34" r="2" fill="#fff" opacity="0.8"/>
     <path d="M34 48 Q40 52 46 48" stroke="#334466" stroke-width="1.5" fill="none"/>
-    <!-- Glowing aura particles -->
     <circle cx="20" cy="20" r="2" fill="#00f5ff" opacity="0.5"/>
     <circle cx="60" cy="25" r="1.5" fill="#8338ec" opacity="0.6"/>
-    <circle cx="40" cy="10" r="2" fill="#fff" opacity="0.5"/>
-    <circle cx="66" cy="44" r="1" fill="#00f5ff" opacity="0.4"/>
   </svg>`,
-
   phoenix: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="phg1" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ff4d00"/><stop offset="50%" stop-color="#ffd60a"/><stop offset="100%" stop-color="#ff006e"/></linearGradient></defs>
-    <!-- Tail flames -->
     <path d="M40 70 Q30 80 20 76 Q30 68 34 58 Z" fill="url(#phg1)" opacity="0.8"/>
     <path d="M40 70 Q50 80 60 76 Q50 68 46 58 Z" fill="url(#phg1)" opacity="0.8"/>
-    <path d="M40 70 Q40 82 36 80 Q40 72 40 60 Z" fill="#ff4d00" opacity="0.7"/>
-    <!-- Wings -->
     <path d="M10 36 Q2 20 10 8 Q22 22 28 40 Z" fill="url(#phg1)" stroke="#ff4d00" stroke-width="1"/>
     <path d="M70 36 Q78 20 70 8 Q58 22 52 40 Z" fill="url(#phg1)" stroke="#ff4d00" stroke-width="1"/>
-    <path d="M10 8 L16 18 M10 8 L20 16" stroke="#ffd60a" stroke-width="1"/>
-    <path d="M70 8 L64 18 M70 8 L60 16" stroke="#ffd60a" stroke-width="1"/>
-    <!-- Body -->
     <ellipse cx="40" cy="44" rx="14" ry="18" fill="#cc2200" stroke="#ff4d00" stroke-width="1.5"/>
-    <!-- Head -->
     <circle cx="40" cy="26" r="12" fill="#cc2200" stroke="#ff4d00" stroke-width="1.2"/>
-    <!-- Crest -->
     <path d="M36 14 Q40 6 44 14 Q42 10 40 10 Q38 10 36 14 Z" fill="#ffd60a"/>
-    <!-- Eyes -->
     <circle cx="35" cy="24" r="4" fill="#000"/>
     <circle cx="45" cy="24" r="4" fill="#000"/>
     <circle cx="35" cy="24" r="2" fill="#ff4d00"/>
     <circle cx="45" cy="24" r="2" fill="#ff4d00"/>
-    <circle cx="34" cy="23" r="1" fill="#ffd60a"/>
-    <circle cx="44" cy="23" r="1" fill="#ffd60a"/>
-    <!-- Beak -->
     <path d="M36 30 L40 36 L44 30 Z" fill="#ffd60a"/>
-    <!-- Chest feathers -->
-    <path d="M30 44 Q40 40 50 44 Q44 50 40 52 Q36 50 30 44 Z" fill="#ff4d00" stroke="#cc2200" stroke-width="0.5"/>
   </svg>`,
-
   witch: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="wtg" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1a0033"/><stop offset="100%" stop-color="#0a0020"/></linearGradient></defs>
-    <!-- Hat -->
     <polygon points="40,2 18,36 62,36" fill="#1a0033" stroke="#8338ec" stroke-width="1.5"/>
-    <!-- Hat band -->
     <rect x="16" y="34" width="48" height="6" rx="2" fill="#6600cc" stroke="#8338ec" stroke-width="1"/>
     <circle cx="26" cy="37" r="2" fill="#ffd60a"/>
-    <!-- Star on hat -->
     <text x="35" y="22" font-size="8" fill="#8338ec">⭐</text>
-    <!-- Hair flowing -->
     <path d="M24 38 Q12 50 14 70" stroke="#330066" stroke-width="8" stroke-linecap="round" fill="none"/>
     <path d="M56 38 Q68 50 66 70" stroke="#330066" stroke-width="8" stroke-linecap="round" fill="none"/>
-    <!-- Face -->
     <ellipse cx="40" cy="34" rx="14" ry="13" fill="#c4a882"/>
-    <!-- Pointy nose -->
     <path d="M36 36 L40 46 L44 36" fill="#b8946a" stroke="#a07848" stroke-width="0.5"/>
-    <!-- Eyes with magic glow -->
     <ellipse cx="33" cy="32" rx="5" ry="4" fill="#1a0033"/>
     <ellipse cx="47" cy="32" rx="5" ry="4" fill="#1a0033"/>
     <circle cx="33" cy="32" r="2.5" fill="#8338ec"/>
     <circle cx="47" cy="32" r="2.5" fill="#8338ec"/>
-    <circle cx="32" cy="31" r="1" fill="#ce93d8"/>
-    <circle cx="46" cy="31" r="1" fill="#ce93d8"/>
-    <!-- Wart :) -->
-    <circle cx="43" cy="42" r="1.5" fill="#9a7a5a"/>
-    <!-- Robe -->
     <path d="M18 48 Q40 44 62 48 L66 78 Q40 82 14 78 Z" fill="url(#wtg)" stroke="#4400aa" stroke-width="1.5"/>
-    <!-- Moon crescent on robe -->
-    <path d="M36 58 Q30 64 36 70 Q32 66 32 64 Q32 60 36 58 Z" fill="#ffd60a"/>
-    <!-- Broomstick -->
     <rect x="60" y="20" width="4" height="56" rx="2" fill="#8b4513" transform="rotate(-15,62,48)"/>
     <path d="M65 58 Q74 62 72 70 Q66 66 62 74 L60 72 Q64 64 65 58 Z" fill="#8b6914"/>
   </svg>`,
-
   pirate: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="prg" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1a0a00"/><stop offset="100%" stop-color="#0a0500"/></linearGradient></defs>
-    <!-- Hat -->
     <path d="M18 28 Q40 16 62 28 L60 34 Q40 38 20 34 Z" fill="#1a0a00" stroke="#666" stroke-width="1"/>
     <path d="M16 30 Q40 22 64 30 L64 36 Q40 40 16 36 Z" fill="#111" stroke="#444" stroke-width="0.8"/>
     <text x="34" y="30" font-size="10" fill="white">☠</text>
-    <!-- Eye patch strap -->
-    <path d="M26 38 Q28 42 30 44" stroke="#333" stroke-width="2"/>
-    <!-- Face -->
     <circle cx="40" cy="40" r="14" fill="#c8966a"/>
-    <!-- Eye patch -->
     <ellipse cx="33" cy="38" rx="6" ry="5" fill="#111"/>
     <rect x="26" y="34" width="14" height="3" rx="1" fill="#333"/>
-    <!-- Normal eye -->
     <ellipse cx="47" cy="38" rx="5" ry="5" fill="#fff"/>
     <circle cx="47" cy="38" r="2.5" fill="#3a2010"/>
-    <circle cx="46" cy="37" r="1" fill="#fff"/>
-    <!-- Scar -->
     <path d="M34 44 L38 52" stroke="#a06030" stroke-width="1.5"/>
-    <!-- Beard -->
     <path d="M28 46 Q40 52 52 46 Q48 56 40 58 Q32 56 28 46 Z" fill="#2a1a0a"/>
-    <!-- Body coat -->
     <path d="M18 54 Q40 50 62 54 L66 80 Q40 84 14 80 Z" fill="#1a0a3a" stroke="#333" stroke-width="1"/>
-    <!-- Gold buttons -->
     <circle cx="40" cy="60" r="2" fill="#ffd60a"/>
     <circle cx="40" cy="68" r="2" fill="#ffd60a"/>
-    <!-- Cutlass -->
     <rect x="60" y="40" width="4" height="36" rx="1" fill="#c0c0c0" transform="rotate(20,62,58)"/>
     <rect x="56" y="52" width="12" height="4" rx="1" fill="#ffd60a" transform="rotate(20,62,56)"/>
-    <rect x="60" y="76" width="4" height="8" rx="2" fill="#8b4513" transform="rotate(20,62,80)"/>
   </svg>`,
-
-  // ── DRAGON LORD (most epic!) ──
   dragon: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="drg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff4d00"/><stop offset="50%" stop-color="#cc0000"/><stop offset="100%" stop-color="#660000"/></linearGradient>
       <linearGradient id="drg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffd60a"/><stop offset="100%" stop-color="#ff8800"/></linearGradient>
       <radialGradient id="drg3" cx="50%" cy="40%"><stop offset="0%" stop-color="#ff6600"/><stop offset="100%" stop-color="#440000"/></radialGradient>
-      <filter id="glow"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
     </defs>
-    <!-- Dragon wings -->
     <path d="M6 38 Q-4 18 6 2 Q14 20 20 38 Z" fill="#880000" stroke="#cc2200" stroke-width="1" opacity="0.9"/>
-    <path d="M6 2 L10 12 M6 2 L14 10 M6 2 L8 16" stroke="#ff4d00" stroke-width="1"/>
     <path d="M74 38 Q84 18 74 2 Q66 20 60 38 Z" fill="#880000" stroke="#cc2200" stroke-width="1" opacity="0.9"/>
-    <path d="M74 2 L70 12 M74 2 L66 10 M74 2 L72 16" stroke="#ff4d00" stroke-width="1"/>
-    <!-- Dragon tail -->
     <path d="M40 72 Q30 80 22 76 Q30 70 36 62 Z" fill="#880000" opacity="0.9"/>
     <path d="M40 72 Q50 80 58 76 Q50 70 44 62 Z" fill="#880000" opacity="0.9"/>
-    <!-- Body/Torso -->
     <path d="M14 46 Q40 40 66 46 L70 80 Q40 86 10 80 Z" fill="url(#drg1)" stroke="#ff4d00" stroke-width="1.5"/>
-    <!-- Belly scales -->
     <path d="M24 50 Q40 46 56 50" stroke="#ff6600" stroke-width="1" fill="none"/>
     <path d="M22 56 Q40 52 58 56" stroke="#ff6600" stroke-width="1" fill="none"/>
-    <path d="M22 62 Q40 58 58 62" stroke="#ff6600" stroke-width="1" fill="none"/>
-    <!-- Scale diamonds -->
     <g fill="#cc2200" stroke="#ff4d00" stroke-width="0.5">
       <polygon points="30,50 34,54 30,58 26,54"/>
       <polygon points="40,48 44,52 40,56 36,52"/>
       <polygon points="50,50 54,54 50,58 46,54"/>
     </g>
-    <!-- Neck -->
-    <path d="M28 40 Q40 36 52 40 L52 46 Q40 44 28 46 Z" fill="url(#drg1)" stroke="#ff4d00" stroke-width="1"/>
-    <!-- Dragon head -->
     <path d="M20 22 Q40 8 60 22 L62 38 Q40 44 18 38 Z" fill="url(#drg3)" stroke="#ff4d00" stroke-width="1.5"/>
-    <!-- Horns -->
     <path d="M26 16 Q20 4 24 0 Q28 10 30 18 Z" fill="#ffd60a" stroke="#ff8800" stroke-width="1"/>
     <path d="M54 16 Q60 4 56 0 Q52 10 50 18 Z" fill="#ffd60a" stroke="#ff8800" stroke-width="1"/>
-    <!-- Head spikes -->
     <path d="M32 10 Q34 4 36 8" stroke="#ffd60a" stroke-width="2"/>
     <path d="M40 8 Q40 2 42 6" stroke="#ffd60a" stroke-width="2"/>
     <path d="M48 10 Q50 4 48 8" stroke="#ffd60a" stroke-width="2"/>
-    <!-- Dragon eyes (glowing!) -->
-    <ellipse cx="31" cy="24" rx="7" ry="7" fill="#000" filter="url(#glow)"/>
-    <ellipse cx="49" cy="24" rx="7" ry="7" fill="#000" filter="url(#glow)"/>
+    <ellipse cx="31" cy="24" rx="7" ry="7" fill="#000"/>
+    <ellipse cx="49" cy="24" rx="7" ry="7" fill="#000"/>
     <ellipse cx="31" cy="24" rx="4" ry="5" fill="url(#drg2)"/>
     <ellipse cx="49" cy="24" rx="4" ry="5" fill="url(#drg2)"/>
     <ellipse cx="31" cy="24" rx="1.5" ry="4" fill="#000"/>
     <ellipse cx="49" cy="24" rx="1.5" ry="4" fill="#000"/>
     <circle cx="30" cy="22" r="1.5" fill="#fff" opacity="0.8"/>
     <circle cx="48" cy="22" r="1.5" fill="#fff" opacity="0.8"/>
-    <!-- Snout -->
     <path d="M28 32 Q40 28 52 32 L50 38 Q40 40 30 38 Z" fill="#aa2200" stroke="#ff4d00" stroke-width="1"/>
-    <!-- Nostrils -->
     <circle cx="34" cy="34" r="2" fill="#660000"/>
     <circle cx="46" cy="34" r="2" fill="#660000"/>
-    <!-- Dragon breath fire! -->
     <path d="M34 38 Q30 46 24 50 Q32 46 36 42 Z" fill="#ffd60a" opacity="0.8"/>
     <path d="M46 38 Q50 46 56 50 Q48 46 44 42 Z" fill="#ff4d00" opacity="0.7"/>
-    <path d="M40 38 Q40 50 38 56 Q42 50 42 40 Z" fill="#ff6600" opacity="0.7"/>
-    <!-- Crown -->
     <path d="M26 16 Q30 10 34 14 Q38 8 42 14 Q46 10 50 14 Q54 10 54 16 L54 20 Q40 18 26 20 Z" fill="url(#drg2)"/>
   </svg>`,
-
   wizard: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><radialGradient id="wzg" cx="50%" cy="30%"><stop offset="0%" stop-color="#66aaff"/><stop offset="100%" stop-color="#001144"/></radialGradient></defs>
     <polygon points="40,2 16,38 64,38" fill="#001144" stroke="#4488ff" stroke-width="1.5"/>
     <rect x="14" y="36" width="52" height="6" rx="2" fill="#002266" stroke="#4488ff" stroke-width="1"/>
-    <!-- Stars on hat -->
     <text x="30" y="22" font-size="8" fill="#4488ff">✦</text>
     <text x="44" y="28" font-size="5" fill="#88ccff">✦</text>
-    <!-- Long beard -->
     <path d="M28 50 Q36 60 40 78 Q44 60 52 50" fill="white" stroke="#ccc" stroke-width="0.8"/>
-    <path d="M30 52 Q38 62 40 76 Q42 62 50 52" stroke="#ddd" stroke-width="0.5" fill="none"/>
-    <!-- Face -->
     <ellipse cx="40" cy="42" rx="16" ry="14" fill="#f0e8d8"/>
-    <!-- Bushy eyebrows -->
     <path d="M28 36 Q34 33 38 36" stroke="#888" stroke-width="2.5" stroke-linecap="round" fill="none"/>
     <path d="M42 36 Q46 33 52 36" stroke="#888" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-    <!-- Deep eyes -->
     <circle cx="34" cy="40" r="4" fill="#001144"/>
     <circle cx="46" cy="40" r="4" fill="#001144"/>
     <circle cx="34" cy="40" r="2.5" fill="url(#wzg)"/>
     <circle cx="46" cy="40" r="2.5" fill="url(#wzg)"/>
-    <circle cx="33" cy="39" r="1" fill="#88ccff"/>
-    <circle cx="45" cy="39" r="1" fill="#88ccff"/>
-    <!-- Nose -->
     <path d="M36 44 Q40 50 44 44" stroke="#c8a080" stroke-width="1.5" fill="none"/>
-    <!-- Robe -->
     <path d="M16 56 Q40 52 64 56 L68 80 Q40 84 12 80 Z" fill="#001144" stroke="#4488ff" stroke-width="1.2"/>
     <text x="32" y="72" font-size="10" fill="#4488ff">✦</text>
-    <!-- Staff -->
     <rect x="66" y="22" width="3" height="54" rx="1" fill="#6b4226"/>
     <circle cx="67" cy="18" r="7" fill="#001144" stroke="#4488ff" stroke-width="1.5"/>
     <circle cx="67" cy="18" r="4" fill="#66aaff" opacity="0.9"/>
     <circle cx="67" cy="18" r="2" fill="#fff" opacity="0.8"/>
   </svg>`,
 
-  // ── ITEMS — Detailed SVG artwork ──
-  // WEAPONS
+  // ── ITEMS ──
   iron_sword: `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="isw" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e8e8e8"/><stop offset="50%" stop-color="#aaaaaa"/><stop offset="100%" stop-color="#555"/></linearGradient></defs>
-    <rect x="28" y="4" width="4" height="40" rx="2" fill="url(#isw)"/>
     <path d="M26 8 L30 4 L34 8 L34 44 L30 48 L26 44 Z" fill="url(#isw)" stroke="#888" stroke-width="0.5"/>
     <line x1="30" y1="6" x2="30" y2="46" stroke="#ccc" stroke-width="0.8" opacity="0.7"/>
     <rect x="20" y="36" width="20" height="5" rx="2" fill="#888" stroke="#666" stroke-width="0.8"/>
     <rect x="27" y="41" width="6" height="14" rx="3" fill="#6b4226"/>
     <circle cx="30" cy="54" r="3" fill="#888"/>
   </svg>`,
-
   neon_katana: `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="nkw" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#00f5ff"/><stop offset="50%" stop-color="#fff"/><stop offset="100%" stop-color="#8338ec"/></linearGradient></defs>
-    <rect x="29" y="2" width="3" height="44" rx="1" fill="url(#nkw)"/>
     <path d="M27 4 L30 2 L33 4 L34 46 L30 50 L26 46 Z" fill="url(#nkw)" stroke="#00f5ff" stroke-width="0.5"/>
     <line x1="30" y1="4" x2="30" y2="48" stroke="#fff" stroke-width="0.8" opacity="0.6"/>
     <ellipse cx="30" cy="40" rx="8" ry="3" fill="#8338ec" stroke="#00f5ff" stroke-width="1"/>
-    <path d="M28 4 Q30 2 32 4" stroke="#00f5ff" stroke-width="1.5" fill="none"/>
     <rect x="28" y="50" width="4" height="8" rx="2" fill="#1a0033"/>
     <circle cx="30" cy="57" r="2" fill="#8338ec"/>
-    <!-- Glow effect -->
     <rect x="29" y="2" width="3" height="44" rx="1" fill="none" stroke="#00f5ff" stroke-width="2" opacity="0.3"/>
   </svg>`,
-
   dragon_slayer: `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="dsw" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffd60a"/><stop offset="50%" stop-color="#ff8800"/><stop offset="100%" stop-color="#cc4400"/></linearGradient>
       <linearGradient id="dsw2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ff4d00"/><stop offset="100%" stop-color="#ffd60a"/></linearGradient>
     </defs>
-    <!-- Massive blade -->
     <path d="M24 2 L36 2 L38 46 L30 52 L22 46 Z" fill="url(#dsw)" stroke="#ff8800" stroke-width="1"/>
     <line x1="30" y1="4" x2="30" y2="50" stroke="#ffd60a" stroke-width="1.5" opacity="0.8"/>
-    <line x1="26" y1="6" x2="26" y2="44" stroke="#fff" stroke-width="0.6" opacity="0.5"/>
-    <!-- Dragon scale pattern on blade -->
     <path d="M26 14 Q30 12 34 14 Q30 18 26 14 Z" fill="#cc4400" opacity="0.6"/>
     <path d="M26 22 Q30 20 34 22 Q30 26 26 22 Z" fill="#cc4400" opacity="0.6"/>
     <path d="M26 30 Q30 28 34 30 Q30 34 26 30 Z" fill="#cc4400" opacity="0.6"/>
-    <!-- Cross guard with dragon head detail -->
     <path d="M14 40 L46 40 L44 46 L30 44 L16 46 Z" fill="url(#dsw2)" stroke="#ffd60a" stroke-width="1"/>
-    <!-- Dragon on guard -->
-    <path d="M16 40 Q14 38 16 36 Q18 38 16 40 Z" fill="#cc4400"/>
-    <path d="M44 40 Q46 38 44 36 Q42 38 44 40 Z" fill="#cc4400"/>
-    <!-- Grip -->
     <rect x="27" y="44" width="6" height="14" rx="3" fill="#330000" stroke="#660000" stroke-width="0.8"/>
-    <line x1="27" y1="48" x2="33" y2="48" stroke="#ffd60a" stroke-width="0.8"/>
-    <line x1="27" y1="52" x2="33" y2="52" stroke="#ffd60a" stroke-width="0.8"/>
     <circle cx="30" cy="58" r="3" fill="#cc4400" stroke="#ffd60a" stroke-width="1"/>
   </svg>`,
-
   plasma_blade: `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="pbw" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#00f5ff"/><stop offset="50%" stop-color="#8338ec"/><stop offset="100%" stop-color="#ff006e"/></linearGradient></defs>
     <path d="M27 2 L33 2 L35 44 L30 50 L25 44 Z" fill="url(#pbw)" stroke="#8338ec" stroke-width="1.5"/>
     <line x1="30" y1="2" x2="30" y2="50" stroke="#fff" stroke-width="1" opacity="0.5"/>
-    <!-- Plasma sparks -->
     <circle cx="28" cy="12" r="1.5" fill="#00f5ff" opacity="0.8"/>
     <circle cx="32" cy="20" r="1.5" fill="#8338ec" opacity="0.8"/>
     <circle cx="28" cy="30" r="1.5" fill="#ff006e" opacity="0.8"/>
-    <circle cx="32" cy="38" r="1.5" fill="#00f5ff" opacity="0.8"/>
     <rect x="20" y="42" width="20" height="5" rx="2" fill="#0a0a18" stroke="url(#pbw)" stroke-width="1.5"/>
     <rect x="27" y="47" width="6" height="12" rx="3" fill="#1a0a28"/>
     <circle cx="30" cy="58" r="3" fill="#8338ec"/>
-    <path d="M25 2 L35 2" stroke="#00f5ff" stroke-width="2" stroke-linecap="round"/>
   </svg>`,
-
-  // ARMORS
   samurai_armor: `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="sag" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#c8102e"/><stop offset="100%" stop-color="#6b0014"/></linearGradient></defs>
-    <!-- Main chest plate -->
     <path d="M8 12 Q30 6 52 12 L56 52 Q30 58 4 52 Z" fill="url(#sag)" stroke="#aa0022" stroke-width="1.5"/>
-    <!-- Lamellar plates -->
     <rect x="10" y="16" width="40" height="6" rx="1" fill="#a0001e" stroke="#ffd60a" stroke-width="0.8"/>
     <rect x="10" y="23" width="40" height="6" rx="1" fill="#a0001e" stroke="#ffd60a" stroke-width="0.8"/>
     <rect x="10" y="30" width="40" height="6" rx="1" fill="#a0001e" stroke="#ffd60a" stroke-width="0.8"/>
     <rect x="10" y="37" width="40" height="6" rx="1" fill="#a0001e" stroke="#ffd60a" stroke-width="0.8"/>
-    <!-- Gold lacing lines -->
-    <line x1="10" y1="20" x2="50" y2="20" stroke="#ffd60a" stroke-width="1"/>
-    <line x1="10" y1="27" x2="50" y2="27" stroke="#ffd60a" stroke-width="1"/>
-    <line x1="10" y1="34" x2="50" y2="34" stroke="#ffd60a" stroke-width="1"/>
-    <line x1="10" y1="41" x2="50" y2="41" stroke="#ffd60a" stroke-width="1"/>
-    <!-- Center medallion -->
     <circle cx="30" cy="28" r="8" fill="#6b0014" stroke="#ffd60a" stroke-width="1.5"/>
     <text x="27" y="32" font-size="10" fill="#ffd60a">龍</text>
-    <!-- Shoulder guards -->
     <path d="M4 14 Q0 20 4 30 Q8 24 8 14 Z" fill="url(#sag)" stroke="#aa0022" stroke-width="1"/>
     <path d="M56 14 Q60 20 56 30 Q52 24 52 14 Z" fill="url(#sag)" stroke="#aa0022" stroke-width="1"/>
   </svg>`,
-
   neon_suit: `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="nsg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00f5ff"/><stop offset="50%" stop-color="#8338ec"/><stop offset="100%" stop-color="#ff006e"/></linearGradient></defs>
     <path d="M8 10 Q30 4 52 10 L56 56 Q30 62 4 56 Z" fill="#050b18" stroke="url(#nsg)" stroke-width="2"/>
-    <!-- Circuit lines -->
     <line x1="12" y1="20" x2="48" y2="20" stroke="#00f5ff" stroke-width="0.8" opacity="0.6"/>
     <line x1="12" y1="28" x2="48" y2="28" stroke="#8338ec" stroke-width="0.8" opacity="0.6"/>
     <line x1="12" y1="36" x2="48" y2="36" stroke="#ff006e" stroke-width="0.8" opacity="0.6"/>
-    <line x1="12" y1="44" x2="48" y2="44" stroke="#00f5ff" stroke-width="0.8" opacity="0.6"/>
-    <!-- Power core -->
     <circle cx="30" cy="30" r="10" fill="#050b18" stroke="url(#nsg)" stroke-width="1.5"/>
     <circle cx="30" cy="30" r="6" fill="url(#nsg)" opacity="0.8"/>
     <circle cx="30" cy="30" r="3" fill="#fff" opacity="0.9"/>
-    <!-- Shoulder pads with glow -->
     <rect x="2" y="10" width="8" height="20" rx="3" fill="#050b18" stroke="#00f5ff" stroke-width="1.5"/>
     <rect x="50" y="10" width="8" height="20" rx="3" fill="#050b18" stroke="#ff006e" stroke-width="1.5"/>
-    <!-- Neon dots -->
-    <circle cx="8" cy="15" r="2" fill="#00f5ff"/>
-    <circle cx="8" cy="22" r="2" fill="#8338ec"/>
-    <circle cx="52" cy="15" r="2" fill="#ff006e"/>
-    <circle cx="52" cy="22" r="2" fill="#ffd60a"/>
   </svg>`,
-
-  // WINGS
   dragon_wings: `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="dwg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#cc2200"/><stop offset="100%" stop-color="#440000"/></linearGradient></defs>
     <path d="M30 30 Q10 10 2 2 Q8 18 14 30 Z" fill="url(#dwg)" stroke="#ff4d00" stroke-width="1"/>
     <path d="M30 30 Q50 10 58 2 Q52 18 46 30 Z" fill="url(#dwg)" stroke="#ff4d00" stroke-width="1"/>
-    <path d="M30 30 Q6 20 2 2 L8 12 L4 18 L10 22 L6 26 L14 28" stroke="#ff4d00" stroke-width="1" fill="none"/>
-    <path d="M30 30 Q54 20 58 2 L52 12 L56 18 L50 22 L54 26 L46 28" stroke="#ff4d00" stroke-width="1" fill="none"/>
     <path d="M30 30 Q18 40 10 56 Q22 46 30 36 Z" fill="#880000" opacity="0.8"/>
     <path d="M30 30 Q42 40 50 56 Q38 46 30 36 Z" fill="#880000" opacity="0.8"/>
     <circle cx="30" cy="30" r="5" fill="#ff4d00" opacity="0.9"/>
     <circle cx="30" cy="30" r="2" fill="#ffd60a"/>
   </svg>`,
-
   phoenix_wings: `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="phwg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffd60a"/><stop offset="50%" stop-color="#ff4d00"/><stop offset="100%" stop-color="#ff006e"/></linearGradient></defs>
     <path d="M30 28 Q8 6 2 2 Q10 16 18 28 Z" fill="url(#phwg)" opacity="0.9"/>
     <path d="M30 28 Q52 6 58 2 Q50 16 42 28 Z" fill="url(#phwg)" opacity="0.9"/>
-    <path d="M30 28 Q14 16 4 6 L8 14 L4 20 L12 22 L6 26 L18 26" stroke="#ffd60a" stroke-width="0.8" fill="none"/>
-    <path d="M30 28 Q46 16 56 6 L52 14 L56 20 L48 22 L54 26 L42 26" stroke="#ffd60a" stroke-width="0.8" fill="none"/>
-    <!-- Flame tips -->
-    <path d="M2 2 Q4 8 8 6 Q4 4 2 2 Z" fill="#ffd60a"/>
-    <path d="M58 2 Q56 8 52 6 Q56 4 58 2 Z" fill="#ffd60a"/>
     <path d="M30 28 Q22 38 16 56 Q24 44 30 34 Z" fill="#ff4d00" opacity="0.8"/>
     <path d="M30 28 Q38 38 44 56 Q36 44 30 34 Z" fill="#ff4d00" opacity="0.8"/>
   </svg>`,
-
-  // BOSS ARTWORK
   goblin_boss: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><radialGradient id="gbg" cx="50%" cy="40%"><stop offset="0%" stop-color="#66aa00"/><stop offset="100%" stop-color="#224400"/></radialGradient></defs>
-    <!-- Lazy posture, slumped -->
     <ellipse cx="40" cy="60" rx="22" ry="16" fill="#224400" opacity="0.8"/>
-    <!-- Tummy -->
     <ellipse cx="40" cy="58" rx="16" ry="14" fill="url(#gbg)"/>
-    <!-- Head -->
     <circle cx="40" cy="30" r="18" fill="url(#gbg)" stroke="#448800" stroke-width="1.5"/>
-    <!-- Big ears -->
     <ellipse cx="20" cy="28" rx="6" ry="10" fill="#66aa00" stroke="#448800" stroke-width="1"/>
     <ellipse cx="60" cy="28" rx="6" ry="10" fill="#66aa00" stroke="#448800" stroke-width="1"/>
-    <ellipse cx="20" cy="28" rx="3" ry="6" fill="#aa5566"/>
-    <ellipse cx="60" cy="28" rx="3" ry="6" fill="#aa5566"/>
-    <!-- Sleepy eyes (half closed) -->
     <path d="M28 26 Q34 22 36 26" stroke="#000" stroke-width="2" fill="none"/>
     <path d="M44 26 Q50 22 52 26" stroke="#000" stroke-width="2" fill="none"/>
-    <!-- Snoring Z's -->
     <text x="52" y="18" font-size="8" fill="#ffd60a" opacity="0.9">ZZZ</text>
-    <!-- Tusks -->
     <path d="M34 40 L32 48" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
     <path d="M46 40 L48 48" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-    <!-- Bag of gold (being lazy with loot) -->
     <circle cx="60" cy="62" r="10" fill="#ffd60a" stroke="#cc8800" stroke-width="1.5"/>
-    <path d="M56 58 Q60 54 64 58" stroke="#cc8800" stroke-width="1.5" fill="none"/>
     <text x="56" y="66" font-size="8" fill="#cc8800">$</text>
   </svg>`,
-
   time_thief: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs><radialGradient id="ttbg" cx="50%" cy="30%"><stop offset="0%" stop-color="#666699"/><stop offset="100%" stop-color="#111133"/></radialGradient></defs>
-    <!-- Shadow cloak -->
     <path d="M10 40 Q8 68 18 76 L40 70 L62 76 Q72 68 70 40 Z" fill="#111133" stroke="#444466" stroke-width="1.5"/>
-    <!-- Body -->
     <ellipse cx="40" cy="52" rx="20" ry="18" fill="url(#ttbg)"/>
-    <!-- Head -->
     <circle cx="40" cy="28" r="16" fill="url(#ttbg)" stroke="#8888cc" stroke-width="1.5"/>
-    <!-- Clock face as face -->
     <circle cx="40" cy="28" r="12" fill="#001133" stroke="#4444aa" stroke-width="1"/>
-    <!-- Clock numbers -->
     <text x="38" y="18" font-size="4" fill="#aaaaff">12</text>
     <text x="50" y="30" font-size="4" fill="#aaaaff">3</text>
     <text x="38" y="42" font-size="4" fill="#aaaaff">6</text>
     <text x="26" y="30" font-size="4" fill="#aaaaff">9</text>
-    <!-- Clock hands (creepy) -->
     <line x1="40" y1="28" x2="40" y2="18" stroke="#ff006e" stroke-width="1.5" stroke-linecap="round"/>
     <line x1="40" y1="28" x2="50" y2="30" stroke="#ff006e" stroke-width="1" stroke-linecap="round"/>
-    <!-- Glowing eyes -->
     <circle cx="35" cy="26" r="3" fill="#ff006e" opacity="0.9"/>
     <circle cx="45" cy="26" r="3" fill="#ff006e" opacity="0.9"/>
-    <!-- Stolen clock bag -->
     <circle cx="58" cy="56" r="8" fill="#222244" stroke="#4444aa" stroke-width="1"/>
     <text x="54" y="60" font-size="8" fill="#aaaaff">🕐</text>
   </svg>`,
-
   fear_dragon_boss: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <radialGradient id="fdbg" cx="50%" cy="40%"><stop offset="0%" stop-color="#4400aa"/><stop offset="100%" stop-color="#0a0020"/></radialGradient>
-      <filter id="fearGlow"><feGaussianBlur stdDeviation="3" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
     </defs>
-    <!-- Wings -->
     <path d="M6 44 Q-2 22 8 6 Q16 24 22 46 Z" fill="#220055" stroke="#8338ec" stroke-width="1.5"/>
     <path d="M74 44 Q82 22 72 6 Q64 24 58 46 Z" fill="#220055" stroke="#8338ec" stroke-width="1.5"/>
-    <path d="M8 6 L12 18 M8 6 L18 16" stroke="#8338ec" stroke-width="1.2"/>
-    <path d="M72 6 L68 18 M72 6 L62 16" stroke="#8338ec" stroke-width="1.2"/>
-    <!-- Body -->
     <path d="M16 50 Q40 44 64 50 L68 78 Q40 82 12 78 Z" fill="url(#fdbg)" stroke="#8338ec" stroke-width="1.5"/>
-    <!-- Scale pattern -->
     <path d="M20 54 Q40 50 60 54" stroke="#6600cc" stroke-width="1"/>
-    <path d="M18 60 Q40 56 62 60" stroke="#6600cc" stroke-width="1"/>
-    <!-- Head -->
-    <path d="M20 24 Q40 10 60 24 L62 42 Q40 48 18 42 Z" fill="url(#fdbg)" stroke="#8338ec" stroke-width="2"/>
-    <!-- Horns -->
+    <path d="M20 22 Q40 10 60 22 L62 42 Q40 48 18 42 Z" fill="url(#fdbg)" stroke="#8338ec" stroke-width="2"/>
     <path d="M26 18 Q20 4 24 0 Q28 12 30 20 Z" fill="#8338ec"/>
     <path d="M54 18 Q60 4 56 0 Q52 12 50 20 Z" fill="#8338ec"/>
-    <!-- Terror eyes -->
-    <ellipse cx="31" cy="28" rx="8" ry="8" fill="#000" filter="url(#fearGlow)"/>
-    <ellipse cx="49" cy="28" rx="8" ry="8" fill="#000" filter="url(#fearGlow)"/>
+    <ellipse cx="31" cy="28" rx="8" ry="8" fill="#000"/>
+    <ellipse cx="49" cy="28" rx="8" ry="8" fill="#000"/>
     <ellipse cx="31" cy="28" rx="5" ry="6" fill="#8338ec"/>
     <ellipse cx="49" cy="28" rx="5" ry="6" fill="#8338ec"/>
     <circle cx="31" cy="28" r="2" fill="#fff" opacity="0.9"/>
     <circle cx="49" cy="28" r="2" fill="#fff" opacity="0.9"/>
-    <!-- Void breath -->
     <path d="M34 42 Q30 52 24 56 Q32 50 36 44 Z" fill="#8338ec" opacity="0.7"/>
     <path d="M46 42 Q50 52 56 56 Q48 50 44 44 Z" fill="#8338ec" opacity="0.7"/>
-    <!-- Fear aura -->
-    <circle cx="40" cy="32" r="30" fill="none" stroke="#8338ec" stroke-width="0.5" opacity="0.3"/>
-    <circle cx="40" cy="32" r="24" fill="none" stroke="#8338ec" stroke-width="0.5" opacity="0.2"/>
   </svg>`,
 };
 
-// Helper to get avatar SVG
-function getAvatarSVG(id) {
-  return SVG_ART[id] || SVG_ART.coder;
-}
-
-// Helper to get item SVG (fallback to emoji if no SVG)
+function getAvatarSVG(id) { return SVG_ART[id] || SVG_ART.coder; }
 function getItemSVG(item) {
   const key = item.id;
   if (SVG_ART[key]) return SVG_ART[key];
-  // Fallback: emoji in SVG
   return `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><text x="30" y="42" font-size="36" text-anchor="middle">${item.emoji}</text></svg>`;
 }
-
 function getBossSVG(boss) {
-  const map = {
-    goblin: 'goblin_boss',
-    thief: 'time_thief',
-    fear: 'fear_dragon_boss',
-    scroller: null,
-    burnout: null,
-    overmind: null,
-  };
+  const map = { goblin:'goblin_boss', thief:'time_thief', fear:'fear_dragon_boss' };
   const k = map[boss.id];
   if (k && SVG_ART[k]) return SVG_ART[k];
   return `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><text x="40" y="52" font-size="52" text-anchor="middle">${boss.emoji}</text></svg>`;
@@ -1836,6 +1492,8 @@ const DEFAULT_QUESTS = [
 // ═══════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════
+const SAVE_KEY = 'neon_quest_v3_save';
+
 let G = {
   name:'',avatar:'coder',
   class:'programmer',className:'Programmer',
@@ -1848,6 +1506,54 @@ let G = {
   multiClasses:[],shopCat:'weapon',currentZone:'village',
   currentStep:1,
 };
+
+// ══════════════════════════════════════════════
+// ✅ LOCALSTORAGE SAVE / LOAD
+// ══════════════════════════════════════════════
+function saveGame() {
+  try {
+    const saveData = {
+      name: G.name, avatar: G.avatar, class: G.class, className: G.className,
+      level: G.level, xp: G.xp, xpNeeded: G.xpNeeded, gold: G.gold, gems: G.gems,
+      str: G.str, int: G.int, agi: G.agi, end: G.end, focus: G.focus, luck: G.luck,
+      quests: G.quests, inventory: G.inventory, equipped: G.equipped,
+      pets: G.pets, activePet: G.activePet, skills: G.skills,
+      multiClasses: G.multiClasses, shopCat: G.shopCat, currentZone: G.currentZone,
+    };
+    localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+  } catch(e) { console.warn('Save failed:', e); }
+}
+
+function loadGame() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    // Merge saved data into G
+    Object.assign(G, data);
+    return true;
+  } catch(e) {
+    console.warn('Load failed:', e);
+    return false;
+  }
+}
+
+function confirmReset() {
+  openModal(`<div class="modal-title">🗑️ شروع مجدد</div>
+    <div style="font-size:.82rem;color:var(--tm);line-height:1.8;margin-bottom:16px">
+      تمام پیشرفت، آیتم‌ها، پت‌ها و مأموریت‌ها پاک می‌شوند.<br>
+      این عمل قابل بازگشت نیست.
+    </div>
+    <button class="modal-action-btn" style="background:linear-gradient(135deg,var(--p),var(--o))" onclick="resetGame()">
+      بله، همه چیز رو پاک کن
+    </button>`);
+}
+
+function resetGame() {
+  try { localStorage.removeItem(SAVE_KEY); } catch(e){}
+  closeModalDirect();
+  location.reload();
+}
 
 // ═══════════════════════════════════════════════
 // SETUP
@@ -1890,7 +1596,6 @@ function initSetup(){
     ag.appendChild(d);
   });
 
-  // Set initial preview
   document.getElementById('preview3DArt').innerHTML=getAvatarSVG(G.avatar);
 }
 
@@ -1923,8 +1628,8 @@ function startGame(){
   G.quests=[...DEFAULT_QUESTS,...cq].map((q,i)=>({...q,id:'q'+i,done:false,progress:0,total:1}));
   document.getElementById('setup-screen').classList.remove('active');
   document.getElementById('game-screen').classList.add('active');
+  saveGame(); // ✅ save on start
   renderAll();
-  // ✅ NEW: scroll to top and switch to profile tab on game start
   window.scrollTo({top:0,behavior:'instant'});
   showTab('profile');
   setTimeout(()=>showToast('خوش آمدی، '+G.name+'! ⚔️','success'),300);
@@ -1953,46 +1658,6 @@ function getEquippedItem(slot){
 }
 
 function renderHome(){
-  const inner=document.getElementById('hero3dInner');
-  // Set main avatar art
-  document.getElementById('hero3dArt').innerHTML=getAvatarSVG(G.avatar);
-
-  // Remove old equipped visuals
-  inner.querySelectorAll('.hero-eq-helmet,.hero-eq-weapon,.hero-eq-wings-l,.hero-eq-wings-r,.hero-eq-aura,.hero-eq-pet').forEach(x=>x.remove());
-
-  const eqW=getEquippedItem('wings');
-  const eqH=getEquippedItem('helmet');
-  const eqA=getEquippedItem('aura');
-  const eqWep=getEquippedItem('weapon');
-  const petD=G.activePet?PETS.find(p=>p.id===G.activePet):null;
-
-  if(eqH){const s=document.createElement('span');s.className='hero-eq-helmet';s.textContent=eqH.emoji;inner.appendChild(s);}
-  if(eqWep){const s=document.createElement('span');s.className='hero-eq-weapon';s.textContent=eqWep.emoji;inner.appendChild(s);}
-  if(eqW){
-    const sl=document.createElement('span');sl.className='hero-eq-wings-l';sl.textContent=eqW.emoji;inner.appendChild(sl);
-    const sr=document.createElement('span');sr.className='hero-eq-wings-r';sr.textContent=eqW.emoji;inner.appendChild(sr);
-  }
-  if(eqA){
-    const col=eqA.color||'rgba(0,245,255,0.3)';
-    const s=document.createElement('div');s.className='hero-eq-aura';
-    s.style.background=`conic-gradient(${col},transparent,${col})`;inner.appendChild(s);
-  }
-  if(petD){const s=document.createElement('span');s.className='hero-eq-pet';s.textContent=petD.emoji;inner.appendChild(s);}
-
-  document.getElementById('heroName').textContent=G.name.toUpperCase();
-  document.getElementById('heroClassTag').textContent=G.className.toUpperCase();
-  document.getElementById('hStatStr').textContent=G.str;
-  document.getElementById('hStatInt').textContent=G.int;
-  document.getElementById('hStatAgi').textContent=G.agi;
-  document.getElementById('hStatEnd').textContent=G.end;
-
-  const mr=document.getElementById('multiclassRow');
-  mr.innerHTML='';
-  G.multiClasses.forEach(mc=>{
-    const t=document.createElement('span');t.className='mclass-tag';t.textContent=mc;mr.appendChild(t);
-  });
-  const ab=document.createElement('span');ab.className='mclass-tag add';ab.textContent='+ کلاس';ab.onclick=openMulticlass;mr.appendChild(ab);
-
   renderEquippedStrip();
   renderQuests();
   renderCurrentZone();
@@ -2071,7 +1736,7 @@ function renderMap(){
       <span class="zone-emoji">${z.emoji}</span>
       <div class="zone-name">${z.name}</div>
       <div class="zone-levels">Lv ${z.levels}</div>`;
-    if(unlocked&&!current) d.onclick=()=>{G.currentZone=z.id;renderMap();renderCurrentZone();showToast('وارد '+z.name+' شدی','success');};
+    if(unlocked&&!current) d.onclick=()=>{G.currentZone=z.id;saveGame();renderMap();renderCurrentZone();showToast('وارد '+z.name+' شدی','success');};
     document.getElementById(i<5?'zoneRow1':'zoneRow2').appendChild(d);
   });
 
@@ -2217,6 +1882,97 @@ function renderProfile(){
   });
 }
 
+// ══════════════════════════════════════════════
+// ✅ EDIT CHARACTER (from profile only)
+// ══════════════════════════════════════════════
+function openEditCharacter() {
+  // Determine current selections
+  let tempName = G.name;
+  let tempClass = G.class;
+  let tempClassName = G.className;
+  let tempAvatar = G.avatar;
+
+  const classOpts = CLASSES.map(c => `
+    <div class="mini-class-card ${c.id===tempClass?'selected':''}" id="ec_cls_${c.id}" onclick="ecSelectClass('${c.id}','${c.name}')">
+      <div style="font-size:1.6rem">${c.icon}</div>
+      <div style="font-family:var(--fd);font-size:.58rem;color:var(--c);margin-top:4px">${c.name}</div>
+      <div style="font-size:.5rem;color:var(--tm)">${c.branch}</div>
+    </div>`).join('');
+
+  const avatarOpts = AVATARS.map(a => `
+    <div class="mini-avatar-card ${a.id===tempAvatar?'selected':''} ${!a.free?'locked':''}" id="ec_av_${a.id}" onclick="${a.free?`ecSelectAvatar('${a.id}')`:''}" title="${!a.free?'PRO only':''}">
+      ${getAvatarSVG(a.id)}
+      <div style="font-family:var(--fd);font-size:.5rem;color:var(--tm);margin-top:3px">${a.label}</div>
+      ${!a.free?'<span class="lock-badge" style="position:relative;display:inline-block;margin-top:3px">💎</span>':''}
+    </div>`).join('');
+
+  openModal(`
+    <div class="modal-title">✏️ ویرایش کاراکتر</div>
+    <div class="form-group">
+      <label class="form-label">نام</label>
+      <input class="form-input" id="ec_name" value="${G.name}" maxlength="20">
+    </div>
+    <div class="form-group">
+      <label class="form-label" style="margin-bottom:10px">کلاس</label>
+      <div class="edit-class-grid">${classOpts}</div>
+    </div>
+    <div class="form-group" style="margin-top:14px">
+      <label class="form-label" style="margin-bottom:10px">آواتار (رایگان)</label>
+      <div class="edit-avatar-grid">${avatarOpts}</div>
+    </div>
+    <button class="modal-action-btn" onclick="saveEditCharacter()">✓ ذخیره تغییرات</button>
+  `);
+}
+
+// temp selection tracking
+let _ecClass = null;
+let _ecClassName = null;
+let _ecAvatar = null;
+
+function ecSelectClass(id, name) {
+  _ecClass = id; _ecClassName = name;
+  document.querySelectorAll('.mini-class-card').forEach(el => el.classList.remove('selected'));
+  const el = document.getElementById('ec_cls_' + id);
+  if (el) el.classList.add('selected');
+}
+
+function ecSelectAvatar(id) {
+  _ecAvatar = id;
+  document.querySelectorAll('.mini-avatar-card').forEach(el => el.classList.remove('selected'));
+  const el = document.getElementById('ec_av_' + id);
+  if (el) el.classList.add('selected');
+}
+
+function saveEditCharacter() {
+  const newName = document.getElementById('ec_name').value.trim();
+  if (!newName) { showToast('نام نمی‌تواند خالی باشد','default'); return; }
+
+  const oldClass = G.class;
+  G.name = newName;
+  if (_ecClass) { G.class = _ecClass; G.className = _ecClassName; }
+  if (_ecAvatar) { G.avatar = _ecAvatar; }
+
+  // Reset temp
+  _ecClass = null; _ecClassName = null; _ecAvatar = null;
+
+  // If class changed, add new class quests (keep existing)
+  if (G.class !== oldClass) {
+    const cq = QUEST_TEMPLATES[G.class] || [];
+    const existingNames = G.quests.map(q => q.name);
+    cq.forEach((q, i) => {
+      if (!existingNames.includes(q.name)) {
+        G.quests.push({...q, id:'ec'+Date.now()+i, done:false, progress:0, total:1});
+      }
+    });
+  }
+
+  saveGame();
+  closeModalDirect();
+  renderAll();
+  showToast('✓ تغییرات ذخیره شد','success');
+  spawnParticles('✨','⭐');
+}
+
 // ═══════════════════════════════════════════════
 // ACTIONS
 // ═══════════════════════════════════════════════
@@ -2228,6 +1984,7 @@ function completeQuest(qid){
   addXP(q.xp);
   spawnParticles('+'+q.xp+' XP','⭐','✨');
   showToast('+'+q.xp+' XP | +'+q.gold+' Gold','xp');
+  saveGame(); // ✅ auto-save
   renderAll();
 }
 
@@ -2253,7 +2010,7 @@ function showLevelUp(){
   document.getElementById('lvlNum').textContent=G.level;
   document.getElementById('lvlOverlay').classList.add('show');
 }
-function closeLvlUp(){document.getElementById('lvlOverlay').classList.remove('show');renderAll();}
+function closeLvlUp(){document.getElementById('lvlOverlay').classList.remove('show');saveGame();renderAll();}
 
 function buyItem(item){
   if(G.gold<item.price){showToast('Gold کافی نداری!','default');return;}
@@ -2262,6 +2019,7 @@ function buyItem(item){
   equipItem(item,false);
   showToast(item.emoji+' '+item.name+' خریداری و تجهیز شد!','success');
   spawnParticles(item.emoji,'✨');
+  saveGame(); // ✅ auto-save
   renderAll();
 }
 
@@ -2271,6 +2029,7 @@ function equipItem(item,showMsg=true){
     showToast(item.emoji+' '+item.name+' تجهیز شد ✓','success');
     spawnParticles(item.emoji);
   }
+  saveGame(); // ✅ auto-save
   renderAll();
 }
 
@@ -2281,6 +2040,7 @@ function buyPet(pet){
   activatePet(pet,false);
   showToast(pet.emoji+' '+pet.name+' خریداری شد! 🐾','success');
   spawnParticles(pet.emoji,'🐾');
+  saveGame(); // ✅ auto-save
   renderAll();
 }
 
@@ -2290,6 +2050,7 @@ function activatePet(pet,showMsg=true){
     showToast(pet.emoji+' '+pet.name+' فعال شد 🐾','success');
     spawnParticles(pet.emoji);
   }
+  saveGame(); // ✅ auto-save
   renderAll();
 }
 
@@ -2303,6 +2064,7 @@ function upgradeSkill(sid){
   G.skills[sid]=lvl+1;
   showToast(sk.icon+' '+sk.name+' ارتقا یافت!','xp');
   spawnParticles(sk.icon);
+  saveGame(); // ✅ auto-save
   renderProfile();renderTopBar();
 }
 
@@ -2332,6 +2094,7 @@ function saveNewQuest(){
   const cat=document.getElementById('qCat').value;
   G.quests.push({id:'q'+Date.now(),name,desc:desc||'مأموریت شخصی',icon:catIcons[cat],xp:40,gold:25,done:false,progress:0,total:1});
   closeModalDirect();
+  saveGame(); // ✅ auto-save
   renderQuests();
   showToast('مأموریت اضافه شد!','success');
 }
@@ -2358,6 +2121,7 @@ function addMulticlass(name,icon,classId){
     spawnParticles(icon,'⭐');
   }
   closeModalDirect();
+  saveGame(); // ✅ auto-save
   renderHome();
 }
 
@@ -2436,7 +2200,9 @@ function fightAction(type){
 function fightWin(){
   const boss=fightState.boss;
   addXP(boss.xp);G.gold+=boss.gold;
-  closeFight();renderAll();
+  closeFight();
+  saveGame(); // ✅ auto-save
+  renderAll();
   showToast('🏆 پیروزی! +'+boss.xp+' XP | +'+boss.gold+' Gold','gold');
   spawnParticles('🏆','⚡','🌟');
 }
@@ -2485,14 +2251,28 @@ function spawnParticles(...emojis){
   });
 }
 
-// INIT
-window.addEventListener('load',()=>{
+// ═══════════════════════════════════════════════
+// ✅ INIT — load save or show setup
+// ═══════════════════════════════════════════════
+window.addEventListener('load', () => {
   initSetup();
-  setTimeout(()=>{
-    const l=document.getElementById('loading');
-    l.style.opacity='0';
-    setTimeout(()=>l.style.display='none',800);
-  },2400);
+
+  setTimeout(() => {
+    const l = document.getElementById('loading');
+    l.style.opacity = '0';
+    setTimeout(() => l.style.display = 'none', 800);
+  }, 2400);
+
+  // ✅ Try to load saved game
+  if (loadGame() && G.name) {
+    // Has a saved game — go straight to game
+    document.getElementById('setup-screen').classList.remove('active');
+    document.getElementById('game-screen').classList.add('active');
+    renderAll();
+    window.scrollTo({top:0,behavior:'instant'});
+    showTab('profile');
+    setTimeout(() => showToast('خوش برگشتی، ' + G.name + '! 💾','success'), 600);
+  }
 });
 </script>
 </body>
