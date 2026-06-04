@@ -42,9 +42,9 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   text-shadow:0 0 30px var(--c),0 0 60px rgba(0,245,255,0.4),0 0 100px rgba(0,245,255,0.15);
   letter-spacing:6px;text-align:center;margin:24px 0 6px;animation:logoFloat 4s ease-in-out infinite}
 @keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.setup-tagline{font-family:var(--fd);font-size:.62rem;color:var(--p);letter-spacing:4px;text-shadow:0 0 15px var(--p);margin-bottom:8px}
+.setup-tagline{font-family:var(--fd);font-size:.62rem;color:var(--p);letter-spacing:4px;text-shadow:0 0 15px var(--p);margin-bottom:30px}
 
-/* Step indicator */
+/* Step indicator — فقط در setup */
 .step-indicator{display:flex;gap:8px;align-items:center;margin-bottom:24px}
 .step-dot{width:36px;height:36px;border-radius:50%;border:2px solid rgba(0,245,255,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.65rem;color:var(--tm);transition:all .4s;cursor:default;position:relative}
 .step-dot.active{border-color:var(--c);color:var(--c);box-shadow:0 0 16px rgba(0,245,255,0.5),inset 0 0 10px rgba(0,245,255,0.1)}
@@ -271,7 +271,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .boss-rewards{display:flex;gap:8px;justify-content:center;margin-top:12px}
 .boss-fight-btn{background:linear-gradient(135deg,var(--p),var(--o));border:none;border-radius:10px;
   color:#fff;font-family:var(--fd);font-size:.7rem;letter-spacing:2px;padding:11px 26px;
-  cursor:pointer;margin-top:14px;transition:all .25s;box-shadow:0 0 24px rgba(255,0,110,0.35)}
+  cursor:pointer;margin-top:14px;transition:all .25px;box-shadow:0 0 24px rgba(255,0,110,0.35)}
 .boss-fight-btn:hover{transform:scale(1.06);box-shadow:0 0 40px rgba(255,0,110,0.6)}
 .boss-locked{opacity:.5;cursor:not-allowed;background:var(--bgc);border-color:rgba(255,255,255,0.08)}
 
@@ -544,6 +544,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   <div class="setup-logo">⚔ NEON QUEST</div>
   <div class="setup-tagline">ULTIMATE V3 — LIFE RPG EDITION</div>
 
+  <!-- Step indicator فقط در setup نمایش داده می‌شه -->
   <div class="step-indicator">
     <div class="step-dot active" id="sd1">1</div>
     <div class="step-line" id="sl1"></div>
@@ -601,7 +602,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
 <!-- ════════ GAME SCREEN ════════ -->
 <div id="game-screen" class="screen">
-  <!-- TOP BAR -->
+  <!-- TOP BAR — بدون step indicator -->
   <div class="top-bar">
     <div class="player-avatar-small" id="topAvatar" onclick="showTab('profile')"></div>
     <div class="top-info">
@@ -618,7 +619,6 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
   <!-- HOME TAB -->
   <div class="tab-page active" id="tab-home">
-    <!-- hero-banner REMOVED — فقط از پروفایل قابل ویرایش است -->
     <div class="equipped-strip" id="equippedStrip"></div>
     <div class="sec-title">مأموریت‌های امروز</div>
     <div id="questList"></div>
@@ -649,11 +649,11 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     <div class="pet-grid" id="petGrid"></div>
   </div>
 
-  <!-- PROFILE TAB -->
+  <!-- PROFILE TAB — دکمه ویرایش کاراکتر که شامل ۳ مرحله (نام/کلاس/آواتار) می‌شه -->
   <div class="tab-page" id="tab-profile">
     <div class="sec-title">کاراکتر من</div>
 
-    <!-- ✅ NEW: Edit Character Button -->
+    <!-- دکمه ویرایش کامل کاراکتر (جایگزین step indicator در گیم) -->
     <button class="edit-char-btn" onclick="openEditCharacter()">✏️ ویرایش کاراکتر (نام / کلاس / آواتار)</button>
 
     <div class="profile-3d-wrap">
@@ -672,7 +672,6 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     <div class="sec-title">درخت مهارت</div>
     <div class="skill-tree" id="skillTree"></div>
 
-    <!-- ✅ NEW: Reset Save Button -->
     <button class="reset-btn" onclick="confirmReset()">🗑️ حذف پیشرفت و شروع مجدد</button>
   </div>
 
@@ -1508,7 +1507,7 @@ let G = {
 };
 
 // ══════════════════════════════════════════════
-// ✅ LOCALSTORAGE SAVE / LOAD
+// LOCALSTORAGE SAVE / LOAD
 // ══════════════════════════════════════════════
 function saveGame() {
   try {
@@ -1529,7 +1528,6 @@ function loadGame() {
     const raw = localStorage.getItem(SAVE_KEY);
     if (!raw) return false;
     const data = JSON.parse(raw);
-    // Merge saved data into G
     Object.assign(G, data);
     return true;
   } catch(e) {
@@ -1628,7 +1626,7 @@ function startGame(){
   G.quests=[...DEFAULT_QUESTS,...cq].map((q,i)=>({...q,id:'q'+i,done:false,progress:0,total:1}));
   document.getElementById('setup-screen').classList.remove('active');
   document.getElementById('game-screen').classList.add('active');
-  saveGame(); // ✅ save on start
+  saveGame();
   renderAll();
   window.scrollTo({top:0,behavior:'instant'});
   showTab('profile');
@@ -1883,24 +1881,24 @@ function renderProfile(){
 }
 
 // ══════════════════════════════════════════════
-// ✅ EDIT CHARACTER (from profile only)
+// EDIT CHARACTER (از پروفایل — جایگزین step indicator در گیم)
 // ══════════════════════════════════════════════
+let _ecClass = null;
+let _ecClassName = null;
+let _ecAvatar = null;
+
 function openEditCharacter() {
-  // Determine current selections
-  let tempName = G.name;
-  let tempClass = G.class;
-  let tempClassName = G.className;
-  let tempAvatar = G.avatar;
+  _ecClass = null; _ecClassName = null; _ecAvatar = null;
 
   const classOpts = CLASSES.map(c => `
-    <div class="mini-class-card ${c.id===tempClass?'selected':''}" id="ec_cls_${c.id}" onclick="ecSelectClass('${c.id}','${c.name}')">
+    <div class="mini-class-card ${c.id===G.class?'selected':''}" id="ec_cls_${c.id}" onclick="ecSelectClass('${c.id}','${c.name}')">
       <div style="font-size:1.6rem">${c.icon}</div>
       <div style="font-family:var(--fd);font-size:.58rem;color:var(--c);margin-top:4px">${c.name}</div>
       <div style="font-size:.5rem;color:var(--tm)">${c.branch}</div>
     </div>`).join('');
 
   const avatarOpts = AVATARS.map(a => `
-    <div class="mini-avatar-card ${a.id===tempAvatar?'selected':''} ${!a.free?'locked':''}" id="ec_av_${a.id}" onclick="${a.free?`ecSelectAvatar('${a.id}')`:''}" title="${!a.free?'PRO only':''}">
+    <div class="mini-avatar-card ${a.id===G.avatar?'selected':''} ${!a.free?'locked':''}" id="ec_av_${a.id}" onclick="${a.free?`ecSelectAvatar('${a.id}')`:''}" title="${!a.free?'PRO only':''}">
       ${getAvatarSVG(a.id)}
       <div style="font-family:var(--fd);font-size:.5rem;color:var(--tm);margin-top:3px">${a.label}</div>
       ${!a.free?'<span class="lock-badge" style="position:relative;display:inline-block;margin-top:3px">💎</span>':''}
@@ -1923,11 +1921,6 @@ function openEditCharacter() {
     <button class="modal-action-btn" onclick="saveEditCharacter()">✓ ذخیره تغییرات</button>
   `);
 }
-
-// temp selection tracking
-let _ecClass = null;
-let _ecClassName = null;
-let _ecAvatar = null;
 
 function ecSelectClass(id, name) {
   _ecClass = id; _ecClassName = name;
@@ -1952,10 +1945,8 @@ function saveEditCharacter() {
   if (_ecClass) { G.class = _ecClass; G.className = _ecClassName; }
   if (_ecAvatar) { G.avatar = _ecAvatar; }
 
-  // Reset temp
   _ecClass = null; _ecClassName = null; _ecAvatar = null;
 
-  // If class changed, add new class quests (keep existing)
   if (G.class !== oldClass) {
     const cq = QUEST_TEMPLATES[G.class] || [];
     const existingNames = G.quests.map(q => q.name);
@@ -1984,7 +1975,7 @@ function completeQuest(qid){
   addXP(q.xp);
   spawnParticles('+'+q.xp+' XP','⭐','✨');
   showToast('+'+q.xp+' XP | +'+q.gold+' Gold','xp');
-  saveGame(); // ✅ auto-save
+  saveGame();
   renderAll();
 }
 
@@ -2019,7 +2010,7 @@ function buyItem(item){
   equipItem(item,false);
   showToast(item.emoji+' '+item.name+' خریداری و تجهیز شد!','success');
   spawnParticles(item.emoji,'✨');
-  saveGame(); // ✅ auto-save
+  saveGame();
   renderAll();
 }
 
@@ -2029,7 +2020,7 @@ function equipItem(item,showMsg=true){
     showToast(item.emoji+' '+item.name+' تجهیز شد ✓','success');
     spawnParticles(item.emoji);
   }
-  saveGame(); // ✅ auto-save
+  saveGame();
   renderAll();
 }
 
@@ -2040,7 +2031,7 @@ function buyPet(pet){
   activatePet(pet,false);
   showToast(pet.emoji+' '+pet.name+' خریداری شد! 🐾','success');
   spawnParticles(pet.emoji,'🐾');
-  saveGame(); // ✅ auto-save
+  saveGame();
   renderAll();
 }
 
@@ -2050,7 +2041,7 @@ function activatePet(pet,showMsg=true){
     showToast(pet.emoji+' '+pet.name+' فعال شد 🐾','success');
     spawnParticles(pet.emoji);
   }
-  saveGame(); // ✅ auto-save
+  saveGame();
   renderAll();
 }
 
@@ -2064,7 +2055,7 @@ function upgradeSkill(sid){
   G.skills[sid]=lvl+1;
   showToast(sk.icon+' '+sk.name+' ارتقا یافت!','xp');
   spawnParticles(sk.icon);
-  saveGame(); // ✅ auto-save
+  saveGame();
   renderProfile();renderTopBar();
 }
 
@@ -2094,7 +2085,7 @@ function saveNewQuest(){
   const cat=document.getElementById('qCat').value;
   G.quests.push({id:'q'+Date.now(),name,desc:desc||'مأموریت شخصی',icon:catIcons[cat],xp:40,gold:25,done:false,progress:0,total:1});
   closeModalDirect();
-  saveGame(); // ✅ auto-save
+  saveGame();
   renderQuests();
   showToast('مأموریت اضافه شد!','success');
 }
@@ -2121,7 +2112,7 @@ function addMulticlass(name,icon,classId){
     spawnParticles(icon,'⭐');
   }
   closeModalDirect();
-  saveGame(); // ✅ auto-save
+  saveGame();
   renderHome();
 }
 
@@ -2201,7 +2192,7 @@ function fightWin(){
   const boss=fightState.boss;
   addXP(boss.xp);G.gold+=boss.gold;
   closeFight();
-  saveGame(); // ✅ auto-save
+  saveGame();
   renderAll();
   showToast('🏆 پیروزی! +'+boss.xp+' XP | +'+boss.gold+' Gold','gold');
   spawnParticles('🏆','⚡','🌟');
@@ -2252,7 +2243,7 @@ function spawnParticles(...emojis){
 }
 
 // ═══════════════════════════════════════════════
-// ✅ INIT — load save or show setup
+// INIT
 // ═══════════════════════════════════════════════
 window.addEventListener('load', () => {
   initSetup();
@@ -2263,18 +2254,13 @@ window.addEventListener('load', () => {
     setTimeout(() => l.style.display = 'none', 800);
   }, 2400);
 
-  // ✅ Try to load saved game
   if (loadGame() && G.name) {
-    // Has a saved game — go straight to game
     document.getElementById('setup-screen').classList.remove('active');
     document.getElementById('game-screen').classList.add('active');
     renderAll();
     window.scrollTo({top:0,behavior:'instant'});
     showTab('profile');
     setTimeout(() => showToast('خوش برگشتی، ' + G.name + '! 💾','success'), 600);
-}
-HTMLEOF
-echo "replacement JS ready"
   }
 });
 </script>
