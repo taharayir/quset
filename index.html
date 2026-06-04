@@ -2272,7 +2272,142 @@ window.addEventListener('load', () => {
     window.scrollTo({top:0,behavior:'instant'});
     showTab('profile');
     setTimeout(() => showToast('خوش برگشتی، ' + G.name + '! 💾','success'), 600);
-   
+
+    cat << 'HTMLEOF' > /home/claude/edit_replacement.js
+// ══════════════════════════════════════════════════
+// ✅ EDIT CHARACTER — 3-Step Modal (from profile)
+// ══════════════════════════════════════════════════
+let _ecStep = 1;
+let _ecClass = null;
+let _ecClassName = null;
+let _ecAvatar = null;
+
+function openEditCharacter() {
+  _ecStep = 1;
+  _ecClass = G.class;
+  _ecClassName = G.className;
+  _ecAvatar = G.avatar;
+  renderEditStep();
+}
+
+function renderEditStep() {
+  const stepDot = (n) => {
+    let cls = '';
+    if (n < _ecStep) cls = 'done';
+    else if (n === _ecStep) cls = 'active';
+    return `<div class="step-dot ${cls}" style="width:30px;height:30px;font-size:.6rem">${n < _ecStep ? '✓' : n}</div>`;
+  };
+  const stepLine = (n) => `<div class="step-line ${n < _ecStep ? 'done' : ''}" style="width:20px"></div>`;
+
+  const indicator = `<div style="display:flex;gap:6px;align-items:center;justify-content:center;margin-bottom:20px">
+    ${stepDot(1)}${stepLine(1)}${stepDot(2)}${stepLine(2)}${stepDot(3)}
+  </div>`;
+
+  let body = '';
+
+  if (_ecStep === 1) {
+    body = `<div class="modal-title">✏️ ویرایش — نام کاراکتر</div>
+      ${indicator}
+      <div class="form-group">
+        <label class="form-label">نام قهرمان</label>
+        <input class="form-input" id="ec_name" value="${G.name}" maxlength="20" style="font-size:1.1rem;padding:16px">
+      </div>
+      <button class="modal-action-btn" onclick="ecNext(1)">بعدی: کلاس ←</button>`;
+
+  } else if (_ecStep === 2) {
+    const classOpts = CLASSES.map(c => `
+      <div class="mini-class-card ${c.id===_ecClass?'selected':''}" id="ec_cls_${c.id}" onclick="ecSelectClass('${c.id}','${c.name}')">
+        <div style="font-size:1.5rem">${c.icon}</div>
+        <div style="font-family:var(--fd);font-size:.56rem;color:var(--c);margin-top:3px">${c.name}</div>
+        <div style="font-size:.48rem;color:var(--tm)">${c.branch}</div>
+      </div>`).join('');
+    body = `<div class="modal-title">✏️ ویرایش — کلاس</div>
+      ${indicator}
+      <div class="edit-class-grid" style="margin-bottom:16px">${classOpts}</div>
+      <div style="display:flex;gap:8px">
+        <button style="flex:1;padding:13px;border-radius:10px;font-family:var(--fd);font-size:.7rem;letter-spacing:1px;cursor:pointer;background:transparent;border:1px solid rgba(0,245,255,0.2);color:var(--tm)" onclick="ecBack()">← قبلی</button>
+        <button style="flex:2;padding:13px;border-radius:10px;font-family:var(--fd);font-size:.7rem;letter-spacing:1px;cursor:pointer;background:linear-gradient(135deg,var(--v),var(--p));color:#fff;border:none" onclick="ecNext(2)">بعدی: آواتار ←</button>
+      </div>`;
+
+  } else if (_ecStep === 3) {
+    const avatarOpts = AVATARS.map(a => `
+      <div class="mini-avatar-card ${a.id===_ecAvatar?'selected':''} ${!a.free?'locked':''}" id="ec_av_${a.id}" onclick="${a.free?`ecSelectAvatar('${a.id}')`:''}" title="${!a.free?'PRO only':''}">
+        ${getAvatarSVG(a.id)}
+        <div style="font-family:var(--fd);font-size:.48rem;color:var(--tm);margin-top:2px">${a.label}</div>
+        ${!a.free?'<span class="lock-badge" style="position:relative;display:inline-block;margin-top:2px">💎</span>':''}
+      </div>`).join('');
+    body = `<div class="modal-title">✏️ ویرایش — آواتار</div>
+      ${indicator}
+      <div style="text-align:center;margin-bottom:12px">
+        <div style="width:72px;height:72px;margin:0 auto;border:2px solid var(--c);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(0,245,255,0.3)" id="ec_preview_wrap">${getAvatarSVG(_ecAvatar)}</div>
+      </div>
+      <div class="edit-avatar-grid" style="margin-bottom:16px">${avatarOpts}</div>
+      <div style="display:flex;gap:8px">
+        <button style="flex:1;padding:13px;border-radius:10px;font-family:var(--fd);font-size:.7rem;letter-spacing:1px;cursor:pointer;background:transparent;border:1px solid rgba(0,245,255,0.2);color:var(--tm)" onclick="ecBack()">← قبلی</button>
+        <button style="flex:2;padding:13px;border-radius:10px;font-family:var(--fd);font-size:.8rem;font-weight:700;letter-spacing:2px;cursor:pointer;background:linear-gradient(135deg,#00f5ff,#8338ec,#ff006e);color:#fff;border:none" onclick="saveEditCharacter()">✓ ذخیره تغییرات</button>
+      </div>`;
+  }
+
+  openModal(body);
+}
+
+function ecNext(fromStep) {
+  if (fromStep === 1) {
+    const newName = document.getElementById('ec_name').value.trim();
+    if (!newName) { showToast('نام نمی‌تواند خالی باشد','default'); return; }
+    G.name = newName;
+    _ecStep = 2;
+  } else if (fromStep === 2) {
+    _ecStep = 3;
+  }
+  renderEditStep();
+}
+
+function ecBack() {
+  _ecStep = Math.max(1, _ecStep - 1);
+  renderEditStep();
+}
+
+function ecSelectClass(id, name) {
+  _ecClass = id; _ecClassName = name;
+  document.querySelectorAll('.mini-class-card').forEach(el => el.classList.remove('selected'));
+  const el = document.getElementById('ec_cls_' + id);
+  if (el) el.classList.add('selected');
+}
+
+function ecSelectAvatar(id) {
+  _ecAvatar = id;
+  document.querySelectorAll('.mini-avatar-card').forEach(el => el.classList.remove('selected'));
+  const el = document.getElementById('ec_av_' + id);
+  if (el) el.classList.add('selected');
+  const pw = document.getElementById('ec_preview_wrap');
+  if (pw) pw.innerHTML = getAvatarSVG(id);
+}
+
+function saveEditCharacter() {
+  const oldClass = G.class;
+  if (_ecClass) { G.class = _ecClass; G.className = _ecClassName; }
+  if (_ecAvatar) { G.avatar = _ecAvatar; }
+  _ecClass = null; _ecClassName = null; _ecAvatar = null; _ecStep = 1;
+
+  if (G.class !== oldClass) {
+    const cq = QUEST_TEMPLATES[G.class] || [];
+    const existingNames = G.quests.map(q => q.name);
+    cq.forEach((q, i) => {
+      if (!existingNames.includes(q.name)) {
+        G.quests.push({...q, id:'ec'+Date.now()+i, done:false, progress:0, total:1});
+      }
+    });
+  }
+
+  saveGame();
+  closeModalDirect();
+  renderAll();
+  showToast('✓ تغییرات ذخیره شد','success');
+  spawnParticles('✨','⭐');
+}
+HTMLEOF
+echo "replacement JS ready"
   }
 });
 </script>
