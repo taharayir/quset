@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#04050c">
+<title>NEON QUEST ⚔️</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">NEON QUEST</div>
+  <div class="topbar-r">
+    <div class="tbadge streak" id="topStreak">🔥 0</div>
+    <div class="tbadge level">LVL <strong id="topLvl">1</strong></div>
+    <div class="tbadge gold">🪙 <span id="topGold">0</span></div>
+  </div>
+</div>
+
+<main>
+
+<!-- DASHBOARD -->
+<div class="page active" id="page-dashboard">
+  <div class="ncard">
+    <canvas id="avatarCanvas" onclick="openClassModal()" title="برای انتخاب کلاس کلیک کن"></canvas>
+    <div class="avatar-info-row">
+      <div style="flex:1">
+        <div class="pc-name-big" id="pcName">Hero</div>
+        <div id="pcClassBadge" style="margin:3px 0"></div>
+        <div class="pc-title-neon" id="pcTitle">Rookie</div>
+      </div>
+      <div style="text-align:left">
+        <div style="font-size:22px;font-weight:800;color:var(--gold);font-family:'Orbitron',monospace" id="pcGold">0 🪙</div>
+      </div>
+    </div>
+    <div style="margin-top:10px">
+      <div class="bar-r"><div class="bar-l"><span>❤️ HP</span><span id="hpTxt">100/100</span></div><div class="bar-t"><div class="bar-f hp-b" id="hpBar" style="width:100%"></div></div></div>
+      <div class="bar-r"><div class="bar-l"><span>⭐ XP</span><span id="xpTxt">0/100</span></div><div class="bar-t"><div class="bar-f xp-b" id="xpBar" style="width:0%"></div></div></div>
+      <div class="bar-r"><div class="bar-l"><span>💧 Mana</span><span id="manaTxt">50/50</span></div><div class="bar-t"><div class="bar-f mana-b" id="manaBar" style="width:100%"></div></div></div>
+    </div>
+  </div>
+
+  <div class="sh"><div class="st">مهارت‌ها</div><div class="ss" id="totalPow">Power: 0</div></div>
+  <div class="stats-g" id="statsGrid"></div>
+
+  <div class="sh"><div class="st">Boss</div><div class="ss" id="bossSub"></div></div>
+  <div class="boss-ncard" id="bossCard">
+    <div class="boss-r">
+      <div class="boss-av-wrap">
+        <span class="boss-emoji" id="bossEm">👾</span>
+        <div class="boss-ring"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="34" fill="none" stroke="rgba(232,93,93,.15)" stroke-width="4"/><circle cx="40" cy="40" r="34" fill="none" stroke="var(--red)" stroke-width="4" stroke-dasharray="213.6" id="bossRingPath" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 40 40)"/></svg></div>
+      </div>
+      <div class="boss-info">
+        <div class="boss-nm" id="bossName">Lazy Goblin</div>
+        <div class="boss-ht"><div class="boss-hf" id="bossHpF" style="width:100%"></div></div>
+        <div class="boss-stats"><span id="bossHpTxt">300/300</span><span id="bossDmg">هر مأموریت = ضربه 💥</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sh"><div class="st">Daily Challenge</div><div class="ss" id="chTimer"></div></div>
+  <div class="ch-ncard" style="position:relative">
+    <div class="ch-icon" id="chIcon">🎯</div>
+    <div class="ch-info"><div class="ch-nm" id="chNm">...</div><div class="ch-rw" id="chRw"></div></div>
+    <button class="ch-btn" id="chBtn" onclick="completeChallenge()">انجام</button>
+  </div>
+
+  <div class="sh"><div class="st">دستاوردها</div><div class="ss" id="achCount">0/0</div></div>
+  <div class="ach-sc" id="achScroll"></div>
+</div>
+
+<!-- QUESTS -->
+<div class="page" id="page-quests">
+  <div class="qh"><div class="qdate" id="qDate"></div><div class="qring"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="none" stroke="var(--border)" stroke-width="4"/><circle cx="24" cy="24" r="20" fill="none" stroke="var(--neon-blue)" stroke-width="4" stroke-dasharray="125.6" id="qRing" stroke-dashoffset="125.6" stroke-linecap="round" transform="rotate(-90 24 24)" style="filter:drop-shadow(0 0 4px var(--neon-blue))"/></svg><span id="qRingTxt">0%</span></div></div>
+  <div class="qtabs">
+    <button class="qtab active" onclick="switchQTab('daily',this)">🌅 Daily</button>
+    <button class="qtab" onclick="switchQTab('weekly',this)">📅 Weekly</button>
+    <button class="qtab" onclick="switchQTab('monthly',this)">🗓️ Monthly</button>
+    <button class="qtab" onclick="switchQTab('class',this)">⚔️ کلاس</button>
+    <button class="qtab" onclick="switchQTab('custom',this)">✏️ سفارشی</button>
+  </div>
+  <div class="quest-list" id="questList"></div>
+  <button class="add-q" onclick="openQuestModal()"><span style="font-size:15px">+</span> مأموریت جدید</button>
+</div>
+
+<!-- SKILL TREE -->
+<div class="page" id="page-skilltree">
+  <div class="sh" style="margin-bottom:12px"><div class="st">Skill Tree</div><div class="ss" id="skillPts">💎 0 pts</div></div>
+  <div class="tree-tabs" id="treeTabs"></div>
+  <div id="treeWrap"></div>
+</div>
+
+<!-- MAP -->
+<div class="page" id="page-map">
+  <div class="sh" style="margin-bottom:12px"><div class="st">World Map</div><div class="ss" id="mapLevel">Level 1</div></div>
+  <div id="mapPath"></div>
+</div>
+
+<!-- INVENTORY -->
+<div class="page" id="page-inventory">
+  <div class="sh" style="margin-bottom:10px"><div class="st">Inventory</div><div class="ss" id="invCount">0 آیتم</div></div>
+  <div class="inv-tabs">
+    <button class="inv-tab active" onclick="switchInvTab('all',this)">همه</button>
+    <button class="inv-tab" onclick="switchInvTab('weapon',this)">⚔️</button>
+    <button class="inv-tab" onclick="switchInvTab('armor',this)">🛡️</button>
+    <button class="inv-tab" onclick="switchInvTab('helmet',this)">⛑️</button>
+    <button class="inv-tab" onclick="switchInvTab('boots',this)">👟</button>
+    <button class="inv-tab" onclick="switchInvTab('ring',this)">💍</button>
+    <button class="inv-tab" onclick="switchInvTab('necklace',this)">📿</button>
+    <button class="inv-tab" onclick="switchInvTab('wings',this)">🕊️</button>
+    <button class="inv-tab" onclick="switchInvTab('aura',this)">✨</button>
+  </div>
+  <div class="inv-grid" id="invGrid"></div>
+  <div class="sh" style="margin-bottom:8px"><div class="st">Equipped</div></div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:12px">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px" id="eqSlots"></div>
+  </div>
+</div>
+
+<!-- SHOP -->
+<div class="page" id="page-shop">
+  <div class="shop-hdr">
+    <div class="shop-gold-r"><div class="st">Shop</div><div class="shop-gb">🪙 <span id="shopGold">0</span></div></div>
+    <div class="shop-tabs">
+      <button class="shop-tab active" onclick="switchShopTab('weapon',this)">⚔️ سلاح</button>
+      <button class="shop-tab" onclick="switchShopTab('armor',this)">🛡️ زره</button>
+      <button class="shop-tab" onclick="switchShopTab('helmet',this)">⛑️ کلاه</button>
+      <button class="shop-tab" onclick="switchShopTab('boots',this)">👟 کفش</button>
+      <button class="shop-tab" onclick="switchShopTab('ring',this)">💍 انگشتر</button>
+      <button class="shop-tab" onclick="switchShopTab('necklace',this)">📿 گردنبند</button>
+      <button class="shop-tab" onclick="switchShopTab('wings',this)">🕊️ بال</button>
+      <button class="shop-tab" onclick="switchShopTab('aura',this)">✨ اورا</button>
+      <button class="shop-tab" onclick="switchShopTab('boost',this)">⚡ Boost</button>
+    </div>
+  </div>
+  <div class="shop-grid" id="shopGrid"></div>
+</div>
+
+<!-- PETS -->
+<div class="page" id="page-pets">
+  <div class="sh" style="margin-bottom:10px"><div class="st">Pets</div><div class="ss" id="activePetLbl">بدون پت</div></div>
+  <div class="pets-filter">
+    <button class="pf-btn active" onclick="switchPetFilter('all',this)">همه</button>
+    <button class="pf-btn" onclick="switchPetFilter('common',this)" style="color:var(--common)">Common</button>
+    <button class="pf-btn" onclick="switchPetFilter('rare',this)" style="color:var(--rare)">Rare</button>
+    <button class="pf-btn" onclick="switchPetFilter('epic',this)" style="color:var(--epic)">Epic</button>
+    <button class="pf-btn" onclick="switchPetFilter('legendary',this)" style="color:var(--legendary)">Legendary</button>
+    <button class="pf-btn" onclick="switchPetFilter('mythic',this)" style="color:var(--mythic)">Mythic</button>
+  </div>
+  <div class="pets-g" id="petsGrid"></div>
+</div>
+
+<!-- PROFILE -->
+<div class="page" id="page-profile">
+  <div class="profile-hero">
+    <div class="prof-av" id="profAv">⚔️</div>
+    <div class="prof-name-r">
+      <input class="pni" id="nameInput" placeholder="نام شخصیت..."/>
+      <button class="psb" onclick="saveName()">✓</button>
+    </div>
+    <div class="prof-cls" id="profCls">NO CLASS</div>
+    <div class="prof-tit" id="profTit">ROOKIE</div>
+  </div>
+  <div class="stats-full" id="statsFullGrid"></div>
+  <div class="sh" style="margin:12px 0 7px"><div class="st">Activity</div></div>
+  <div class="act-chart" id="actChart"></div>
+  <div class="divider"></div>
+  <button class="reset-btn" onclick="confirmReset()">⚠️ RESET ALL DATA</button>
+</div>
+
+</main>
+
+<!-- NAV -->
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="goPage('dashboard',this)"><span class="nav-icon">🏠</span><span class="nav-lbl">HOME</span></button>
+  <button class="nav-item" onclick="goPage('quests',this)"><span class="nav-icon">⚔️</span><span class="nav-lbl">QUESTS</span></button>
+  <button class="nav-item" onclick="goPage('skilltree',this)"><span class="nav-icon">🌳</span><span class="nav-lbl">SKILLS</span></button>
+  <button class="nav-item" onclick="goPage('map',this)"><span class="nav-icon">🗺️</span><span class="nav-lbl">MAP</span></button>
+  <button class="nav-item" onclick="goPage('inventory',this)"><span class="nav-icon">🎒</span><span class="nav-lbl">INV</span></button>
+  <button class="nav-item" onclick="goPage('shop',this)"><span class="nav-icon">🛒</span><span class="nav-lbl">SHOP</span></button>
+  <button class="nav-item" onclick="goPage('pets',this)"><span class="nav-icon">🐾</span><span class="nav-lbl">PETS</span></button>
+  <button class="nav-item" onclick="goPage('profile',this)"><span class="nav-icon">👤</span><span class="nav-lbl">PROFILE</span></button>
+</nav>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="classModal" onclick="if(event.target===this)closeModal('classModal')">
+  <div class="modal-box" style="max-height:85dvh;overflow-y:auto" onclick="event.stopPropagation()">
+    <div class="modal-title">⚔️ SELECT CLASS</div>
+    <div class="modal-sub">کلاست رو انتخاب کن — هر کلاس مأموریت اختصاصی داره</div>
+    <div id="classGrid"></div>
+    <button class="btn-c" onclick="closeModal('classModal')" style="width:100%;margin-top:10px">بعداً</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="questModal" onclick="if(event.target===this)closeModal('questModal')">
+  <div class="modal-box bs" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">+ NEW QUEST</div>
+    <div class="fg"><label class="fl">عنوان</label><input class="fi" id="qTitle" placeholder="مثلاً: تمرین React"/></div>
+    <div class="fr">
+      <div class="fg"><label class="fl">نوع</label><select class="fi" id="qType"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></div>
+      <div class="fg"><label class="fl">مهارت</label><select class="fi" id="qStat"></select></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label class="fl">XP</label><input class="fi" type="number" id="qXp" value="25" min="5" max="500"/></div>
+      <div class="fg"><label class="fl">Gold</label><input class="fi" type="number" id="qGold" value="12" min="5" max="200"/></div>
+    </div>
+    <div class="mbtns"><button class="btn-c" onclick="closeModal('questModal')">لغو</button><button class="btn-p" onclick="addCustomQuest()">افزودن ✓</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="statModal" onclick="if(event.target===this)closeModal('statModal')"><div class="modal-box" onclick="event.stopPropagation()"><div id="statModalContent"></div></div></div>
+<div class="modal-overlay" id="itemModal" onclick="if(event.target===this)closeModal('itemModal')"><div class="modal-box" onclick="event.stopPropagation()"><div id="itemModalContent"></div></div></div>
+
+<div class="modal-overlay" id="luModal">
+  <div class="modal-box lu-box" onclick="event.stopPropagation()">
+    <div class="lu-rays"></div><div class="lu-icon">⬆️</div>
+    <div class="lu-title">LEVEL UP!</div><div class="lu-lvl" id="luNum">2</div>
+    <div class="lu-rws" id="luRws"></div><div class="lu-sub" id="luSub">ROOKIE</div>
+    <button class="btn-p" onclick="closeModal('luModal')" style="width:100%;margin-top:12px">CONTINUE ⚔️</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="bdModal">
+  <div class="modal-box bd-box" onclick="event.stopPropagation()">
+    <div class="bd-icon" id="bdIco">💀</div><div class="bd-title">BOSS DEFEATED!</div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:8px;font-family:'Orbitron',monospace" id="bdNm"></div>
+    <div class="bd-rw" id="bdRw">+100 🪙</div>
+    <button class="btn-p" onclick="closeModal('bdModal')" style="width:100%;margin-top:12px">🎉 CLAIM REWARD</button>
+  </div>
+</div>
+
+<div class="toast-c" id="toastC"></div>
+<div class="xp-fc" id="xpFC"></div>
+
+<!-- Three.js از CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- Game Files -->
+<script src="js/data.js"></script>
+<script src="js/item-art.js"></script>
+<script src="js/engine.js"></script>
+</body>
+</html>
